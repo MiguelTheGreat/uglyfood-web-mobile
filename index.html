@@ -48,7 +48,6 @@
       <div class="lg-pill lg-refractive uf-brand-nav-pill">
         <a href="#top" class="uf-brand">
           UglyFood
-          <span class="uf-brand-pill-tag">AI</span>
         </a>
 
         <nav id="top-nav-track" class="lg-spring-track uf-top-nav-track" aria-label="Primary navigation">
@@ -578,23 +577,13 @@
   <!-- Floating Apple Liquid Glass Toast -->
   <div id="uf-toast" class="lg-toast" role="status" aria-live="polite"></div>
 
-  <!-- ====================================================================
-       CURVED LIQUID GLASS FOOTER
-       ==================================================================== -->
-  <footer class="uf-footer">
-    <div class="lg-card uf-footer-card">
-      <div>
-        <span class="uf-brand" style="font-size:1.05rem;">UglyFood <span class="uf-brand-pill-tag">AI</span></span>
-        <p style="font-size:0.84rem;color:var(--ink-secondary);margin:0.35rem 0 0;">
-          Direct farm-to-buyer marketplace crafted with Apple Liquid Glass.
-        </p>
-      </div>
-      <div style="display:flex;gap:0.65rem;flex-wrap:wrap;">
-        <a href="#top" class="lg-btn" style="padding:0.55rem 1.05rem;font-size:0.8rem;">Back to Top &uarr;</a>
-        <a href="https://github.com/MiguelTheGreat/uglyfood-web-mobile" target="_blank" rel="noopener" class="lg-btn" style="padding:0.55rem 1.05rem;font-size:0.8rem;">GitHub &nearr;</a>
-      </div>
-    </div>
-  </footer>
+  <!-- Floating Apple Liquid Glass Back-to-Top Button -->
+  <button type="button" id="back-to-top-btn" class="lg-pill lg-refractive uf-back-to-top" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
 
   <!-- UglyFood AI Dataset & Apple-Spring Controller -->
   <script src="./js/uglyfood-data.js"></script>

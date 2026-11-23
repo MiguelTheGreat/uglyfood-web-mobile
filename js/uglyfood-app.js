@@ -1192,7 +1192,14 @@
       }
     });
 
-    // ScrollSpy + Mobile Dock Auto-Minimize on Scroll Down (Apple HIG)
+    // Floating Back-to-Top Button
+    const backToTopBtn = document.getElementById('back-to-top-btn');
+    backToTopBtn?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNavSection('marketplace');
+    });
+
+    // ScrollSpy + Mobile Dock Auto-Minimize + Back-to-Top Visibility (Apple HIG)
     let lastScrollY = window.scrollY;
     const mobileDock = document.getElementById('mobile-liquid-dock');
     const sections = ['marketplace', 'scanner', 'farmer-dashboard'];
@@ -1201,6 +1208,9 @@
       'scroll',
       () => {
         const currentY = window.scrollY;
+        if (backToTopBtn) {
+          backToTopBtn.classList.toggle('is-visible', currentY > 360);
+        }
         if (mobileDock) {
           if (currentY > lastScrollY + 18 && currentY > 220) {
             mobileDock.classList.add('is-minimized');

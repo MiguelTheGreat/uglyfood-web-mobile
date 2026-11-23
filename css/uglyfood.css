@@ -1208,22 +1208,60 @@ body.is-mobile-frame-mode .uf-farms-grid {
   transform: scale(1.06);
 }
 
-/* Footer */
-.uf-footer {
-  position: relative;
-  z-index: var(--z-base);
-  max-width: 1260px;
-  margin: 0 auto;
-  padding: 2rem clamp(1rem, 3.5vw, 2.75rem) 6.5rem;
+/* Floating Apple Liquid Glass Back-to-Top Button */
+.uf-back-to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: 1.75rem;
+  z-index: calc(var(--z-nav) + 1);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-primary);
+  cursor: pointer;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.88);
+  transition:
+    opacity 0.32s ease,
+    transform 0.44s var(--apple-spring-bouncy),
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
 
-.uf-footer-card {
-  padding: 1.5rem 1.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+.uf-back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.uf-back-to-top:hover {
+  transform: translateY(-3px) scale(1.06);
+  background: var(--lg-prominent-ink);
+  color: var(--bg-canvas);
+}
+
+.uf-back-to-top:active {
+  transform: scale(0.92);
+}
+
+.uf-back-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2;
+}
+
+@media (max-width: 960px) {
+  .uf-back-to-top {
+    bottom: 5.5rem;
+    right: 1rem;
+    width: 46px;
+    height: 46px;
+  }
 }
 
 /* --------------------------------------------------------------------------
