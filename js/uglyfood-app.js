@@ -1233,25 +1233,13 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Mobile Dock Auto-Minimize + Back-to-Top Visibility (Apple HIG)
-    let lastScrollY = window.scrollY;
-    const mobileDock = document.getElementById('mobile-liquid-dock');
-
+    // Back-to-Top Visibility on Scroll (Mobile Dock Stays Permanently Fixed)
     window.addEventListener(
       'scroll',
       () => {
-        const currentY = window.scrollY;
         if (backToTopBtn) {
-          backToTopBtn.classList.toggle('is-visible', currentY > 360);
+          backToTopBtn.classList.toggle('is-visible', window.scrollY > 360);
         }
-        if (mobileDock) {
-          if (currentY > lastScrollY + 18 && currentY > 220) {
-            mobileDock.classList.add('is-minimized');
-          } else if (currentY < lastScrollY - 10 || currentY < 120) {
-            mobileDock.classList.remove('is-minimized');
-          }
-        }
-        lastScrollY = currentY;
       },
       { passive: true }
     );

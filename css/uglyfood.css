@@ -242,21 +242,10 @@ body {
   position: fixed;
   bottom: max(0.85rem, env(safe-area-inset-bottom));
   left: 50%;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%);
   z-index: var(--z-nav);
   display: none;
   width: min(374px, calc(100vw - 1.25rem));
-  transition: transform 0.45s var(--apple-spring), opacity 0.35s ease;
-}
-
-.uf-mobile-dock.is-minimized {
-  transform: translateX(-50%) translateY(72%) scale(0.9);
-  opacity: 0.78;
-}
-
-.uf-mobile-dock.is-minimized:hover {
-  transform: translateX(-50%) translateY(0) scale(1);
-  opacity: 1;
 }
 
 .uf-mobile-dock-pill {
