@@ -1305,7 +1305,7 @@ body.is-mobile-frame-mode .uf-farms-grid {
   }
 
   .uf-floating-header {
-    top: 0.65rem;
+    top: calc(0.65rem + env(safe-area-inset-top, 0px));
     padding: 0 0.75rem;
   }
 
