@@ -70,71 +70,74 @@
        3. Icon-Only Utility Group (Search, Mobile Frame Toggle, Theme, Cart)
        ==================================================================== -->
   <header class="uf-floating-header">
-    <!-- Capsule 1: Brand + Text Navigation -->
-    <div class="liquid-glass liquid-glass--refractive uf-nav-capsule">
-      <a href="#top" class="lumina-brand hover-target">
-        UGLYFOOD.
-        <span class="uf-brand-tag">AI</span>
-      </a>
-      <nav class="uf-nav-links" aria-label="Primary navigation">
-        <a href="#marketplace" class="lumina-menu-item hover-target">Marketplace</a>
-        <a href="#scanner" class="lumina-menu-item hover-target">AI Scanner</a>
-        <a href="#farmer-dashboard" class="lumina-menu-item hover-target">Supplier Atelier</a>
-        <a href="#impact-tracker" class="lumina-menu-item hover-target">Impact Ledger</a>
-      </nav>
-    </div>
-
-    <!-- Capsule 2: Demo Mode Role Switcher (Fluid Morphing GlassEffectContainer) -->
-    <div class="liquid-glass liquid-glass--refractive uf-role-capsule" role="group" aria-label="Demo User Role Switcher">
-      <span class="uf-role-label">ROLE:</span>
-      <div class="lg-segmented-pill">
-        <button type="button" class="lg-segment-btn is-active hover-target" data-role-btn="b2c" aria-pressed="true">
-          Individual (B2C)
-        </button>
-        <button type="button" class="lg-segment-btn hover-target" data-role-btn="b2b" aria-pressed="false">
-          Commercial (B2B)
-        </button>
-        <button type="button" class="lg-segment-btn hover-target" data-role-btn="farmer" aria-pressed="false">
-          Local Farmer
-        </button>
-      </div>
-    </div>
-
-    <!-- Capsule 3: Separated Icon-Only Utility Pills (HIG Rule 6) -->
-    <div class="uf-utility-group">
-      <!-- Separated Semantic Search Pill -->
-      <div class="liquid-glass liquid-glass--refractive uf-icon-pill">
-        <button type="button" class="uf-icon-btn hover-target" data-focus-search aria-label="Search Rescued Produce" title="Search Rescued Produce">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
+    <!-- Top Row (Brand + Desktop Nav + Utility Icons) -->
+    <div class="uf-header-primary-row">
+      <!-- Capsule 1: Brand + Text Navigation -->
+      <div class="liquid-glass liquid-glass--refractive uf-nav-capsule">
+        <a href="#top" class="lumina-brand hover-target">
+          UGLYFOOD.
+          <span class="uf-brand-tag">AI</span>
+        </a>
+        <nav class="uf-nav-links" aria-label="Primary navigation">
+          <a href="#marketplace" class="lumina-menu-item hover-target">Market</a>
+          <a href="#scanner" class="lumina-menu-item hover-target">AI Scan</a>
+          <a href="#farmer-dashboard" class="lumina-menu-item hover-target">Atelier</a>
+          <a href="#impact-tracker" class="lumina-menu-item hover-target">Impact</a>
+        </nav>
       </div>
 
-      <!-- Mobile Frame Toggle + Theme Switcher + Cart Drawer Trigger -->
-      <div class="liquid-glass liquid-glass--refractive uf-icon-pill">
-        <button type="button" id="mobile-frame-toggle-btn" class="uf-icon-btn hover-target" aria-label="Toggle Mobile Viewport Preview Frame" title="Toggle Mobile App Preview Frame">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-            <line x1="12" y1="18" x2="12.01" y2="18"></line>
-          </svg>
-        </button>
+      <!-- Capsule 2 (Desktop inline / Mobile second row): Demo Mode Role Switcher -->
+      <div class="liquid-glass liquid-glass--refractive uf-role-capsule" role="group" aria-label="Demo User Role Switcher">
+        <span class="uf-role-label">MODE</span>
+        <div class="lg-segmented-pill">
+          <button type="button" class="lg-segment-btn is-active hover-target" data-role-btn="b2c" aria-pressed="true" title="Individual Buyer (B2C Retail Packs)">
+            B2C Buyer
+          </button>
+          <button type="button" class="lg-segment-btn hover-target" data-role-btn="b2b" aria-pressed="false" title="Commercial Buyer (B2B Wholesale Crates)">
+            B2B Bulk
+          </button>
+          <button type="button" class="lg-segment-btn hover-target" data-role-btn="farmer" aria-pressed="false" title="Local Farmer (AI Scanner &amp; Supplier Atelier)">
+            Farmer
+          </button>
+        </div>
+      </div>
 
-        <button type="button" id="theme-toggle-btn" class="uf-icon-btn hover-target" aria-label="Toggle Museum Paper and Gallery Noir Theme" title="Toggle Light / Noir Theme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-        </button>
+      <!-- Capsule 3: Separated Icon-Only Utility Pills (HIG Rule 6) -->
+      <div class="uf-utility-group">
+        <!-- Separated Semantic Search Pill (Desktop only; mobile has search orb in bottom dock) -->
+        <div class="liquid-glass liquid-glass--refractive uf-icon-pill uf-desktop-only-pill">
+          <button type="button" class="uf-icon-btn hover-target" data-focus-search aria-label="Search Rescued Produce" title="Search Rescued Produce">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
 
-        <button type="button" id="header-cart-btn" class="uf-icon-btn hover-target" data-open-cart aria-label="Open Rescued Harvest Cart" title="Open Rescued Harvest Cart">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-          <span class="uf-cart-badge" data-cart-badge>3</span>
-        </button>
+        <!-- Mobile Frame Toggle (Desktop only) + Theme Switcher + Cart Drawer Trigger -->
+        <div class="liquid-glass liquid-glass--refractive uf-icon-pill">
+          <button type="button" id="mobile-frame-toggle-btn" class="uf-icon-btn uf-desktop-only-btn hover-target" aria-label="Toggle Mobile Viewport Preview Frame" title="Toggle Mobile App Preview Frame">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </button>
+
+          <button type="button" id="theme-toggle-btn" class="uf-icon-btn hover-target" aria-label="Toggle Museum Paper and Gallery Noir Theme" title="Toggle Light / Noir Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button type="button" id="header-cart-btn" class="uf-icon-btn hover-target" data-open-cart aria-label="Open Rescued Harvest Cart" title="Open Rescued Harvest Cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="uf-cart-badge" data-cart-badge>3</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -145,17 +148,17 @@
        ==================================================================== -->
   <div id="mobile-liquid-dock" class="lg-mobile-dock" role="navigation" aria-label="Mobile quick navigation">
     <div class="liquid-glass liquid-glass--refractive lg-mobile-tab-pill">
-      <button type="button" class="lg-mobile-tab is-active" data-mobile-nav="marketplace">Market</button>
-      <button type="button" class="lg-mobile-tab" data-mobile-nav="scanner">AI Scan</button>
-      <button type="button" class="lg-mobile-tab" data-mobile-nav="farmer-dashboard">Farmer</button>
-      <button type="button" class="lg-mobile-tab" data-mobile-nav="impact-tracker">Impact</button>
+      <button type="button" class="lg-mobile-tab is-active" data-mobile-nav="marketplace">Shop</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="scanner">Scan</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="farmer-dashboard">Farm</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="impact-tracker">SDG</button>
       <button type="button" class="lg-mobile-tab" data-mobile-nav="cart">
         Cart (<span data-cart-badge>3</span>)
       </button>
     </div>
     <!-- Separated Semantic Search Tab Orb per Apple HIG -->
     <button type="button" class="liquid-glass liquid-glass--refractive lg-semantic-search-orb" data-focus-search aria-label="Quick Search Produce">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
