@@ -1255,6 +1255,10 @@
       },
       { passive: true }
     );
+
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
   }
 
   function handleCustomCropImage(file) {
