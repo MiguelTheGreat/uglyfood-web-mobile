@@ -1,242 +1,425 @@
 /* ==========================================================================
-   APPLE HIG LIQUID GLASS CHROME LAYER (iOS 26 / macOS Tahoe Specification)
-   Harmonized with Lumina Museum Paper (#f5f2e9) & Gallery Noir (#131210)
-   Strictly reserved for functional chrome (Floating Nav, Toolbars, Sheets,
-   Media HUD, and transient active Slider/Toggle thumbs).
+   UGLYFOOD AI — APPLE LIQUID GLASS DESIGN SYSTEM (iOS 26 / macOS Tahoe)
+   Inspired by Lumina's warm organic Museum Paper & Gallery Noir tones,
+   elevated with full curved geometry, refractive glass surfaces, and
+   Apple spring physics.
    ========================================================================== */
 
 :root {
-  /* Optical surface tokens — Light (Museum Paper Context) */
-  --lg-regular-bg: rgba(249, 246, 238, 0.62);
-  --lg-regular-sheet-bg: rgba(252, 250, 244, 0.84);
-  --lg-regular-sheet-expanded: rgba(252, 250, 244, 0.96);
-  --lg-clear-bg: rgba(255, 255, 255, 0.14);
+  /* Warm Organic Canvas (Lumina-inspired, luminous for glass refraction) */
+  --bg-canvas: #f6f2e9;
+  --bg-canvas-deep: #ebe4d6;
+  --ink-primary: #1a1917;
+  --ink-secondary: #59544c;
+  --ink-muted: rgba(26, 25, 23, 0.45);
+
+  /* Organic Harvest Accents */
+  --accent-bronze: #a87646;
+  --accent-bronze-deep: #855a31;
+  --accent-emerald: #26694a;
+  --accent-emerald-soft: rgba(38, 105, 74, 0.14);
+
+  /* Liquid Glass Optical Surface Tokens (Light) */
+  --lg-surface-bg: rgba(255, 253, 248, 0.56);
+  --lg-surface-hover: rgba(255, 254, 250, 0.72);
+  --lg-chrome-bg: rgba(252, 249, 242, 0.64);
+  --lg-sheet-bg: rgba(252, 250, 244, 0.76);
+  --lg-sheet-inner-bg: rgba(255, 253, 249, 0.86);
+  --lg-clear-bg: rgba(255, 255, 255, 0.16);
   --lg-clear-dim: rgba(0, 0, 0, 0.35); /* Official 35% dimming over bright media */
 
-  /* Warm Bronze & Harvest Green Prominent Tint (glassProminent) */
-  --lg-prominent-bg: linear-gradient(135deg, rgba(166, 124, 82, 0.82), rgba(125, 91, 57, 0.68));
-  --lg-prominent-emerald: linear-gradient(135deg, rgba(46, 107, 71, 0.84), rgba(31, 79, 51, 0.68));
+  /* Specular Rim, Refraction & Elevation */
+  --lg-border: rgba(255, 255, 255, 0.72);
+  --lg-border-subtle: rgba(26, 25, 23, 0.10);
+  --lg-specular-top: inset 0 1.5px 1.5px rgba(255, 255, 255, 0.92);
+  --lg-specular-bottom: inset 0 -1px 2px rgba(168, 118, 70, 0.16);
+  --lg-shadow-card: 0 14px 36px rgba(45, 36, 24, 0.08), 0 2px 10px rgba(45, 36, 24, 0.04);
+  --lg-shadow-chrome: 0 14px 38px rgba(32, 26, 18, 0.14), 0 3px 10px rgba(32, 26, 18, 0.07);
+  --lg-shadow-sheet: 0 28px 72px rgba(20, 17, 13, 0.24);
 
-  /* Specular rim & elevation */
-  --lg-border: rgba(26, 25, 23, 0.14);
-  --lg-border-highlight: rgba(255, 255, 255, 0.72);
-  --lg-specular-top: inset 0 1px 1px rgba(255, 255, 255, 0.78);
-  --lg-specular-bottom: inset 0 -1px 1.5px rgba(166, 124, 82, 0.18);
-  --lg-elevation: 0 12px 34px rgba(26, 25, 23, 0.12), 0 2px 8px rgba(26, 25, 23, 0.06);
+  /* Prominent Tinted Stained-Glass CTAs */
+  --lg-prominent-bronze: linear-gradient(135deg, rgba(168, 118, 70, 0.88), rgba(133, 90, 49, 0.78));
+  --lg-prominent-emerald: linear-gradient(135deg, rgba(38, 105, 74, 0.88), rgba(26, 78, 54, 0.80));
+  --lg-prominent-ink: linear-gradient(135deg, rgba(30, 28, 25, 0.90), rgba(18, 17, 15, 0.84));
 
-  /* Concentric geometry & spring physics */
-  --lg-radius-sheet: 28px;
-  --lg-padding-sheet: 12px;
-  --lg-radius-inner: calc(var(--lg-radius-sheet) - var(--lg-padding-sheet)); /* 16px concentric */
-  --lg-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Scroll Edge Fade Tint */
+  --lg-scroll-edge: rgba(246, 242, 233, 0.82);
 
-  /* Scroll edge fade tint */
-  --lg-scroll-edge-color: rgba(245, 242, 233, 0.78);
+  /* Concentric Curved Geometry (NEVER square!) */
+  --radius-card: 28px;
+  --radius-card-inner: 20px;
+  --radius-sheet: 32px;
+  --radius-sheet-pad: 12px;
+  --radius-sheet-inner: calc(var(--radius-sheet) - var(--radius-sheet-pad)); /* 20px concentric */
+  --radius-control: 16px;
+  --radius-pill: 9999px;
+
+  /* Apple HIG Spring Physics Curves */
+  --apple-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --apple-spring-bouncy: cubic-bezier(0.34, 1.42, 0.64, 1);
+  --apple-ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Typography — Fraunces (Organic Serif) + Plus Jakarta Sans (Friendly Modern UI) */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Z-Index Scale */
+  --z-mesh: 0;
+  --z-base: 10;
+  --z-edge: 50;
+  --z-nav: 60;
+  --z-modal: 500;
+  --z-toast: 950;
 }
 
+/* Gallery Noir Dark Mode (Lumina-inspired dark warmth with glowing glass refraction) */
 [data-theme="dark"] {
-  --lg-regular-bg: rgba(24, 22, 19, 0.56);
-  --lg-regular-sheet-bg: rgba(26, 24, 21, 0.84);
-  --lg-regular-sheet-expanded: rgba(24, 22, 19, 0.96);
-  --lg-clear-bg: rgba(255, 255, 255, 0.12);
-  --lg-clear-dim: rgba(0, 0, 0, 0.35);
+  --bg-canvas: #12110f;
+  --bg-canvas-deep: #1a1815;
+  --ink-primary: #f4efe6;
+  --ink-secondary: #b2aa9c;
+  --ink-muted: rgba(244, 239, 230, 0.44);
 
-  --lg-prominent-bg: linear-gradient(135deg, rgba(201, 158, 110, 0.78), rgba(142, 105, 66, 0.62));
-  --lg-prominent-emerald: linear-gradient(135deg, rgba(62, 138, 92, 0.82), rgba(40, 96, 62, 0.66));
+  --accent-bronze: #d4a373;
+  --accent-bronze-deep: #b07f4f;
+  --accent-emerald: #63c192;
+  --accent-emerald-soft: rgba(99, 193, 146, 0.16);
 
-  --lg-border: rgba(239, 234, 224, 0.18);
-  --lg-border-highlight: rgba(255, 255, 255, 0.24);
-  --lg-specular-top: inset 0 1px 1px rgba(255, 255, 255, 0.32);
-  --lg-specular-bottom: inset 0 -1px 1.5px rgba(201, 158, 110, 0.16);
-  --lg-elevation: 0 14px 38px rgba(0, 0, 0, 0.44), 0 3px 10px rgba(0, 0, 0, 0.24);
+  --lg-surface-bg: rgba(30, 28, 24, 0.54);
+  --lg-surface-hover: rgba(38, 35, 30, 0.68);
+  --lg-chrome-bg: rgba(26, 24, 21, 0.62);
+  --lg-sheet-bg: rgba(24, 22, 19, 0.78);
+  --lg-sheet-inner-bg: rgba(30, 28, 24, 0.88);
+  --lg-clear-bg: rgba(255, 255, 255, 0.13);
 
-  --lg-scroll-edge-color: rgba(19, 18, 16, 0.78);
+  --lg-border: rgba(255, 255, 255, 0.16);
+  --lg-border-subtle: rgba(244, 239, 230, 0.12);
+  --lg-specular-top: inset 0 1px 1.5px rgba(255, 255, 255, 0.28);
+  --lg-specular-bottom: inset 0 -1px 2px rgba(212, 163, 115, 0.18);
+  --lg-shadow-card: 0 18px 44px rgba(0, 0, 0, 0.42), 0 2px 10px rgba(0, 0, 0, 0.25);
+  --lg-shadow-chrome: 0 16px 46px rgba(0, 0, 0, 0.52), 0 4px 12px rgba(0, 0, 0, 0.30);
+  --lg-shadow-sheet: 0 32px 84px rgba(0, 0, 0, 0.68);
+
+  --lg-prominent-bronze: linear-gradient(135deg, rgba(212, 163, 115, 0.86), rgba(168, 118, 70, 0.74));
+  --lg-prominent-emerald: linear-gradient(135deg, rgba(72, 162, 116, 0.86), rgba(45, 116, 80, 0.76));
+  --lg-prominent-ink: linear-gradient(135deg, rgba(244, 239, 230, 0.92), rgba(226, 218, 204, 0.86));
+
+  --lg-scroll-edge: rgba(18, 17, 15, 0.82);
 }
 
 /* --------------------------------------------------------------------------
-   1. REGULAR LIQUID GLASS (Default for floating bars, toolbars, popovers)
+   1. LUMINOUS ORGANIC AMBIENT MESH (Gives Liquid Glass Rich Color to Refract)
    -------------------------------------------------------------------------- */
-.liquid-glass {
-  position: relative;
-  border-radius: 9999px;
-  background: var(--lg-regular-bg);
-  backdrop-filter: blur(22px) saturate(185%) brightness(1.04);
-  -webkit-backdrop-filter: blur(22px) saturate(185%) brightness(1.04);
-  border: 1px solid var(--lg-border);
-  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-elevation);
-  transition:
-    transform 0.38s var(--lg-spring),
-    background 0.28s ease,
-    box-shadow 0.35s ease,
-    border-color 0.28s ease;
+.lg-ambient-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-mesh);
+  pointer-events: none;
+  overflow: hidden;
 }
 
-/* Progressive enhancement: SVG optical edge lensing in Chromium */
+.lg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.52;
+  will-change: transform;
+  transition: opacity 0.5s ease;
+}
+
+.lg-orb--1 {
+  width: min(580px, 85vw);
+  height: min(580px, 85vw);
+  top: -12%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(226, 173, 118, 0.58) 0%, rgba(226, 173, 118, 0) 70%);
+}
+
+.lg-orb--2 {
+  width: min(520px, 80vw);
+  height: min(520px, 80vw);
+  top: 34%;
+  left: -14%;
+  background: radial-gradient(circle, rgba(108, 172, 132, 0.44) 0%, rgba(108, 172, 132, 0) 70%);
+}
+
+.lg-orb--3 {
+  width: min(620px, 90vw);
+  height: min(620px, 90vw);
+  bottom: -14%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(214, 155, 108, 0.42) 0%, rgba(214, 155, 108, 0) 70%);
+}
+
+[data-theme="dark"] .lg-orb--1 {
+  background: radial-gradient(circle, rgba(196, 136, 74, 0.34) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .lg-orb--2 {
+  background: radial-gradient(circle, rgba(64, 146, 104, 0.28) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .lg-orb--3 {
+  background: radial-gradient(circle, rgba(180, 120, 72, 0.26) 0%, transparent 70%);
+}
+
+/* --------------------------------------------------------------------------
+   2. CORE LIQUID GLASS SURFACES (Curved Cards, Floating Pills, Prominent CTAs)
+   -------------------------------------------------------------------------- */
+.lg-card {
+  position: relative;
+  border-radius: var(--radius-card);
+  background: var(--lg-surface-bg);
+  backdrop-filter: blur(26px) saturate(195%) brightness(1.04);
+  -webkit-backdrop-filter: blur(26px) saturate(195%) brightness(1.04);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-shadow-card);
+  transition:
+    transform 0.42s var(--apple-spring),
+    background-color 0.3s ease,
+    box-shadow 0.42s var(--apple-spring),
+    border-color 0.3s ease;
+}
+
+.lg-card--interactive:hover {
+  transform: translateY(-4px) scale(1.008);
+  background: var(--lg-surface-hover);
+  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), 0 22px 48px rgba(32, 26, 18, 0.13);
+}
+
+.lg-card--interactive:active {
+  transform: translateY(-1px) scale(0.992);
+}
+
+/* Floating Chrome Capsule (Header, Role Switcher, Mobile Dock) */
+.lg-pill {
+  position: relative;
+  border-radius: var(--radius-pill);
+  background: var(--lg-chrome-bg);
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-shadow-chrome);
+  transition:
+    transform 0.38s var(--apple-spring),
+    background-color 0.28s ease,
+    box-shadow 0.38s var(--apple-spring);
+}
+
 @supports (backdrop-filter: url(#liquid-glass-refract)) {
-  .liquid-glass--refractive {
-    backdrop-filter: url(#liquid-glass-refract) blur(16px) saturate(190%) brightness(1.04);
+  .lg-refractive {
+    backdrop-filter: url(#liquid-glass-refract) blur(22px) saturate(200%) brightness(1.05);
   }
 }
 
-/* Gel-like tactile press/hover responsiveness on floating glass controls */
-.liquid-glass--interactive:hover {
-  transform: translateY(-1.5px) scale(1.015);
-  border-color: var(--accent-warm);
-}
-
-.liquid-glass--interactive:active {
-  transform: translateY(0) scale(0.985);
-}
-
-/* --------------------------------------------------------------------------
-   2. CLEAR LIQUID GLASS (ONLY over visually rich media + 35% Dimming Rule)
-   -------------------------------------------------------------------------- */
+/* Clear Liquid Glass over Rich Media + Mandatory 35% Dimmer */
 .lg-media-dimmer {
   position: absolute;
   inset: 0;
-  background: var(--lg-clear-dim); /* Official 35% opacity dimming over bright media */
+  background: var(--lg-clear-dim);
   pointer-events: none;
   z-index: 1;
-  transition: opacity 0.35s ease;
 }
 
-.liquid-glass--clear {
+.lg-clear {
   position: relative;
   z-index: 2;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   background: var(--lg-clear-bg);
-  backdrop-filter: blur(12px) saturate(190%) brightness(1.05);
-  -webkit-backdrop-filter: blur(12px) saturate(190%) brightness(1.05);
-  border: 1px solid rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(14px) saturate(195%) brightness(1.06);
+  -webkit-backdrop-filter: blur(14px) saturate(195%) brightness(1.06);
+  border: 1px solid rgba(255, 255, 255, 0.38);
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.55),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.25);
-  color: #fcfaf4;
-  transition: transform 0.35s var(--lg-spring), background 0.25s ease;
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.62),
+    inset 0 -1px 1.5px rgba(255, 255, 255, 0.15),
+    0 10px 26px rgba(0, 0, 0, 0.24);
+  color: #ffffff;
 }
 
-/* --------------------------------------------------------------------------
-   3. PROMINENT TINTED CTA (glassProminent / Stained Glass)
-   -------------------------------------------------------------------------- */
-.liquid-glass--prominent {
-  background: var(--lg-prominent-bg);
-  border-color: rgba(255, 255, 255, 0.38);
-  color: #fcfaf4 !important;
-}
-
-.liquid-glass--prominent-emerald {
-  background: var(--lg-prominent-emerald);
-  border-color: rgba(255, 255, 255, 0.38);
-  color: #fcfaf4 !important;
-}
-
-/* --------------------------------------------------------------------------
-   4. SCROLL EDGE EFFECTS & BACKGROUND EXTENSION
-   -------------------------------------------------------------------------- */
-.scroll-edge-top {
-  pointer-events: none;
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 96px;
-  background: linear-gradient(to bottom, var(--lg-scroll-edge-color), transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  mask-image: linear-gradient(to bottom, black 32%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 32%, transparent 100%);
-  z-index: 55;
-}
-
-.scroll-edge-bottom {
-  pointer-events: none;
-  position: fixed;
-  inset: auto 0 0 0;
-  height: 88px;
-  background: linear-gradient(to top, var(--lg-scroll-edge-color), transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  mask-image: linear-gradient(to top, black 30%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%);
-  z-index: 55;
-}
-
-/* Background Extension Effect (Mirrored & blurred ambient bleed next to split media) */
-.lg-bg-extension {
-  position: absolute;
-  inset: -12%;
-  background-size: cover;
-  background-position: center;
-  filter: blur(36px) saturate(140%);
-  opacity: 0.24;
-  transform: scaleX(-1);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* --------------------------------------------------------------------------
-   5. GLASS EFFECT CONTAINER & FLUID MORPHING PILLS
-   -------------------------------------------------------------------------- */
-.lg-effect-container {
+/* Glass Buttons (Always Pill-Shaped, Never Square) */
+.lg-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  position: relative;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1.35rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-primary);
+  background: var(--lg-chrome-bg);
+  backdrop-filter: blur(18px) saturate(185%);
+  -webkit-backdrop-filter: blur(18px) saturate(185%);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-specular-top), 0 6px 18px rgba(26, 25, 23, 0.08);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 0.36s var(--apple-spring-bouncy),
+    background 0.26s ease,
+    color 0.24s ease,
+    box-shadow 0.32s ease;
 }
 
-/* Segmented morphing capsule (NO nested backdrop-filter inside!) */
-.lg-segmented-pill {
+.lg-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: var(--lg-surface-hover);
+}
+
+.lg-btn:active {
+  transform: scale(0.95);
+}
+
+.lg-btn--prominent {
+  background: var(--lg-prominent-ink);
+  color: var(--bg-canvas);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.36), 0 12px 26px rgba(26, 25, 23, 0.22);
+}
+
+.lg-btn--prominent:hover {
+  background: var(--lg-prominent-ink);
+  color: var(--bg-canvas);
+  box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.45), 0 16px 32px rgba(26, 25, 23, 0.28);
+}
+
+.lg-btn--bronze {
+  background: var(--lg-prominent-bronze);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 12px 26px rgba(168, 118, 70, 0.28);
+}
+
+.lg-btn--bronze:hover {
+  background: var(--lg-prominent-bronze);
+  color: #ffffff;
+}
+
+.lg-btn--emerald {
+  background: var(--lg-prominent-emerald);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 12px 26px rgba(38, 105, 74, 0.28);
+}
+
+.lg-btn--emerald:hover {
+  background: var(--lg-prominent-emerald);
+  color: #ffffff;
+}
+
+.lg-btn.is-active {
+  background: var(--lg-prominent-ink);
+  color: var(--bg-canvas);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* --------------------------------------------------------------------------
+   3. APPLE iOS 26 SLIDING SPRING GLASS INDICATOR (Top & Bottom Menus)
+   -------------------------------------------------------------------------- */
+.lg-spring-track {
+  position: relative;
   display: inline-flex;
   align-items: center;
   padding: 4px;
   gap: 2px;
 }
 
-.lg-segment-btn {
+.lg-spring-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border-radius: var(--radius-pill);
+  background: var(--lg-prominent-ink);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.36),
+    0 6px 16px rgba(20, 18, 15, 0.2);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width;
+  transition:
+    transform 0.46s var(--apple-spring),
+    width 0.42s var(--apple-spring),
+    opacity 0.25s ease;
+}
+
+.lg-spring-item {
   position: relative;
+  z-index: 1;
   border: none;
   background: transparent;
   color: var(--ink-secondary);
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.46rem 0.72rem;
-  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   white-space: nowrap;
-  transition:
-    color 0.3s ease,
-    background-color 0.35s var(--lg-spring),
-    transform 0.35s var(--lg-spring),
-    box-shadow 0.35s var(--lg-spring);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: color 0.28s ease, transform 0.3s var(--apple-spring-bouncy);
 }
 
-.lg-segment-btn:hover {
+.lg-spring-item:hover {
   color: var(--ink-primary);
 }
 
-.lg-segment-btn.is-active {
-  background: var(--ink-primary);
-  color: var(--bg-paper);
-  box-shadow: 0 4px 12px rgba(26, 25, 23, 0.18);
-  transform: scale(1.02);
+.lg-spring-item:active {
+  transform: scale(0.94);
+}
+
+.lg-spring-item.is-active {
+  color: var(--bg-canvas);
 }
 
 /* --------------------------------------------------------------------------
-   6. CONCENTRIC INSET SHEETS (Modals & Slide-Over Cart Drawer)
-   outerRadius = 28px, padding = 12px, innerRadius = 16px
+   4. SCROLL EDGE EFFECTS (Soft Top & Bottom Glass Haze)
+   -------------------------------------------------------------------------- */
+.scroll-edge-top {
+  pointer-events: none;
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 98px;
+  background: linear-gradient(to bottom, var(--lg-scroll-edge), transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+  z-index: var(--z-edge);
+}
+
+.scroll-edge-bottom {
+  pointer-events: none;
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 96px;
+  background: linear-gradient(to top, var(--lg-scroll-edge), transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(to top, black 35%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 35%, transparent 100%);
+  z-index: var(--z-edge);
+}
+
+/* --------------------------------------------------------------------------
+   5. CONCENTRIC INSET LIQUID GLASS SHEETS (Modals & Cart Drawer)
+   outerRadius = 32px, padding = 12px, innerRadius = 20px
    -------------------------------------------------------------------------- */
 .lg-sheet-backdrop {
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
-  background: rgba(19, 18, 16, 0.46);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(18, 17, 15, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.42s var(--lg-spring);
+  transition: opacity 0.38s var(--apple-spring);
 }
 
 .lg-sheet-backdrop.is-open {
@@ -244,46 +427,34 @@
   pointer-events: auto;
 }
 
-/* Inset Sheet Container */
 .lg-sheet {
-  background: var(--lg-regular-sheet-bg);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  background: var(--lg-sheet-bg);
+  backdrop-filter: blur(34px) saturate(210%);
+  -webkit-backdrop-filter: blur(34px) saturate(210%);
   border: 1px solid var(--lg-border);
-  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), 0 24px 64px rgba(0, 0, 0, 0.28);
-  border-radius: var(--lg-radius-sheet);
-  padding: var(--lg-padding-sheet);
-  transition:
-    transform 0.48s var(--lg-spring),
-    background-color 0.35s ease,
-    opacity 0.38s ease;
+  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-shadow-sheet);
+  border-radius: var(--radius-sheet);
+  padding: var(--radius-sheet-pad);
+  transition: transform 0.52s var(--apple-spring), opacity 0.36s ease;
 }
 
-/* When expanded or focused, transitions to more opaque surface per HIG */
-.lg-sheet.is-expanded,
-.lg-sheet:focus-within {
-  background: var(--lg-regular-sheet-expanded);
-}
-
-/* Concentric Inner Surface (16px radius = 28px outer - 12px padding) */
 .lg-sheet-inner {
-  border-radius: var(--lg-radius-inner);
-  background: var(--bg-paper-focus);
-  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sheet-inner);
+  background: var(--lg-sheet-inner-bg);
+  border: 1px solid var(--lg-border-subtle);
   overflow: hidden;
 }
 
 /* --------------------------------------------------------------------------
-   7. CONTENT-LAYER EXCEPTION: TRANSIENT LIQUID GLASS SLIDER & TOGGLE THUMBS
-   Only transforms into refractive Liquid Glass while actively interacted with!
+   6. TRANSIENT LIQUID GLASS SLIDER & TOGGLE KNOBS (Apple HIG)
    -------------------------------------------------------------------------- */
 .lg-range-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--border-strong);
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--lg-border-subtle);
   outline: none;
   cursor: pointer;
 }
@@ -291,81 +462,51 @@
 .lg-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--ink-primary);
-  border: 2px solid var(--bg-paper-focus);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--bg-canvas);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
   cursor: grab;
-  transition:
-    transform 0.28s var(--lg-spring),
-    background 0.22s ease,
-    box-shadow 0.28s ease,
-    border-color 0.22s ease;
+  transition: transform 0.3s var(--apple-spring-bouncy), background 0.22s ease, box-shadow 0.28s ease;
 }
 
-/* Transient Liquid Glass transformation on active interaction */
 .lg-range-slider:active::-webkit-slider-thumb,
-.lg-range-slider.is-Interacting::-webkit-slider-thumb {
+.lg-range-slider.is-interacting::-webkit-slider-thumb {
   cursor: grabbing;
-  transform: scale(1.38);
-  background: rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(8px) saturate(180%);
-  border: 1.5px solid var(--accent-warm);
-  box-shadow:
-    inset 0 1px 2px rgba(255, 255, 255, 0.9),
-    0 6px 18px rgba(166, 124, 82, 0.38);
-}
-
-.lg-range-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--ink-primary);
-  border: 2px solid var(--bg-paper-focus);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  cursor: grab;
-  transition: transform 0.28s var(--lg-spring), background 0.22s ease, box-shadow 0.28s ease;
-}
-
-.lg-range-slider:active::-moz-range-thumb {
-  cursor: grabbing;
-  transform: scale(1.38);
+  transform: scale(1.42);
   background: rgba(255, 255, 255, 0.45);
-  border: 1.5px solid var(--accent-warm);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 6px 18px rgba(166, 124, 82, 0.38);
+  backdrop-filter: blur(10px) saturate(200%);
+  border: 1.5px solid var(--accent-bronze);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.92), 0 8px 20px rgba(168, 118, 70, 0.4);
 }
 
-/* Transient Liquid Glass Toggle Switch */
 .lg-toggle-switch {
   position: relative;
-  width: 48px;
-  height: 26px;
-  border-radius: 9999px;
-  background: var(--border-strong);
-  border: 1px solid var(--border-subtle);
+  width: 52px;
+  height: 30px;
+  border-radius: var(--radius-pill);
+  background: rgba(120, 115, 108, 0.28);
+  border: 1px solid var(--lg-border);
   cursor: pointer;
-  padding: 2px;
-  transition: background-color 0.3s var(--lg-spring);
+  padding: 3px;
+  transition: background-color 0.34s var(--apple-spring);
 }
 
 .lg-toggle-switch.is-on {
-  background: var(--accent-warm);
+  background: var(--accent-emerald);
 }
 
 .lg-toggle-knob {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: var(--bg-paper-focus);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
   transform: translateX(0);
-  transition:
-    transform 0.32s var(--lg-spring),
-    background 0.22s ease,
-    box-shadow 0.25s ease;
+  transition: transform 0.36s var(--apple-spring-bouncy), background 0.22s ease;
 }
 
 .lg-toggle-switch.is-on .lg-toggle-knob {
@@ -373,96 +514,74 @@
 }
 
 .lg-toggle-switch:active .lg-toggle-knob {
-  transform: scale(1.26) translateX(4px);
-  background: rgba(255, 255, 255, 0.55);
+  transform: scale(1.24) translateX(3px);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(8px);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 4px 14px rgba(0, 0, 0, 0.28);
 }
 
 .lg-toggle-switch.is-on:active .lg-toggle-knob {
-  transform: scale(1.26) translateX(18px);
+  transform: scale(1.24) translateX(18px);
 }
 
 /* --------------------------------------------------------------------------
-   8. FLOATING MOBILE / COMPACT TAB BAR (Minimizes on Scroll Down)
+   7. APPLE SPRING VIEW ENTRANCE & FLOATING LIQUID GLASS TOAST
    -------------------------------------------------------------------------- */
-.lg-mobile-dock {
+@keyframes appleSpringIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.apple-spring-enter {
+  animation: appleSpringIn 0.56s var(--apple-spring) both;
+}
+
+.lg-toast {
   position: fixed;
-  bottom: max(0.85rem, env(safe-area-inset-bottom));
+  top: 5.5rem;
   left: 50%;
-  transform: translateX(-50%) translateY(0);
-  z-index: var(--z-nav);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  max-width: calc(100vw - 1.2rem);
-  transition: transform 0.45s var(--lg-spring), opacity 0.35s ease;
+  transform: translateX(-50%) translateY(-16px) scale(0.94);
+  z-index: var(--z-toast);
+  padding: 0.72rem 1.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--lg-prominent-ink);
+  color: var(--bg-canvas);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.26);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  max-width: calc(100vw - 2rem);
+  text-align: center;
+  transition:
+    opacity 0.3s ease,
+    transform 0.45s var(--apple-spring-bouncy);
 }
 
-.lg-mobile-dock.is-minimized {
-  transform: translateX(-50%) translateY(68%) scale(0.86);
-  opacity: 0.72;
-}
-
-.lg-mobile-dock.is-minimized:hover {
-  transform: translateX(-50%) translateY(0) scale(1);
+.lg-toast.is-visible {
   opacity: 1;
-}
-
-.lg-mobile-tab-pill {
-  display: flex;
-  align-items: center;
-  padding: 0.28rem 0.32rem;
-  gap: 0.12rem;
-  min-width: 0;
-}
-
-.lg-mobile-tab {
-  border: none;
-  background: transparent;
-  color: var(--ink-secondary);
-  font-family: var(--font-display);
-  font-size: 0.44rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.48rem 0.56rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.3s var(--lg-spring), color 0.25s ease;
-}
-
-.lg-mobile-tab.is-active {
-  background: var(--ink-primary);
-  color: var(--bg-paper);
-}
-
-/* Separated Semantic Search Orb at Trailing End of Tab Bar */
-.lg-semantic-search-orb {
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--ink-primary);
-  padding: 0;
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 /* --------------------------------------------------------------------------
-   9. MANDATORY APPLE ACCESSIBILITY ACCOMMODATIONS
+   8. APPLE ACCESSIBILITY ACCOMMODATIONS
    -------------------------------------------------------------------------- */
-
-/* Reduced Transparency: frostier, higher opacity, zero visual bleed */
 @media (prefers-reduced-transparency: reduce) {
-  .liquid-glass,
-  .liquid-glass--clear,
-  .lg-sheet {
-    background: var(--bg-paper-focus) !important;
+  .lg-card,
+  .lg-pill,
+  .lg-clear,
+  .lg-sheet,
+  .lg-btn {
+    background: var(--bg-canvas) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -473,30 +592,21 @@
   }
 }
 
-/* Increased Contrast: pure foreground contrast + explicit tap-target borders */
 @media (prefers-contrast: more) {
-  .liquid-glass,
-  .liquid-glass--clear,
-  .lg-sheet {
+  .lg-card,
+  .lg-pill,
+  .lg-clear,
+  .lg-sheet,
+  .lg-btn {
     border: 1.5px solid var(--ink-primary) !important;
-  }
-  .lg-segment-btn,
-  .lg-mobile-tab {
-    color: var(--ink-primary) !important;
   }
 }
 
-/* Reduced Motion: disable elastic liquid deformation & morphing */
 @media (prefers-reduced-motion: reduce) {
-  .liquid-glass,
-  .liquid-glass--clear,
-  .lg-sheet,
-  .lg-segment-btn,
-  .lg-mobile-dock {
-    transition: none !important;
-    transform: none !important;
-  }
-  .lg-mobile-dock {
-    transform: translateX(-50%) !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

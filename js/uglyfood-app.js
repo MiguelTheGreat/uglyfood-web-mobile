@@ -1,10 +1,12 @@
 /**
- * UGLYFOOD AI — INTERACTIVE APPLICATION CONTROLLER
- * Harmonizes Lumina Design System (window.LuminaDesign) with Apple HIG Liquid Glass Chrome.
+ * UGLYFOOD AI — APPLE LIQUID GLASS INTERACTION & SPRING MOTION CONTROLLER
+ * Zero external dependencies. Implements Apple HIG spring sliding indicators
+ * for top & bottom menus, curved Liquid Glass cards, simulated CV scanning,
+ * and localStorage persistence.
  */
 (function () {
-  const STORAGE_KEY = 'uglyfood_ai_state_v1';
-
+  const STORAGE_KEY = 'uglyfood_ai_state_v2';
+  const THEME_KEY = 'uglyfood_theme_v2';
   const defaultData = window.UGLYFOOD_INITIAL_DATA;
 
   function loadState() {
@@ -20,7 +22,7 @@
       console.warn('Could not read localStorage state:', e);
     }
     return {
-      role: 'b2c', // 'b2c' | 'b2b' | 'farmer'
+      role: 'b2c',
       listings: JSON.parse(JSON.stringify(defaultData.listings)),
       incomingOrders: JSON.parse(JSON.stringify(defaultData.incomingOrders)),
       platformStats: JSON.parse(JSON.stringify(defaultData.platformStats)),
@@ -33,6 +35,7 @@
   }
 
   let state = loadState();
+  let toastTimer = null;
 
   const ui = {
     filters: {
@@ -45,20 +48,16 @@
     activePresetId: 'preset-carrots',
     customUploadDataUrl: null,
     customUploadName: null,
-    isScanning: false,
-    isScanComplete: true,
     activeModalCropId: null,
     modalQty: 1,
-    shareStyle: 'etched',
-    checkoutSuccessOrder: null,
-    cursorCtrl: null
+    checkoutSuccessOrder: null
   };
 
   function saveState() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch (e) {
-      console.warn('Could not persist localStorage state:', e);
+      console.warn('Could not persist state:', e);
     }
   }
 
@@ -66,6 +65,120 @@
     return '₱' + Number(num || 0).toLocaleString('en-PH');
   }
 
+  function showToast(message, duration = 2400) {
+    const el = document.getElementById('uf-toast');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('is-visible'), duration);
+  }
+
+  /* ------------------------------------------------------------------------
+     1. APPLE HIG SPRING SLIDING GLASS INDICATOR ENGINE (Top & Bottom Menus)
+     ------------------------------------------------------------------------ */
+  function positionSpringIndicator(trackEl, immediate = false) {
+    if (!trackEl) return;
+    const indicator = trackEl.querySelector('.lg-spring-indicator');
+    const activeItem = trackEl.querySelector('.lg-spring-item.is-active');
+    if (!indicator || !activeItem) return;
+
+    const width = activeItem.offsetWidth;
+    const offsetLeft = activeItem.offsetLeft;
+    if (width === 0) return;
+
+    if (immediate) {
+      indicator.style.transition = 'none';
+    }
+    indicator.style.width = `${width}px`;
+    indicator.style.transform = `translate3d(${offsetLeft}px, 0, 0)`;
+
+    if (immediate) {
+      void indicator.offsetWidth;
+      indicator.style.transition = '';
+    }
+  }
+
+  function syncAllSpringIndicators(immediate = false) {
+    ['top-nav-track', 'role-switcher-track', 'mobile-nav-track'].forEach((id) => {
+      positionSpringIndicator(document.getElementById(id), immediate);
+    });
+  }
+
+  function setActiveNavSection(sectionId) {
+    // Update Top Nav Track
+    const topTrack = document.getElementById('top-nav-track');
+    if (topTrack) {
+      topTrack.querySelectorAll('[data-top-nav]').forEach((item) => {
+        item.classList.toggle('is-active', item.getAttribute('data-top-nav') === sectionId);
+      });
+      positionSpringIndicator(topTrack);
+    }
+
+    // Update Mobile Bottom Dock Track
+    const mobileTrack = document.getElementById('mobile-nav-track');
+    if (mobileTrack) {
+      mobileTrack.querySelectorAll('[data-mobile-nav]').forEach((item) => {
+        item.classList.toggle('is-active', item.getAttribute('data-mobile-nav') === sectionId);
+      });
+      positionSpringIndicator(mobileTrack);
+    }
+  }
+
+  function triggerAppleSectionSpring(sectionEl) {
+    if (!sectionEl) return;
+    sectionEl.classList.remove('apple-spring-enter');
+    void sectionEl.offsetWidth;
+    sectionEl.classList.add('apple-spring-enter');
+  }
+
+  function navigateToSection(sectionId) {
+    document.getElementById('mobile-liquid-dock')?.classList.remove('is-minimized');
+    if (sectionId === 'cart') {
+      setActiveNavSection('cart');
+      openCartDrawer();
+      return;
+    }
+    setActiveNavSection(sectionId);
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      triggerAppleSectionSpring(section);
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     2. THEME CONTROLLER (Warm Museum Paper <-> Gallery Noir)
+     ------------------------------------------------------------------------ */
+  function setTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch {}
+  }
+
+  function initTheme() {
+    let saved = 'light';
+    try {
+      saved = localStorage.getItem(THEME_KEY) || 'light';
+    } catch {}
+    setTheme(saved);
+  }
+
+  function toggleTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    setTheme(next);
+    showToast(next === 'dark' ? 'Dark Glass Mode Active' : 'Warm Light Glass Mode Active');
+  }
+
+  /* ------------------------------------------------------------------------
+     3. ROLE SWITCHER (B2C Buyer · B2B Bulk · Farmer)
+     ------------------------------------------------------------------------ */
   function getActivePrice(crop, role = state.role) {
     if (role === 'b2b') {
       return {
@@ -85,14 +198,10 @@
     };
   }
 
-  /* ------------------------------------------------------------------------
-     1. ROLE SWITCHER (B2C / B2B / Local Farmer)
-     ------------------------------------------------------------------------ */
   function setRole(newRole, { scrollToSection = false } = {}) {
     state.role = newRole;
     saveState();
 
-    // Update Max Price slider range for B2C vs B2B
     const priceSlider = document.getElementById('filter-max-price');
     if (priceSlider) {
       if (newRole === 'b2b') {
@@ -108,79 +217,78 @@
       }
     }
 
-    document.querySelectorAll('[data-role-btn]').forEach((btn) => {
-      const isMatch = btn.getAttribute('data-role-btn') === newRole;
-      btn.classList.toggle('is-active', isMatch);
-      btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
-    });
+    const roleTrack = document.getElementById('role-switcher-track');
+    if (roleTrack) {
+      roleTrack.querySelectorAll('[data-role-btn]').forEach((btn) => {
+        const isMatch = btn.getAttribute('data-role-btn') === newRole;
+        btn.classList.toggle('is-active', isMatch);
+        btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+      positionSpringIndicator(roleTrack);
+    }
 
-    const roleBannerText = document.getElementById('hero-role-indicator');
-    if (roleBannerText) {
+    const roleBanner = document.getElementById('hero-role-indicator');
+    if (roleBanner) {
       const labels = {
-        b2c: 'ACTIVE VIEW: INDIVIDUAL BUYER (B2C RETAIL PACKS · 1–5 KG)',
-        b2b: 'ACTIVE VIEW: COMMERCIAL BUYER (B2B WHOLESALE CRATES · 25–100 KG)',
-        farmer: 'ACTIVE VIEW: LOCAL FARMER (AI CROP SCANNER & SUPPLIER ATELIER)'
+        b2c: 'Individual Buyer · 1–5 kg Retail Packs',
+        b2b: 'Commercial Buyer · 25–100 kg Wholesale Crates',
+        farmer: 'Local Farmer · AI Crop Scanner & Supplier Atelier'
       };
-      roleBannerText.textContent = labels[newRole] || labels.b2c;
+      roleBanner.textContent = labels[newRole] || labels.b2c;
     }
 
-    if (window.LuminaDesign) {
-      window.LuminaDesign.playPaperRustle(0.045);
-      const toastLabels = {
-        b2c: 'Switched to Individual Buyer (B2C Retail Pricing)',
-        b2b: 'Switched to Commercial Buyer (B2B Bulk Crate Pricing)',
-        farmer: 'Switched to Local Farmer (AI Scanner & Supplier View)'
-      };
-      window.LuminaDesign.showToast(toastLabels[newRole]);
-    }
+    const toastLabels = {
+      b2c: 'Individual Buyer Mode (B2C Retail Pricing)',
+      b2b: 'Commercial Buyer Mode (B2B Wholesale Crates)',
+      farmer: 'Local Farmer Mode (AI Scanner & Dashboard)'
+    };
+    showToast(toastLabels[newRole]);
 
     renderMarketplace();
     renderCart();
     renderFarmerDashboard();
 
     if (scrollToSection) {
-      const targetId = newRole === 'farmer' ? 'scanner' : 'marketplace';
-      const el = document.getElementById(targetId);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      navigateToSection(newRole === 'farmer' ? 'scanner' : 'marketplace');
     }
   }
 
   /* ------------------------------------------------------------------------
-     2. LIVE IMPACT TICKER & HERO FOLIO SLAB
+     4. LIVE METRICS STRIP
      ------------------------------------------------------------------------ */
-  function renderImpactTicker() {
+  function renderImpactStrip() {
     const wasteEl = document.getElementById('ticker-waste-kg');
     const earnEl = document.getElementById('ticker-farmer-php');
     const saveEl = document.getElementById('ticker-savings-pct');
-    const batchEl = document.getElementById('ticker-batches');
+    const personalEl = document.getElementById('personal-saved-summary');
 
     if (wasteEl) wasteEl.textContent = state.platformStats.wasteDivertedKg.toLocaleString('en-PH') + ' kg';
     if (earnEl) earnEl.textContent = formatPhp(state.platformStats.farmerEarningsPhp);
-    if (saveEl) saveEl.textContent = state.platformStats.avgSavingsPct + '%';
-    if (batchEl) batchEl.textContent = state.platformStats.verifiedBatches.toLocaleString('en-PH');
+    if (saveEl) saveEl.textContent = state.platformStats.avgSavingsPct + '% Off';
+    if (personalEl) personalEl.textContent = `${state.userImpact.savedKg.toFixed(1)} kg · ${formatPhp(state.userImpact.savedPhp)}`;
   }
 
   /* ------------------------------------------------------------------------
-     3. MARKETPLACE RENDERER & FILTERING
+     5. MARKETPLACE (Curved Liquid Glass Cards)
      ------------------------------------------------------------------------ */
   function renderMarketplace() {
     const grid = document.getElementById('marketplace-grid');
     const countLabel = document.getElementById('marketplace-count-label');
     const priceLabel = document.getElementById('filter-price-display');
-    const modeSubnote = document.getElementById('marketplace-mode-note');
+    const modeNote = document.getElementById('marketplace-mode-note');
 
     if (priceLabel) {
-      const unitSuffix = state.role === 'b2b' ? ' / 25kg crate' : ' / kg';
-      priceLabel.textContent = formatPhp(ui.filters.maxPrice) + unitSuffix;
+      const suffix = state.role === 'b2b' ? ' / 25 kg crate' : ' / kg';
+      priceLabel.textContent = formatPhp(ui.filters.maxPrice) + suffix;
     }
 
-    if (modeSubnote) {
+    if (modeNote) {
       if (state.role === 'b2b') {
-        modeSubnote.textContent = 'Commercial B2B Mode active — showing 25 kg wholesale crates with direct commissary discounts (-47% to -52% vs. Divisoria wholesale).';
+        modeNote.textContent = 'Commercial B2B mode — showing 25 kg wholesale crates with direct commissary pricing (-47% to -52% vs. traditional wholesale).';
       } else if (state.role === 'farmer') {
-        modeSubnote.textContent = 'Farmer Preview Mode — showing live crops currently published to buyers. Scan a new harvest below to add an immediate listing.';
+        modeNote.textContent = 'Farmer Preview mode — showing your live crops currently visible to buyers. Scan a harvest below to publish instantly.';
       } else {
-        modeSubnote.textContent = 'Individual B2C Mode active — showing 1 kg retail packs harvested within 24 hours and verified 100% safe by computer vision.';
+        modeNote.textContent = 'Individual Buyer mode — showing 1 kg retail packs harvested within 24 hours and verified 100% safe by computer vision.';
       }
     }
 
@@ -195,85 +303,74 @@
       if (ui.filters.region !== 'All' && !item.region.toLowerCase().includes(ui.filters.region.toLowerCase())) return false;
       if (ui.filters.search.trim()) {
         const q = ui.filters.search.toLowerCase();
-        const matchTitle = item.title.toLowerCase().includes(q);
-        const matchFarm = item.farmName.toLowerCase().includes(q);
-        const matchRegion = item.region.toLowerCase().includes(q);
-        const matchDefect = (item.cosmeticDefects || []).join(' ').toLowerCase().includes(q);
-        if (!matchTitle && !matchFarm && !matchRegion && !matchDefect) return false;
+        const hay = `${item.title} ${item.farmName} ${item.region} ${(item.cosmeticDefects || []).join(' ')}`.toLowerCase();
+        if (!hay.includes(q)) return false;
       }
       return true;
     });
 
     if (countLabel) {
-      countLabel.textContent = `SHOWING ${filtered.length} OF ${state.listings.filter((l) => l.active).length} AI-VERIFIED HARVEST LOTS`;
+      countLabel.textContent = `${filtered.length} of ${state.listings.filter((l) => l.active).length} verified lots`;
     }
 
     if (filtered.length === 0) {
       grid.innerHTML = `
-        <div class="uf-kpi-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem;">
-          <span class="lumina-kicker">ARCHIVE QUERY EMPTY</span>
-          <h3 class="lumina-heading" style="font-size: 1.75rem; margin: 0.4rem 0;">No imperfect harvest lots match those exact filter criteria.</h3>
-          <p style="color: var(--ink-secondary); margin: 0 0 1.25rem;">Try resetting the maximum price slider or viewing all regional hubs.</p>
-          <div><button type="button" class="ctrl-btn hover-target" id="reset-filters-empty-btn">Reset All Filters</button></div>
+        <div class="lg-card" style="grid-column:1/-1;text-align:center;padding:3rem 1.5rem;">
+          <span class="uf-kicker">No Matching Lots</span>
+          <h3 class="uf-heading" style="font-size:1.65rem;margin:0.45rem 0 0.65rem;">No rescued harvests match those filters.</h3>
+          <p style="color:var(--ink-secondary);margin:0 0 1.25rem;">Try raising the price slider or clearing your search term.</p>
+          <button type="button" class="lg-btn lg-btn--prominent" id="reset-filters-empty-btn">Reset All Filters</button>
         </div>
       `;
-      const resetBtn = document.getElementById('reset-filters-empty-btn');
-      if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+      document.getElementById('reset-filters-empty-btn')?.addEventListener('click', resetFilters);
       return;
     }
 
     grid.innerHTML = filtered
       .map((crop) => {
         const pricing = getActivePrice(crop);
-        const defectSummary = crop.cosmeticDefects && crop.cosmeticDefects[0] ? crop.cosmeticDefects[0] : 'Cosmetic asymmetry only — 100% edible.';
+        const defectNote = crop.cosmeticDefects && crop.cosmeticDefects[0] ? crop.cosmeticDefects[0] : 'Cosmetic variation only — 100% edible.';
         return `
-          <article class="uf-product-card" data-crop-id="${crop.id}">
-            <div class="uf-product-media" data-open-report="${crop.id}" data-cursor-inspect="REPORT">
+          <article class="lg-card lg-card--interactive uf-product-card">
+            <div class="uf-product-media" data-open-report="${crop.id}">
               <img src="${crop.image}" alt="${crop.title}" loading="lazy">
-              <div class="uf-badge-row-top">
-                <span class="uf-trust-badge">
-                  <span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;"></span>
-                  AI SAFE · ${crop.freshnessScore}% FRESH
+              <div class="uf-badge-overlay">
+                <span class="uf-trust-pill uf-tabular">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#26694a;display:inline-block;"></span>
+                  AI Safe · ${crop.freshnessScore}%
                 </span>
-                <span class="uf-discount-tag">-${pricing.discountPct}% OFF</span>
+                <span class="uf-discount-pill uf-tabular">-${pricing.discountPct}%</span>
               </div>
-              ${crop.isNewlyScanned ? `<span class="uf-new-scan-ribbon">NEWLY SCANNED LOT</span>` : ''}
+              ${crop.isNewlyScanned ? `<span class="uf-new-lot-pill">Newly Scanned</span>` : ''}
             </div>
 
             <div class="uf-product-body">
-              <div class="uf-product-meta-top">
-                <span class="uf-grade-pill">${crop.gradeLabel}</span>
-                <span class="lumina-label">${crop.stockKg} KG AVAIL</span>
+              <div class="uf-product-meta-row">
+                <span class="uf-grade-chip">${crop.gradeLabel}</span>
+                <span class="uf-tabular" style="font-size:0.75rem;color:var(--ink-secondary);font-weight:600;">${crop.stockKg} kg left</span>
               </div>
 
               <h3 class="uf-product-title">${crop.title}</h3>
+              <div class="uf-product-farm">${crop.farmName} · ${crop.region}</div>
 
-              <div class="uf-product-farm">
-                <span>${crop.farmName}</span>
-                <span>&middot;</span>
-                <span>${crop.region}</span>
-              </div>
+              <p class="uf-defect-bubble">${defectNote}</p>
 
-              <p class="uf-product-defect-note">&ldquo;${defectSummary}&rdquo;</p>
-
-              <div class="uf-product-pricing-box">
+              <div class="uf-pricing-row">
                 <div>
-                  <span class="uf-price-primary">${formatPhp(pricing.price)}</span>
-                  <span class="uf-price-strike">${formatPhp(pricing.market)}</span>
+                  <span class="uf-price-main uf-tabular">${formatPhp(pricing.price)}</span>
+                  <span class="uf-price-strike uf-tabular">${formatPhp(pricing.market)}</span>
                   <div class="uf-price-unit">${pricing.unit}</div>
                 </div>
                 <div style="text-align:right;">
-                  <span class="lumina-kicker" style="color:var(--emerald-trust);">SAVE ${formatPhp(pricing.market - pricing.price)}</span>
-                  <div class="uf-price-unit">CV Conf: ${crop.cvConfidence}%</div>
+                  <div class="uf-tabular" style="font-size:0.76rem;font-weight:700;color:var(--accent-emerald);">Save ${formatPhp(pricing.market - pricing.price)}</div>
+                  <div class="uf-price-unit uf-tabular">CV ${crop.cvConfidence}%</div>
                 </div>
               </div>
             </div>
 
             <div class="uf-product-actions">
-              <button type="button" class="ctrl-btn hover-target" data-open-report="${crop.id}">
-                AI Report
-              </button>
-              <button type="button" class="ctrl-btn is-active hover-target" data-add-cart="${crop.id}">
+              <button type="button" class="lg-btn" data-open-report="${crop.id}">AI Report</button>
+              <button type="button" class="lg-btn lg-btn--prominent" data-add-cart="${crop.id}">
                 + Add ${state.role === 'b2b' ? 'Crate' : 'Pack'}
               </button>
             </div>
@@ -289,8 +386,6 @@
     grid.querySelectorAll('[data-add-cart]').forEach((btn) => {
       btn.addEventListener('click', () => addToCart(btn.getAttribute('data-add-cart'), 1));
     });
-
-    if (ui.cursorCtrl) ui.cursorCtrl.bindTargets(grid);
   }
 
   function resetFilters() {
@@ -318,7 +413,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     4. CONCENTRIC INSET AI TRUST REPORT SHEET (Product Detail Modal)
+     6. CONCENTRIC INSET LIQUID GLASS AI TRUST REPORT MODAL
      ------------------------------------------------------------------------ */
   function openProductReportModal(cropId) {
     const crop = state.listings.find((item) => item.id === cropId);
@@ -340,137 +435,120 @@
       const totalKg = pricing.kgPerUnit * ui.modalQty;
 
       content.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding-bottom:1.15rem;border-bottom:1px solid var(--border-hairline);margin-bottom:1.35rem;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding-bottom:1rem;border-bottom:1px solid var(--lg-border-subtle);margin-bottom:1.25rem;">
           <div>
-            <span class="lumina-kicker">COMPUTER VISION CERTIFICATE &middot; ${crop.harvestDate}</span>
-            <h2 class="lumina-heading" style="font-size:clamp(1.65rem,3vw,2.35rem);margin:0.25rem 0 0;">${crop.title}</h2>
+            <span class="uf-kicker">AI Quality Certificate · ${crop.harvestDate}</span>
+            <h2 class="uf-heading" style="font-size:clamp(1.5rem,3vw,2.15rem);margin-top:0.25rem;">${crop.title}</h2>
           </div>
-          <button type="button" class="lumina-nav-arrow hover-target" id="close-trust-modal-btn" aria-label="Close AI Report">&times;</button>
+          <button type="button" class="uf-close-orb" id="close-trust-modal-btn" aria-label="Close AI Report">&times;</button>
         </div>
 
         <div class="uf-trust-grid">
-          <div style="display:flex;flex-direction:column;gap:1rem;">
-            <div style="position:relative;border-radius:var(--radius-sharp);overflow:hidden;border:1px solid var(--border-subtle);aspect-ratio:4/3;">
+          <div style="display:flex;flex-direction:column;gap:0.95rem;">
+            <div style="position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;">
               <img src="${crop.image}" alt="${crop.title}" style="width:100%;height:100%;object-fit:cover;display:block;">
               <div class="lg-media-dimmer"></div>
-              <div class="liquid-glass--clear uf-media-hud-bar">
-                <span class="uf-media-hud-text">PASSED &middot; ${crop.edibilityScore}% EDIBLE</span>
-                <span class="uf-media-hud-text">CV CONFIDENCE: ${crop.cvConfidence}%</span>
+              <div class="lg-clear uf-media-hud-bar">
+                <span>Passed · ${crop.edibilityScore}% Edible</span>
+                <span class="uf-tabular">${crop.cvConfidence}% Confidence</span>
               </div>
             </div>
 
-            <div style="border:1px solid var(--border-subtle);background:var(--bg-paper);padding:1rem 1.15rem;border-radius:var(--radius-sharp);">
-              <span class="lumina-kicker">${farm.kicker}</span>
-              <h3 class="lumina-heading" style="font-size:1.3rem;margin:0.25rem 0;">${crop.farmName} (${crop.region})</h3>
-              <p style="font-size:0.84rem;color:var(--ink-secondary);margin:0.35rem 0 0.65rem;line-height:1.55;">${farm.bio}</p>
-              <div style="display:flex;justify-content:space-between;font-family:var(--font-display);font-size:0.48rem;letter-spacing:0.16em;color:var(--emerald-trust);padding-top:0.55rem;border-top:1px solid var(--border-hairline);">
-                <span>DIRECT FARMER PAYOUT: ${farm.directSharePct}%</span>
-                <span>0 MIDDLEMEN</span>
+            <div style="border-radius:20px;background:var(--lg-surface-bg);border:1px solid var(--lg-border-subtle);padding:1rem 1.15rem;">
+              <span class="uf-kicker">Direct Farm Origin</span>
+              <h3 class="uf-heading" style="font-size:1.22rem;margin:0.25rem 0 0.35rem;">${crop.farmName}</h3>
+              <p style="font-size:0.84rem;color:var(--ink-secondary);margin:0 0 0.7rem;line-height:1.52;">${farm.bio}</p>
+              <div style="display:flex;justify-content:space-between;font-size:0.76rem;font-weight:700;color:var(--accent-emerald);padding-top:0.55rem;border-top:1px solid var(--lg-border-subtle);">
+                <span>${farm.directSharePct}% Direct Farmer Payout</span>
+                <span>0 Middlemen</span>
               </div>
             </div>
           </div>
 
-          <div style="display:flex;flex-direction:column;justify-content:space-between;gap:1.1rem;">
+          <div style="display:flex;flex-direction:column;justify-content:space-between;gap:1rem;">
             <div>
-              <div class="uf-score-grid" style="margin-bottom:1rem;">
-                <div class="uf-score-cell">
-                  <span class="lumina-label">FRESHNESS</span>
-                  <div class="uf-score-val" style="color:var(--emerald-trust);">${crop.freshnessScore}%</div>
+              <div class="uf-score-grid" style="margin-bottom:0.95rem;">
+                <div class="uf-score-pill-card">
+                  <span style="font-size:0.72rem;font-weight:600;color:var(--ink-secondary);">Freshness</span>
+                  <div class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">${crop.freshnessScore}%</div>
                 </div>
-                <div class="uf-score-cell">
-                  <span class="lumina-label">EDIBILITY</span>
-                  <div class="uf-score-val" style="color:var(--emerald-trust);">${crop.edibilityScore}%</div>
+                <div class="uf-score-pill-card">
+                  <span style="font-size:0.72rem;font-weight:600;color:var(--ink-secondary);">Edibility</span>
+                  <div class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">${crop.edibilityScore}%</div>
                 </div>
-                <div class="uf-score-cell">
-                  <span class="lumina-label">VISUAL GRADE</span>
-                  <div class="uf-score-val" style="color:var(--accent-warm);">${crop.grade}</div>
+                <div class="uf-score-pill-card">
+                  <span style="font-size:0.72rem;font-weight:600;color:var(--ink-secondary);">Grade</span>
+                  <div class="uf-score-val" style="color:var(--accent-bronze);">${crop.grade}</div>
                 </div>
               </div>
 
-              <p style="font-size:0.92rem;line-height:1.65;color:var(--ink-secondary);margin:0 0 1rem;">${crop.description}</p>
+              <p style="font-size:0.9rem;line-height:1.6;color:var(--ink-secondary);margin:0 0 0.95rem;">${crop.description}</p>
 
-              <div style="border:1px solid var(--border-subtle);background:var(--bg-paper);padding:0.95rem 1.1rem;border-radius:var(--radius-sharp);margin-bottom:1rem;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-                  <span class="lumina-kicker">DETECTED COSMETIC IMPERFECTIONS</span>
-                  <span class="lumina-label">${crop.brixIndex || '99.2% Purity'}</span>
+              <div style="border-radius:20px;background:var(--lg-surface-bg);border:1px solid var(--lg-border-subtle);padding:0.95rem 1.1rem;">
+                <div style="display:flex;justify-content:space-between;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.45rem;">
+                  <span class="uf-kicker">Cosmetic Notes</span>
+                  <span style="font-size:0.76rem;font-weight:600;color:var(--ink-secondary);">${crop.brixIndex || '99.2% Purity'}</span>
                 </div>
-                <ul style="margin:0;padding-left:1.1rem;font-size:0.84rem;color:var(--ink-primary);line-height:1.65;">
+                <ul style="margin:0;padding-left:1.15rem;font-size:0.84rem;color:var(--ink-primary);line-height:1.6;">
                   ${(crop.cosmeticDefects || []).map((d) => `<li>${d}</li>`).join('')}
                 </ul>
               </div>
             </div>
 
-            <div style="border-top:1px solid var(--border-subtle);padding-top:1.1rem;display:flex;flex-direction:column;gap:0.95rem;">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="border-top:1px solid var(--lg-border-subtle);padding-top:1rem;display:flex;flex-direction:column;gap:0.9rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:0.75rem;flex-wrap:wrap;">
                 <div>
-                  <span class="lumina-label">ACTIVE MODE (${state.role.toUpperCase()})</span>
-                  <div style="display:flex;align-items:baseline;gap:0.5rem;margin-top:0.2rem;">
-                    <span class="uf-price-primary">${formatPhp(totalCost)}</span>
-                    <span class="uf-price-strike">${formatPhp(pricing.market * ui.modalQty)}</span>
-                    <span class="uf-price-unit">(${totalKg} kg rescued)</span>
+                  <span style="font-size:0.74rem;font-weight:700;color:var(--ink-secondary);">${state.role === 'b2b' ? 'B2B Bulk Pricing' : 'B2C Retail Pricing'}</span>
+                  <div style="display:flex;align-items:baseline;gap:0.45rem;margin-top:0.15rem;">
+                    <span class="uf-price-main uf-tabular">${formatPhp(totalCost)}</span>
+                    <span class="uf-price-strike uf-tabular">${formatPhp(pricing.market * ui.modalQty)}</span>
+                    <span class="uf-price-unit uf-tabular">(${totalKg} kg)</span>
                   </div>
                 </div>
 
                 <div class="uf-qty-stepper" aria-label="Quantity selector">
                   <button type="button" class="uf-qty-btn" id="modal-qty-dec" aria-label="Decrease quantity">&minus;</button>
-                  <span style="padding:0 0.85rem;font-family:var(--font-display);font-size:0.62rem;">${ui.modalQty}</span>
+                  <span class="uf-tabular" style="padding:0 0.75rem;font-weight:700;font-size:0.88rem;">${ui.modalQty}</span>
                   <button type="button" class="uf-qty-btn" id="modal-qty-inc" aria-label="Increase quantity">+</button>
                 </div>
               </div>
 
-              <div style="display:flex;gap:0.75rem;">
-                <button type="button" class="lumina-cta hover-target" id="modal-add-cart-btn" style="flex:1;justify-content:center;">
-                  Add ${ui.modalQty} &times; ${state.role === 'b2b' ? '25kg Crate' : '1kg Pack'} &middot; Save ${formatPhp(totalSaved)}
-                </button>
-              </div>
+              <button type="button" class="lg-btn lg-btn--prominent" id="modal-add-cart-btn" style="width:100%;padding:0.88rem;font-size:0.9rem;">
+                Add ${ui.modalQty} &times; ${state.role === 'b2b' ? '25 kg Crate' : '1 kg Pack'} · Save ${formatPhp(totalSaved)}
+              </button>
             </div>
           </div>
         </div>
       `;
 
-      const closeBtn = document.getElementById('close-trust-modal-btn');
-      const decBtn = document.getElementById('modal-qty-dec');
-      const incBtn = document.getElementById('modal-qty-inc');
-      const addBtn = document.getElementById('modal-add-cart-btn');
-
-      if (closeBtn) closeBtn.addEventListener('click', closeProductReportModal);
-      if (decBtn) {
-        decBtn.addEventListener('click', () => {
-          if (ui.modalQty > 1) {
-            ui.modalQty -= 1;
-            renderModalInner();
-          }
-        });
-      }
-      if (incBtn) {
-        incBtn.addEventListener('click', () => {
-          ui.modalQty += 1;
+      document.getElementById('close-trust-modal-btn')?.addEventListener('click', closeProductReportModal);
+      document.getElementById('modal-qty-dec')?.addEventListener('click', () => {
+        if (ui.modalQty > 1) {
+          ui.modalQty -= 1;
           renderModalInner();
-        });
-      }
-      if (addBtn) {
-        addBtn.addEventListener('click', () => {
-          addToCart(crop.id, ui.modalQty);
-          closeProductReportModal();
-          openCartDrawer();
-        });
-      }
+        }
+      });
+      document.getElementById('modal-qty-inc')?.addEventListener('click', () => {
+        ui.modalQty += 1;
+        renderModalInner();
+      });
+      document.getElementById('modal-add-cart-btn')?.addEventListener('click', () => {
+        addToCart(crop.id, ui.modalQty);
+        closeProductReportModal();
+        openCartDrawer();
+      });
     }
 
     renderModalInner();
     backdrop.classList.add('is-open');
-    document.body.classList.add('modal-open');
-    if (window.LuminaDesign) window.LuminaDesign.playPaperRustle(0.04);
   }
 
   function closeProductReportModal() {
-    const backdrop = document.getElementById('trust-report-modal');
-    if (backdrop) backdrop.classList.remove('is-open');
-    document.body.classList.remove('modal-open');
+    document.getElementById('trust-report-modal')?.classList.remove('is-open');
   }
 
   /* ------------------------------------------------------------------------
-     5. AI PRODUCE SCANNER & COMPUTER VISION GRADER (Farmer View)
+     7. AI PRODUCE SCANNER & COMPUTER VISION GRADER
      ------------------------------------------------------------------------ */
   function getActivePreset() {
     return defaultData.scannerPresets.find((p) => p.id === ui.activePresetId) || defaultData.scannerPresets[0];
@@ -503,13 +581,11 @@
     viewport.classList.remove('is-analyzed');
     viewport.classList.add('is-scanning');
 
-    if (hudStatus) hudStatus.textContent = 'SCANNING EPIDERMAL GEOMETRY...';
-    if (hudConf) hudConf.textContent = 'NIR SPECTROMETER ACTIVE';
+    if (hudStatus) hudStatus.textContent = 'Scanning epidermal geometry...';
+    if (hudConf) hudConf.textContent = 'Optical freshness check active';
     if (telemetryEl) {
-      telemetryEl.textContent = '[CV-NET v4.2] Acquiring multispectral frames... Mapping surface scars, turgor pressure, and pathogen exclusion markers...';
+      telemetryEl.textContent = 'Analyzing surface contours, natural skin markings, and freshness firmness to verify 100% food safety...';
     }
-
-    if (window.LuminaDesign) window.LuminaDesign.playPaperRustle(0.05);
 
     setTimeout(() => {
       viewport.classList.remove('is-scanning');
@@ -525,20 +601,20 @@
         )
         .join('');
 
-      if (hudStatus) hudStatus.textContent = `PASSED · ${preset.edibility}% SAFE FOR CONSUMPTION`;
-      if (hudConf) hudConf.textContent = `${preset.gradeLabel} (${preset.confidence}% CONF)`;
+      if (hudStatus) hudStatus.textContent = `Passed · ${preset.edibility}% Safe for Consumption`;
+      if (hudConf) hudConf.textContent = `${preset.grade} · ${preset.confidence}% Confidence`;
       if (telemetryEl) {
-        const prefix = ui.customUploadName ? `[UPLOAD: ${ui.customUploadName}] ` : '';
-        telemetryEl.textContent = prefix + preset.telemetry;
+        const cleanNote = preset.telemetry.replace('[CV-NET v4.2] ', '');
+        const prefix = ui.customUploadName ? `Uploaded (${ui.customUploadName}): ` : '';
+        telemetryEl.textContent = prefix + cleanNote;
       }
 
-      // Update output scores & prefill form
       const gradeOut = document.getElementById('scan-out-grade');
       const freshOut = document.getElementById('scan-out-freshness');
       const safetyOut = document.getElementById('scan-out-safety');
       if (gradeOut) gradeOut.textContent = preset.grade;
       if (freshOut) freshOut.textContent = preset.freshness + '%';
-      if (safetyOut) safetyOut.textContent = 'PASSED';
+      if (safetyOut) safetyOut.textContent = 'Passed';
 
       const titleInput = document.getElementById('publish-crop-title');
       const catInput = document.getElementById('publish-crop-category');
@@ -559,7 +635,7 @@
       if (priceB2BInput) priceB2BInput.value = String(preset.recommendedB2B);
       if (farmInput) farmInput.value = `${preset.farmName} · ${preset.region}`;
       if (defectInput) defectInput.value = preset.defects[0];
-    }, 950);
+    }, 850);
   }
 
   function handlePublishScannedCrop(e) {
@@ -586,7 +662,7 @@
       gradeLabel: preset.gradeLabel,
       farmName: farmNamePart || preset.farmName,
       region: regionPart || preset.region,
-      harvestDate: 'Scanned & Verified Just Now · Live Batch',
+      harvestDate: 'Verified Just Now · Live Batch',
       image: ui.customUploadDataUrl || preset.image,
       priceB2C,
       marketPriceB2C: Math.round(priceB2C * 1.92),
@@ -602,7 +678,7 @@
       cvConfidence: preset.confidence,
       brixIndex: preset.brix,
       cosmeticDefects: [defectNote, ...preset.defects.slice(1)],
-      description: `Direct farm-scanned harvest lot verified by UglyFood AI Computer Vision (${preset.confidence}% confidence). Safe, nutrient-dense produce rescued at source.`
+      description: `Direct farm-scanned harvest lot verified by UglyFood AI (${preset.confidence}% confidence). Safe, fresh produce rescued directly at source.`
     };
 
     state.listings.unshift(newListing);
@@ -610,21 +686,16 @@
     state.platformStats.verifiedBatches += 1;
     saveState();
 
-    renderImpactTicker();
+    renderImpactStrip();
     renderMarketplace();
     renderFarmerDashboard();
 
-    if (window.LuminaDesign) {
-      window.LuminaDesign.playPaperRustle(0.06);
-      window.LuminaDesign.showToast(`Published "${title}" (${stockKg} kg) to Live Marketplace`);
-    }
-
-    const marketEl = document.getElementById('marketplace');
-    if (marketEl) marketEl.scrollIntoView({ behavior: 'smooth' });
+    showToast(`Published "${title}" (${stockKg} kg) to Marketplace`);
+    navigateToSection('marketplace');
   }
 
   /* ------------------------------------------------------------------------
-     6. FARMER SUPPLIER ATELIER (Dashboard & Inventory Controls)
+     8. FARMER DASHBOARD & PARTNER FARMS (Curved Liquid Glass Cards)
      ------------------------------------------------------------------------ */
   function renderFarmerDashboard() {
     const activeListings = state.listings.filter((l) => l.active);
@@ -637,47 +708,41 @@
 
     if (revEl) revEl.textContent = formatPhp(totalRevenuePhp);
     if (kgEl) kgEl.textContent = totalRescuedKg.toLocaleString('en-PH') + ' kg';
-    if (countEl) countEl.textContent = `${activeListings.length} Active / ${state.listings.length} Total`;
+    if (countEl) countEl.textContent = `${activeListings.length} Active / ${state.listings.length}`;
 
-    const invBody = document.getElementById('farmer-inventory-tbody');
-    if (invBody) {
-      invBody.innerHTML = state.listings
-        .slice(0, 7)
+    const invList = document.getElementById('farmer-inventory-list');
+    if (invList) {
+      invList.innerHTML = state.listings
+        .slice(0, 6)
         .map(
           (item) => `
-          <tr>
-            <td>
-              <div style="font-weight:600;color:var(--ink-primary);">${item.title}</div>
-              <div style="font-size:0.75rem;color:var(--ink-secondary);">${item.gradeLabel} &middot; ${item.farmName}</div>
-            </td>
-            <td>
-              <span style="font-family:var(--font-serif);font-size:1.1rem;font-weight:600;">${item.stockKg} kg</span>
-            </td>
-            <td>
-              <div>${formatPhp(item.priceB2C)}/kg</div>
-              <div style="font-size:0.74rem;color:var(--ink-secondary);">${formatPhp(item.priceB2B)}/crate</div>
-            </td>
-            <td>
+          <div class="uf-inventory-row-card">
+            <div style="flex:1 1 200px;">
+              <div style="font-weight:700;font-size:0.94rem;color:var(--ink-primary);">${item.title}</div>
+              <div style="font-size:0.78rem;color:var(--ink-secondary);margin-top:0.15rem;">
+                ${item.gradeLabel} · <strong class="uf-tabular" style="color:var(--ink-primary);">${item.stockKg} kg</strong> · ${formatPhp(item.priceB2C)}/kg
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap;">
               <button
                 type="button"
                 class="lg-toggle-switch ${item.active ? 'is-on' : ''}"
                 data-toggle-listing="${item.id}"
-                aria-label="Toggle listing availability for ${item.title}"
+                aria-label="Toggle availability for ${item.title}"
                 title="${item.active ? 'Active in Marketplace' : 'Paused'}"
               >
                 <span class="lg-toggle-knob"></span>
               </button>
-            </td>
-            <td style="text-align:right;">
-              <button type="button" class="ctrl-btn hover-target" data-restock-listing="${item.id}" style="padding:0.35rem 0.65rem;font-size:0.46rem;">+50 kg</button>
-              <button type="button" class="ctrl-btn hover-target" data-delete-listing="${item.id}" style="padding:0.35rem 0.65rem;font-size:0.46rem;" aria-label="Delete ${item.title}">&times;</button>
-            </td>
-          </tr>
+              <button type="button" class="lg-btn" data-restock-listing="${item.id}" style="padding:0.42rem 0.78rem;font-size:0.74rem;">+50 kg</button>
+              <button type="button" class="uf-close-orb" data-delete-listing="${item.id}" style="width:32px;height:32px;font-size:1rem;" aria-label="Remove ${item.title}">&times;</button>
+            </div>
+          </div>
         `
         )
         .join('');
 
-      invBody.querySelectorAll('[data-toggle-listing]').forEach((btn) => {
+      invList.querySelectorAll('[data-toggle-listing]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-toggle-listing');
           const target = state.listings.find((l) => l.id === id);
@@ -686,15 +751,12 @@
             saveState();
             renderFarmerDashboard();
             renderMarketplace();
-            if (window.LuminaDesign) {
-              window.LuminaDesign.playPaperRustle(0.035);
-              window.LuminaDesign.showToast(`${target.title} ${target.active ? 'Activated' : 'Paused'}`);
-            }
+            showToast(`${target.title} ${target.active ? 'Live in Marketplace' : 'Paused'}`);
           }
         });
       });
 
-      invBody.querySelectorAll('[data-restock-listing]').forEach((btn) => {
+      invList.querySelectorAll('[data-restock-listing]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-restock-listing');
           const target = state.listings.find((l) => l.id === id);
@@ -703,76 +765,87 @@
             saveState();
             renderFarmerDashboard();
             renderMarketplace();
-            if (window.LuminaDesign) window.LuminaDesign.showToast(`Added +50 kg harvest stock to ${target.title}`);
+            showToast(`Added +50 kg stock to ${target.title}`);
           }
         });
       });
 
-      invBody.querySelectorAll('[data-delete-listing]').forEach((btn) => {
+      invList.querySelectorAll('[data-delete-listing]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-delete-listing');
           if (state.listings.length <= 3) {
-            if (window.LuminaDesign) window.LuminaDesign.showToast('Keep at least 3 active demo listings in the archive');
+            showToast('Keep at least 3 active lots in demo mode');
             return;
           }
           state.listings = state.listings.filter((l) => l.id !== id);
           saveState();
           renderFarmerDashboard();
           renderMarketplace();
-          if (window.LuminaDesign) window.LuminaDesign.showToast('Listing removed from inventory ledger');
+          showToast('Harvest lot removed');
         });
       });
     }
 
-    const ordersBody = document.getElementById('farmer-orders-tbody');
-    if (ordersBody) {
-      ordersBody.innerHTML = state.incomingOrders
-        .slice(0, 6)
+    const ordersList = document.getElementById('farmer-orders-list');
+    if (ordersList) {
+      ordersList.innerHTML = state.incomingOrders
+        .slice(0, 5)
         .map(
           (ord) => `
-          <tr>
-            <td>
-              <span class="lumina-kicker">${ord.id} &middot; ${ord.timeAgo}</span>
-              <div style="font-weight:600;color:var(--ink-primary);margin-top:0.15rem;">${ord.buyerName}</div>
-            </td>
-            <td>
-              <div>${ord.cropTitle}</div>
-              <div style="font-size:0.75rem;color:var(--ink-secondary);">${ord.quantityLabel}</div>
-            </td>
-            <td>
-              <span style="font-family:var(--font-serif);font-size:1.1rem;font-weight:600;">${formatPhp(ord.totalPhp)}</span>
-              <div style="font-size:0.72rem;color:var(--emerald-trust);">${ord.status}</div>
-            </td>
-          </tr>
+          <div class="uf-order-row-card">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;">
+              <span class="uf-kicker">${ord.id} · ${ord.timeAgo}</span>
+              <strong class="uf-tabular" style="font-family:var(--font-display);font-size:1.15rem;color:var(--ink-primary);">${formatPhp(ord.totalPhp)}</strong>
+            </div>
+            <div style="font-weight:700;font-size:0.92rem;color:var(--ink-primary);">${ord.buyerName}</div>
+            <div style="font-size:0.82rem;color:var(--ink-secondary);">${ord.cropTitle} · ${ord.quantityLabel}</div>
+            <div style="font-size:0.76rem;font-weight:600;color:var(--accent-emerald);">${ord.status}</div>
+          </div>
         `
         )
         .join('');
     }
   }
 
-  /* ------------------------------------------------------------------------
-     7. SUSTAINABILITY & SOCIAL IMPACT ARCHIVE (UN SDGs & Share Card)
-     ------------------------------------------------------------------------ */
-  function renderPersonalImpact() {
-    const summaryEl = document.getElementById('personal-impact-quote');
-    const kgEl = document.getElementById('personal-saved-kg');
-    const phpEl = document.getElementById('personal-saved-php');
-    const co2El = document.getElementById('personal-saved-co2');
-    const shareQuoteEl = document.getElementById('share-card-quote-text');
+  function renderPartnerFarms() {
+    const grid = document.getElementById('partner-farms-grid');
+    if (!grid) return;
 
-    if (summaryEl) {
-      summaryEl.innerHTML = `&ldquo;Your direct farm orders have rescued <em>${state.userImpact.savedKg.toFixed(1)} kg</em> of nutrient-dense produce and saved <em>${formatPhp(state.userImpact.savedPhp)}</em> this month.&rdquo;`;
-    }
-    if (kgEl) kgEl.textContent = state.userImpact.savedKg.toFixed(1) + ' kg';
-    if (phpEl) phpEl.textContent = formatPhp(state.userImpact.savedPhp);
-    if (co2El) co2El.textContent = state.userImpact.co2AvoidedKg.toFixed(1) + ' kg CO₂e';
-    if (shareQuoteEl) {
-      shareQuoteEl.textContent = `"We rescued ${state.userImpact.savedKg.toFixed(1)} kg of imperfect local harvests—unlocking ${formatPhp(state.userImpact.savedPhp)} in direct farm-to-table value with zero middleman waste."`;
-    }
+    grid.innerHTML = defaultData.farms
+      .map(
+        (farm) => `
+        <article class="lg-card lg-card--interactive uf-farm-card" data-filter-farm="${farm.region.split(' ')[0]}">
+          <div>
+            <span class="uf-kicker">${farm.region}</span>
+            <h4 class="uf-heading" style="font-size:1.3rem;margin:0.25rem 0 0.45rem;">${farm.name}</h4>
+            <p style="font-size:0.84rem;color:var(--ink-secondary);line-height:1.52;margin:0;">${farm.bio}</p>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:0.75rem;border-top:1px solid var(--lg-border-subtle);font-size:0.76rem;font-weight:700;">
+            <span class="uf-tabular" style="color:var(--accent-emerald);">${farm.wasteDivertedKg.toLocaleString('en-PH')} kg rescued</span>
+            <span style="color:var(--accent-bronze);">View Lots &rarr;</span>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+
+    grid.querySelectorAll('[data-filter-farm]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const region = card.getAttribute('data-filter-farm');
+        const regionSelect = document.getElementById('filter-region');
+        if (regionSelect) {
+          regionSelect.value = region;
+          ui.filters.region = region;
+          renderMarketplace();
+          navigateToSection('marketplace');
+          showToast(`Filtered harvests from ${region}`);
+        }
+      });
+    });
   }
 
   /* ------------------------------------------------------------------------
-     8. CART DRAWER & MOCK CHECKOUT
+     9. CART DRAWER & MOCK CHECKOUT
      ------------------------------------------------------------------------ */
   function addToCart(cropId, qty = 1) {
     const crop = state.listings.find((c) => c.id === cropId);
@@ -787,21 +860,14 @@
     ui.checkoutSuccessOrder = null;
     saveState();
     renderCart();
-
-    if (window.LuminaDesign) {
-      window.LuminaDesign.playPaperRustle(0.045);
-      const unitLabel = state.role === 'b2b' ? '25kg crate(s)' : '1kg pack(s)';
-      window.LuminaDesign.showToast(`Added ${qty} ${unitLabel} of ${crop.title} to Cart`);
-    }
+    showToast(`Added ${qty} ${state.role === 'b2b' ? 'crate' : 'pack'} of ${crop.title}`);
   }
 
   function updateCartQty(cropId, delta) {
     const idx = state.cart.findIndex((i) => i.cropId === cropId);
     if (idx === -1) return;
     state.cart[idx].qty += delta;
-    if (state.cart[idx].qty <= 0) {
-      state.cart.splice(idx, 1);
-    }
+    if (state.cart[idx].qty <= 0) state.cart.splice(idx, 1);
     saveState();
     renderCart();
   }
@@ -819,37 +885,33 @@
     if (ui.checkoutSuccessOrder) {
       const ord = ui.checkoutSuccessOrder;
       listEl.innerHTML = `
-        <div style="border:1px solid var(--emerald-trust-border);background:var(--emerald-trust-bg);padding:1.5rem;border-radius:var(--radius-sharp);margin-top:0.75rem;">
-          <span class="lumina-kicker" style="color:var(--emerald-trust);">ORDER CONFIRMED &middot; ${ord.id}</span>
-          <h3 class="lumina-heading" style="font-size:1.65rem;margin:0.35rem 0 0.65rem;">Thank you for rescuing ${ord.rescuedKg} kg of local harvest.</h3>
-          <p style="font-size:0.88rem;color:var(--ink-secondary);line-height:1.6;margin:0 0 1rem;">
-            Your direct farm order for <strong>${ord.buyerName}</strong> has been transmitted to our regional farm hubs with <strong>89% direct farmer payout</strong>.
+        <div style="border-radius:22px;background:var(--accent-emerald-soft);border:1px solid rgba(38,105,74,0.28);padding:1.4rem;margin-top:0.75rem;">
+          <span class="uf-kicker" style="color:var(--accent-emerald);">Order Confirmed · ${ord.id}</span>
+          <h3 class="uf-heading" style="font-size:1.5rem;margin:0.35rem 0 0.6rem;">You rescued ${ord.rescuedKg} kg of local harvest!</h3>
+          <p style="font-size:0.86rem;color:var(--ink-secondary);line-height:1.55;margin:0 0 1rem;">
+            Your direct order for <strong>${ord.buyerName}</strong> has been sent to our partner farm hubs with <strong>89% direct farmer payout</strong>.
           </p>
-          <div style="border-top:1px solid var(--border-hairline);padding-top:0.85rem;display:flex;flex-direction:column;gap:0.4rem;font-size:0.84rem;">
-            <div style="display:flex;justify-content:space-between;"><span>Total Paid:</span><strong>${formatPhp(ord.totalPhp)}</strong></div>
-            <div style="display:flex;justify-content:space-between;color:var(--emerald-trust);"><span>Savings vs. Supermarket:</span><strong>${formatPhp(ord.savedPhp)}</strong></div>
-            <div style="display:flex;justify-content:space-between;"><span>Methane / CO₂e Diverted:</span><strong>${(ord.rescuedKg * 2.5).toFixed(1)} kg CO₂e</strong></div>
+          <div style="border-top:1px solid var(--lg-border-subtle);padding-top:0.8rem;display:flex;flex-direction:column;gap:0.4rem;font-size:0.84rem;">
+            <div style="display:flex;justify-content:space-between;"><span>Total Paid</span><strong class="uf-tabular">${formatPhp(ord.totalPhp)}</strong></div>
+            <div style="display:flex;justify-content:space-between;color:var(--accent-emerald);"><span>Saved vs. Retail</span><strong class="uf-tabular">${formatPhp(ord.savedPhp)}</strong></div>
           </div>
-          <button type="button" class="ctrl-btn is-active hover-target" id="cart-continue-shopping-btn" style="width:100%;margin-top:1.25rem;">Continue Exploring Harvests</button>
+          <button type="button" class="lg-btn lg-btn--prominent" id="cart-continue-shopping-btn" style="width:100%;margin-top:1.15rem;">Continue Shopping</button>
         </div>
       `;
       summaryEl.innerHTML = '';
-      const contBtn = document.getElementById('cart-continue-shopping-btn');
-      if (contBtn) {
-        contBtn.addEventListener('click', () => {
-          ui.checkoutSuccessOrder = null;
-          closeCartDrawer();
-          renderCart();
-        });
-      }
+      document.getElementById('cart-continue-shopping-btn')?.addEventListener('click', () => {
+        ui.checkoutSuccessOrder = null;
+        closeCartDrawer();
+        renderCart();
+      });
       return;
     }
 
     if (state.cart.length === 0) {
       listEl.innerHTML = `
         <div style="text-align:center;padding:3rem 1rem;">
-          <span class="lumina-kicker">HARVEST BASKET EMPTY</span>
-          <p class="lumina-epigraph" style="font-size:1.15rem;margin:0.5rem 0 1.25rem;">Select AI-verified imperfect produce from the Marketplace to begin rescuing local crops.</p>
+          <span class="uf-kicker">Basket Empty</span>
+          <p style="font-size:0.94rem;color:var(--ink-secondary);margin:0.5rem 0 0;">Pick any AI-verified produce from the Marketplace to start rescuing local harvests.</p>
         </div>
       `;
       summaryEl.innerHTML = '';
@@ -877,13 +939,13 @@
           <div class="uf-cart-item">
             <img src="${crop.image}" alt="${crop.title}">
             <div>
-              <div style="font-family:var(--font-serif);font-size:1.1rem;font-weight:500;color:var(--ink-primary);">${crop.title}</div>
-              <div style="font-size:0.75rem;color:var(--ink-secondary);">${formatPhp(pricing.price)} ${pricing.unit} &middot; ${lineKg} kg</div>
-              <div style="font-size:0.72rem;color:var(--emerald-trust);">Save ${formatPhp(lineMarket - lineTotal)}</div>
+              <div style="font-weight:700;font-size:0.92rem;color:var(--ink-primary);">${crop.title}</div>
+              <div class="uf-tabular" style="font-size:0.76rem;color:var(--ink-secondary);">${formatPhp(pricing.price)} ${pricing.unit} · ${lineKg} kg</div>
+              <div class="uf-tabular" style="font-size:0.74rem;font-weight:600;color:var(--accent-emerald);">Save ${formatPhp(lineMarket - lineTotal)}</div>
             </div>
             <div class="uf-qty-stepper">
               <button type="button" class="uf-qty-btn" data-cart-dec="${crop.id}" aria-label="Decrease ${crop.title}">&minus;</button>
-              <span style="padding:0 0.55rem;font-family:var(--font-display);font-size:0.52rem;">${entry.qty}</span>
+              <span class="uf-tabular" style="padding:0 0.5rem;font-weight:700;font-size:0.84rem;">${entry.qty}</span>
               <button type="button" class="uf-qty-btn" data-cart-inc="${crop.id}" aria-label="Increase ${crop.title}">+</button>
             </div>
           </div>
@@ -894,36 +956,36 @@
     const totalSavings = marketTotal - subtotal;
 
     summaryEl.innerHTML = `
-      <div style="border-top:1px solid var(--border-subtle);padding-top:1.1rem;display:flex;flex-direction:column;gap:0.85rem;">
-        <div style="display:flex;flex-direction:column;gap:0.35rem;font-size:0.86rem;">
+      <div style="border-top:1px solid var(--lg-border-subtle);padding-top:1rem;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="display:flex;flex-direction:column;gap:0.35rem;font-size:0.84rem;">
           <div style="display:flex;justify-content:space-between;color:var(--ink-secondary);">
-            <span>Traditional Retail / Wholesale Benchmark</span>
-            <span style="text-decoration:line-through;">${formatPhp(marketTotal)}</span>
+            <span>Retail Benchmark</span>
+            <span class="uf-tabular" style="text-decoration:line-through;">${formatPhp(marketTotal)}</span>
           </div>
-          <div style="display:flex;justify-content:space-between;color:var(--emerald-trust);font-weight:600;">
-            <span>Total Rescued Savings (${Math.round((totalSavings / marketTotal) * 100)}% OFF)</span>
-            <span>&minus;${formatPhp(totalSavings)}</span>
+          <div style="display:flex;justify-content:space-between;color:var(--accent-emerald);font-weight:700;">
+            <span>Your Savings (${Math.round((totalSavings / marketTotal) * 100)}% Off)</span>
+            <span class="uf-tabular">&minus;${formatPhp(totalSavings)}</span>
           </div>
           <div style="display:flex;justify-content:space-between;color:var(--ink-secondary);">
-            <span>Food Waste Diverted from Landfill</span>
-            <strong>${totalRescuedKg} kg</strong>
+            <span>Harvest Rescued</span>
+            <strong class="uf-tabular">${totalRescuedKg} kg</strong>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.5rem;border-top:1px solid var(--border-hairline);">
-            <span class="lumina-kicker">DIRECT FARM SUBTOTAL (${state.role.toUpperCase()})</span>
-            <span style="font-family:var(--font-serif);font-size:1.75rem;font-weight:600;">${formatPhp(subtotal)}</span>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.5rem;border-top:1px solid var(--lg-border-subtle);">
+            <span class="uf-kicker">Direct Subtotal</span>
+            <span class="uf-tabular" style="font-family:var(--font-display);font-size:1.65rem;font-weight:600;">${formatPhp(subtotal)}</span>
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;">
-          <input type="text" id="checkout-buyer-name" class="uf-input" placeholder="${state.role === 'b2b' ? 'Business / Commissary Name' : 'Your Name (Demo)'}" value="${state.role === 'b2b' ? 'Solstice Kitchen Commissary' : 'Elena Reyes'}" style="font-size:0.8rem;padding:0.55rem 0.75rem;">
-          <select id="checkout-fulfillment" class="uf-select" style="font-size:0.8rem;padding:0.55rem 0.75rem;" aria-label="Fulfillment Method">
-            <option value="Direct Hub Pickup">Direct Farm Hub Pickup (₱0)</option>
-            <option value="Cold-Chain Delivery">Metro Cold-Chain Delivery</option>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <input type="text" id="checkout-buyer-name" class="uf-input" value="${state.role === 'b2b' ? 'Solstice Kitchen' : 'Elena Reyes'}" style="font-size:0.82rem;padding:0.6rem 0.85rem;">
+          <select id="checkout-fulfillment" class="uf-select" style="font-size:0.82rem;padding:0.6rem 0.85rem;" aria-label="Fulfillment">
+            <option value="Hub Pickup">Hub Pickup (₱0)</option>
+            <option value="Cold Delivery">Cold-Chain Delivery</option>
           </select>
         </div>
 
-        <button type="button" class="lumina-cta hover-target" id="confirm-mock-order-btn" style="width:100%;justify-content:center;">
-          Confirm Rescued Order &middot; ${formatPhp(subtotal)}
+        <button type="button" class="lg-btn lg-btn--emerald" id="confirm-mock-order-btn" style="width:100%;padding:0.88rem;font-size:0.9rem;">
+          Confirm Rescued Order · ${formatPhp(subtotal)}
         </button>
       </div>
     `;
@@ -935,94 +997,93 @@
       btn.addEventListener('click', () => updateCartQty(btn.getAttribute('data-cart-inc'), 1));
     });
 
-    const confirmBtn = document.getElementById('confirm-mock-order-btn');
-    if (confirmBtn) {
-      confirmBtn.addEventListener('click', () => {
-        const buyerName = (document.getElementById('checkout-buyer-name')?.value || 'Elena Reyes').trim();
-        const fulfillment = document.getElementById('checkout-fulfillment')?.value || 'Direct Hub Pickup';
-        const firstCrop = state.listings.find((c) => c.id === state.cart[0]?.cropId);
+    document.getElementById('confirm-mock-order-btn')?.addEventListener('click', () => {
+      const buyerName = (document.getElementById('checkout-buyer-name')?.value || 'Elena Reyes').trim();
+      const fulfillment = document.getElementById('checkout-fulfillment')?.value || 'Hub Pickup';
+      const firstCrop = state.listings.find((c) => c.id === state.cart[0]?.cropId);
 
-        const orderRecord = {
-          id: 'ORD-' + Math.floor(9000 + Math.random() * 900),
-          buyerName: `${buyerName} (${state.role === 'b2b' ? 'B2B' : 'B2C'})`,
-          buyerType: state.role === 'b2b' ? 'Commercial Buyer (B2B)' : 'Individual Buyer (B2C)',
-          cropTitle: firstCrop ? `${firstCrop.title}${state.cart.length > 1 ? ` + ${state.cart.length - 1} more` : ''}` : 'Rescued Produce Lot',
-          quantityLabel: `${totalRescuedKg} kg total (${fulfillment})`,
-          totalPhp: subtotal,
-          savedPhp: totalSavings,
-          rescuedKg: totalRescuedKg,
-          status: `Confirmed · ${fulfillment}`,
-          timeAgo: 'Just now'
-        };
+      const orderRecord = {
+        id: 'ORD-' + Math.floor(9000 + Math.random() * 900),
+        buyerName: `${buyerName} (${state.role === 'b2b' ? 'B2B' : 'B2C'})`,
+        cropTitle: firstCrop ? `${firstCrop.title}${state.cart.length > 1 ? ` + ${state.cart.length - 1} more` : ''}` : 'Rescued Harvest',
+        quantityLabel: `${totalRescuedKg} kg (${fulfillment})`,
+        totalPhp: subtotal,
+        savedPhp: totalSavings,
+        rescuedKg: totalRescuedKg,
+        status: `Confirmed · ${fulfillment}`,
+        timeAgo: 'Just now'
+      };
 
-        state.incomingOrders.unshift(orderRecord);
-        state.platformStats.wasteDivertedKg += totalRescuedKg;
-        state.platformStats.farmerEarningsPhp += Math.round(subtotal * 0.89);
-        state.userImpact.ordersCount += 1;
-        state.userImpact.savedKg += totalRescuedKg;
-        state.userImpact.savedPhp += totalSavings;
-        state.userImpact.co2AvoidedKg += Number((totalRescuedKg * 2.5).toFixed(1));
-        state.cart = [];
-        ui.checkoutSuccessOrder = orderRecord;
+      state.incomingOrders.unshift(orderRecord);
+      state.platformStats.wasteDivertedKg += totalRescuedKg;
+      state.platformStats.farmerEarningsPhp += Math.round(subtotal * 0.89);
+      state.userImpact.ordersCount += 1;
+      state.userImpact.savedKg += totalRescuedKg;
+      state.userImpact.savedPhp += totalSavings;
+      state.cart = [];
+      ui.checkoutSuccessOrder = orderRecord;
 
-        saveState();
-        renderImpactTicker();
-        renderFarmerDashboard();
-        renderPersonalImpact();
-        renderCart();
-
-        if (window.LuminaDesign) {
-          window.LuminaDesign.playPaperRustle(0.06);
-          window.LuminaDesign.showToast(`Order ${orderRecord.id} Confirmed! Rescued ${totalRescuedKg} kg of food.`);
-        }
-      });
-    }
+      saveState();
+      renderImpactStrip();
+      renderFarmerDashboard();
+      renderCart();
+      showToast(`Order ${orderRecord.id} confirmed! Rescued ${totalRescuedKg} kg.`);
+    });
   }
 
   function openCartDrawer() {
-    const backdrop = document.getElementById('cart-sheet-backdrop');
-    if (backdrop) {
-      backdrop.classList.add('is-open');
-      document.body.classList.add('modal-open');
-      if (window.LuminaDesign) window.LuminaDesign.playPaperRustle(0.035);
-    }
+    document.getElementById('cart-sheet-backdrop')?.classList.add('is-open');
   }
 
   function closeCartDrawer() {
-    const backdrop = document.getElementById('cart-sheet-backdrop');
-    if (backdrop) {
-      backdrop.classList.remove('is-open');
-      document.body.classList.remove('modal-open');
-    }
+    document.getElementById('cart-sheet-backdrop')?.classList.remove('is-open');
+    setActiveNavSection('marketplace');
   }
 
   /* ------------------------------------------------------------------------
-     9. INITIALIZATION & EVENT BINDINGS
+     10. INITIALIZATION & EVENT BINDINGS
      ------------------------------------------------------------------------ */
   function initApp() {
-    // 1. Initialize Lumina Design System Core
-    if (window.LuminaDesign) {
-      const activeTheme = window.LuminaDesign.initTheme();
-      updateThemeButtonLabel(activeTheme);
-      ui.cursorCtrl = window.LuminaDesign.initCursor();
-      window.LuminaDesign.initRadialAura('.volume-band, .accordion-strip');
-      window.LuminaDesign.initScrollProgress();
-      window.LuminaDesign.playCurtain({
-        title: 'UGLYFOOD AI.',
-        subtitle: 'Archival Harvest Marketplace & Computer Vision Grader',
-        holdMs: 740
-      });
-    }
-
-    // 2. Render dynamic sections
-    renderImpactTicker();
+    initTheme();
+    renderImpactStrip();
     renderMarketplace();
     renderFarmerDashboard();
-    renderPersonalImpact();
+    renderPartnerFarms();
     renderCart();
     selectScannerPreset('preset-carrots');
 
-    // 3. Role Switcher buttons
+    // Sync Apple spring sliding indicators on initial paint & resize
+    requestAnimationFrame(() => syncAllSpringIndicators(true));
+    window.addEventListener('resize', () => syncAllSpringIndicators(true));
+
+    // Top Navigation Spring Menu
+    document.querySelectorAll('[data-top-nav]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateToSection(link.getAttribute('data-top-nav'));
+      });
+    });
+
+    // Mobile Bottom Liquid Glass Dock
+    document.querySelectorAll('[data-mobile-nav]').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        navigateToSection(tab.getAttribute('data-mobile-nav'));
+      });
+    });
+
+    // Hero CTAs
+    document.querySelectorAll('[data-jump-section]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateToSection(el.getAttribute('data-jump-section'));
+      });
+    });
+
+    document.getElementById('hero-scan-cta')?.addEventListener('click', () => {
+      setRole('farmer', { scrollToSection: true });
+    });
+
+    // Role Switcher
     document.querySelectorAll('[data-role-btn]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const nextRole = btn.getAttribute('data-role-btn');
@@ -1030,60 +1091,38 @@
       });
     });
 
-    // 4. Theme Toggle
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    if (themeBtn && window.LuminaDesign) {
-      themeBtn.addEventListener('click', () => {
-        const next = window.LuminaDesign.toggleTheme();
-        updateThemeButtonLabel(next);
-        window.LuminaDesign.showToast(next === 'dark' ? 'Gallery Noir Theme Active' : 'Museum Paper Theme Active');
-      });
-    }
+    // Theme Toggle
+    document.getElementById('theme-toggle-btn')?.addEventListener('click', toggleTheme);
 
-    // 5. Mobile Frame Simulator Toggle (for Desktop Reviewers)
+    // Desktop Mobile Frame Simulator Toggle
     const mobileFrameBtn = document.getElementById('mobile-frame-toggle-btn');
-    if (mobileFrameBtn) {
-      mobileFrameBtn.addEventListener('click', () => {
-        const isMobileFrame = document.body.classList.toggle('is-mobile-frame-mode');
-        mobileFrameBtn.classList.toggle('is-active', isMobileFrame);
-        if (window.LuminaDesign) {
-          window.LuminaDesign.playPaperRustle(0.04);
-          window.LuminaDesign.showToast(
-            isMobileFrame ? 'Mobile Viewport Frame Active (430px iOS Liquid Glass Dock)' : 'Full Desktop Canvas Active'
-          );
-        }
-      });
-    }
+    mobileFrameBtn?.addEventListener('click', () => {
+      const active = document.body.classList.toggle('is-mobile-frame-mode');
+      mobileFrameBtn.classList.toggle('is-active', active);
+      setTimeout(() => syncAllSpringIndicators(false), 120);
+      showToast(active ? 'Mobile App Frame Preview Active' : 'Desktop View Active');
+    });
 
-    // 6. Marketplace Filters + Transient Liquid Glass Slider Interaction
-    const searchInput = document.getElementById('filter-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        ui.filters.search = e.target.value;
-        renderMarketplace();
-      });
-    }
+    // Marketplace Filters
+    document.getElementById('filter-search')?.addEventListener('input', (e) => {
+      ui.filters.search = e.target.value;
+      renderMarketplace();
+    });
 
-    const gradeSelect = document.getElementById('filter-grade');
-    if (gradeSelect) {
-      gradeSelect.addEventListener('change', (e) => {
-        ui.filters.grade = e.target.value;
-        renderMarketplace();
-      });
-    }
+    document.getElementById('filter-grade')?.addEventListener('change', (e) => {
+      ui.filters.grade = e.target.value;
+      renderMarketplace();
+    });
 
-    const regionSelect = document.getElementById('filter-region');
-    if (regionSelect) {
-      regionSelect.addEventListener('change', (e) => {
-        ui.filters.region = e.target.value;
-        renderMarketplace();
-      });
-    }
+    document.getElementById('filter-region')?.addEventListener('change', (e) => {
+      ui.filters.region = e.target.value;
+      renderMarketplace();
+    });
 
     const priceSlider = document.getElementById('filter-max-price');
     if (priceSlider) {
-      priceSlider.addEventListener('pointerdown', () => priceSlider.classList.add('is-Interacting'));
-      priceSlider.addEventListener('pointerup', () => priceSlider.classList.remove('is-Interacting'));
+      priceSlider.addEventListener('pointerdown', () => priceSlider.classList.add('is-interacting'));
+      priceSlider.addEventListener('pointerup', () => priceSlider.classList.remove('is-interacting'));
       priceSlider.addEventListener('input', (e) => {
         ui.filters.maxPrice = Number(e.target.value);
         renderMarketplace();
@@ -1093,25 +1132,19 @@
     document.querySelectorAll('[data-category-pill]').forEach((btn) => {
       btn.addEventListener('click', () => {
         ui.filters.category = btn.getAttribute('data-category-pill');
-        document.querySelectorAll('[data-category-pill]').forEach((b) => {
-          b.classList.toggle('is-active', b === btn);
-        });
+        document.querySelectorAll('[data-category-pill]').forEach((b) => b.classList.toggle('is-active', b === btn));
         renderMarketplace();
       });
     });
 
-    const resetFiltersBtn = document.getElementById('reset-filters-btn');
-    if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetFilters);
+    document.getElementById('reset-filters-btn')?.addEventListener('click', resetFilters);
 
-    // 7. AI Scanner Presets, Custom File Upload, Re-Scan & One-Click Publish
+    // AI Scanner Presets, Upload & Publish
     document.querySelectorAll('[data-scanner-preset]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        selectScannerPreset(btn.getAttribute('data-scanner-preset'));
-      });
+      btn.addEventListener('click', () => selectScannerPreset(btn.getAttribute('data-scanner-preset')));
     });
 
-    const rescanBtn = document.getElementById('trigger-cv-scan-btn');
-    if (rescanBtn) rescanBtn.addEventListener('click', runSimulatedCvScan);
+    document.getElementById('trigger-cv-scan-btn')?.addEventListener('click', runSimulatedCvScan);
 
     const fileInput = document.getElementById('scanner-file-input');
     const uploadZone = document.getElementById('scanner-upload-zone');
@@ -1119,7 +1152,7 @@
       uploadZone.addEventListener('click', () => fileInput.click());
       uploadZone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        uploadZone.style.borderColor = 'var(--accent-warm)';
+        uploadZone.style.borderColor = 'var(--accent-bronze)';
       });
       uploadZone.addEventListener('dragleave', () => {
         uploadZone.style.borderColor = '';
@@ -1136,29 +1169,21 @@
       });
     }
 
-    const publishForm = document.getElementById('scanner-publish-form');
-    if (publishForm) publishForm.addEventListener('submit', handlePublishScannedCrop);
+    document.getElementById('scanner-publish-form')?.addEventListener('submit', handlePublishScannedCrop);
 
-    // 8. Cart Drawer & Modal triggers
+    // Cart & Modal Controls
     document.querySelectorAll('[data-open-cart]').forEach((btn) => {
       btn.addEventListener('click', openCartDrawer);
     });
-    const closeCartBtn = document.getElementById('close-cart-btn');
-    if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
+    document.getElementById('close-cart-btn')?.addEventListener('click', closeCartDrawer);
 
-    const cartBackdrop = document.getElementById('cart-sheet-backdrop');
-    if (cartBackdrop) {
-      cartBackdrop.addEventListener('click', (e) => {
-        if (e.target === cartBackdrop) closeCartDrawer();
-      });
-    }
+    document.getElementById('cart-sheet-backdrop')?.addEventListener('click', (e) => {
+      if (e.target.id === 'cart-sheet-backdrop') closeCartDrawer();
+    });
 
-    const trustBackdrop = document.getElementById('trust-report-modal');
-    if (trustBackdrop) {
-      trustBackdrop.addEventListener('click', (e) => {
-        if (e.target === trustBackdrop) closeProductReportModal();
-      });
-    }
+    document.getElementById('trust-report-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'trust-report-modal') closeProductReportModal();
+    });
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -1167,77 +1192,36 @@
       }
     });
 
-    // 9. Lumina 5 Share Card Archetypes Switcher & Export
-    document.querySelectorAll('[data-share-style-btn]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const style = btn.getAttribute('data-share-style-btn');
-        const frame = document.getElementById('impact-share-card');
-        if (frame) frame.setAttribute('data-style', style);
-        document.querySelectorAll('[data-share-style-btn]').forEach((b) => {
-          b.classList.toggle('is-active', b === btn);
-        });
-        if (window.LuminaDesign) window.LuminaDesign.playPaperRustle(0.035);
-      });
-    });
-
-    const copyImpactBtn = document.getElementById('copy-impact-card-btn');
-    if (copyImpactBtn) {
-      copyImpactBtn.addEventListener('click', () => {
-        const text = `UGLYFOOD AI · VERIFIED IMPACT LEDGER: Rescued ${state.userImpact.savedKg.toFixed(1)} kg of imperfect local produce, saved ${formatPhp(state.userImpact.savedPhp)}, and prevented ${state.userImpact.co2AvoidedKg.toFixed(1)} kg CO2e landfill emissions.`;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).catch(() => {});
-        }
-        if (window.LuminaDesign) {
-          window.LuminaDesign.playPaperRustle(0.045);
-          window.LuminaDesign.showToast('Impact Certificate Citation Copied to Clipboard');
-        }
-      });
-    }
-
-    // 10. Floating Mobile Bottom Tab Bar — Auto-Minimize on Scroll Down, Expand on Scroll Up (HIG Rule 6)
+    // ScrollSpy + Mobile Dock Auto-Minimize on Scroll Down (Apple HIG)
     let lastScrollY = window.scrollY;
     const mobileDock = document.getElementById('mobile-liquid-dock');
+    const sections = ['marketplace', 'scanner', 'farmer-dashboard'];
+
     window.addEventListener(
       'scroll',
       () => {
         const currentY = window.scrollY;
         if (mobileDock) {
-          if (currentY > lastScrollY + 14 && currentY > 180) {
+          if (currentY > lastScrollY + 18 && currentY > 220) {
             mobileDock.classList.add('is-minimized');
-          } else if (currentY < lastScrollY - 10 || currentY < 100) {
+          } else if (currentY < lastScrollY - 10 || currentY < 120) {
             mobileDock.classList.remove('is-minimized');
           }
         }
         lastScrollY = currentY;
+
+        // Smoothly glide sliding glass indicator to active visible section
+        let activeId = 'marketplace';
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= 240) {
+            activeId = id;
+          }
+        }
+        setActiveNavSection(activeId);
       },
       { passive: true }
     );
-
-    // Mobile tab navigation highlight + semantic search focus
-    document.querySelectorAll('[data-mobile-nav]').forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const targetId = tab.getAttribute('data-mobile-nav');
-        document.querySelectorAll('[data-mobile-nav]').forEach((t) => t.classList.toggle('is-active', t === tab));
-        if (targetId === 'cart') {
-          openCartDrawer();
-          return;
-        }
-        const section = document.getElementById(targetId);
-        if (section) section.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-
-    const semanticSearchBtns = document.querySelectorAll('[data-focus-search]');
-    semanticSearchBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const marketEl = document.getElementById('marketplace');
-        const input = document.getElementById('filter-search');
-        if (marketEl) marketEl.scrollIntoView({ behavior: 'smooth' });
-        setTimeout(() => {
-          if (input) input.focus();
-        }, 420);
-      });
-    });
   }
 
   function handleCustomCropImage(file) {
@@ -1248,13 +1232,6 @@
       runSimulatedCvScan();
     };
     reader.readAsDataURL(file);
-  }
-
-  function updateThemeButtonLabel(theme) {
-    const btn = document.getElementById('theme-toggle-btn');
-    if (!btn) return;
-    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to Museum Paper Light Mode' : 'Switch to Gallery Noir Dark Mode');
-    btn.title = theme === 'dark' ? 'Switch to Museum Paper Light Mode' : 'Switch to Gallery Noir Dark Mode';
   }
 
   if (document.readyState === 'loading') {
