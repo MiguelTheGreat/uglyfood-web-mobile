@@ -38,6 +38,7 @@
   let toastTimer = null;
 
   const ui = {
+    activeView: 'marketplace',
     filters: {
       search: '',
       category: 'All',
@@ -132,19 +133,30 @@
     sectionEl.classList.add('apple-spring-enter');
   }
 
-  function navigateToSection(sectionId) {
+  function navigateToSection(sectionId, { updateHash = true } = {}) {
     document.getElementById('mobile-liquid-dock')?.classList.remove('is-minimized');
     if (sectionId === 'cart') {
       setActiveNavSection('cart');
       openCartDrawer();
       return;
     }
-    setActiveNavSection(sectionId);
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      triggerAppleSectionSpring(section);
+
+    const validViews = ['marketplace', 'scanner', 'farmer-dashboard'];
+    const targetView = validViews.includes(sectionId) ? sectionId : 'marketplace';
+    ui.activeView = targetView;
+
+    document.querySelectorAll('.uf-view').forEach((viewEl) => {
+      const isMatch = viewEl.getAttribute('data-view') === targetView;
+      viewEl.classList.toggle('is-active', isMatch);
+    });
+
+    setActiveNavSection(targetView);
+
+    if (updateHash && window.location.hash !== `#${targetView}`) {
+      history.replaceState(null, '', `#${targetView}`);
     }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   /* ------------------------------------------------------------------------
@@ -1037,7 +1049,7 @@
 
   function closeCartDrawer() {
     document.getElementById('cart-sheet-backdrop')?.classList.remove('is-open');
-    setActiveNavSection('marketplace');
+    setActiveNavSection(ui.activeView || 'marketplace');
   }
 
   /* ------------------------------------------------------------------------
@@ -1052,9 +1064,21 @@
     renderCart();
     selectScannerPreset('preset-carrots');
 
+    // Support initial URL hash (#scanner, #farmer-dashboard, #marketplace)
+    const initialHash = window.location.hash.replace('#', '');
+    if (['marketplace', 'scanner', 'farmer-dashboard'].includes(initialHash)) {
+      navigateToSection(initialHash, { updateHash: false });
+    }
+
     // Sync Apple spring sliding indicators on initial paint & resize
     requestAnimationFrame(() => syncAllSpringIndicators(true));
     window.addEventListener('resize', () => syncAllSpringIndicators(true));
+
+    // Brand link returns to Market view
+    document.querySelector('.uf-brand')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigateToSection('marketplace');
+    });
 
     // Top Navigation Spring Menu
     document.querySelectorAll('[data-top-nav]').forEach((link) => {
@@ -1072,6 +1096,11 @@
     });
 
     // Hero CTAs
+    document.getElementById('hero-shop-cta')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
     document.querySelectorAll('[data-jump-section]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1080,14 +1109,20 @@
     });
 
     document.getElementById('hero-scan-cta')?.addEventListener('click', () => {
-      setRole('farmer', { scrollToSection: true });
+      setRole('farmer', { scrollToSection: false });
+      navigateToSection('scanner');
     });
 
     // Role Switcher
     document.querySelectorAll('[data-role-btn]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const nextRole = btn.getAttribute('data-role-btn');
-        setRole(nextRole, { scrollToSection: nextRole === 'farmer' });
+        setRole(nextRole, { scrollToSection: false });
+        if (nextRole === 'farmer') {
+          navigateToSection('farmer-dashboard');
+        } else if (ui.activeView !== 'marketplace') {
+          navigateToSection('marketplace');
+        }
       });
     });
 
@@ -1196,13 +1231,11 @@
     const backToTopBtn = document.getElementById('back-to-top-btn');
     backToTopBtn?.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      setActiveNavSection('marketplace');
     });
 
-    // ScrollSpy + Mobile Dock Auto-Minimize + Back-to-Top Visibility (Apple HIG)
+    // Mobile Dock Auto-Minimize + Back-to-Top Visibility (Apple HIG)
     let lastScrollY = window.scrollY;
     const mobileDock = document.getElementById('mobile-liquid-dock');
-    const sections = ['marketplace', 'scanner', 'farmer-dashboard'];
 
     window.addEventListener(
       'scroll',
@@ -1219,16 +1252,6 @@
           }
         }
         lastScrollY = currentY;
-
-        // Smoothly glide sliding glass indicator to active visible section
-        let activeId = 'marketplace';
-        for (const id of sections) {
-          const el = document.getElementById(id);
-          if (el && el.getBoundingClientRect().top <= 240) {
-            activeId = id;
-          }
-        }
-        setActiveNavSection(activeId);
       },
       { passive: true }
     );

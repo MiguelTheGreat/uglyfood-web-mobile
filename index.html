@@ -159,171 +159,171 @@
   <main id="top" class="uf-page-shell">
 
     <!-- ================================================================
-         HERO SECTION (Curved Liquid Glass Botanical Showcase — No 3D Slab)
+         VIEW 01: MARKET (HERO + AI-VERIFIED RESCUED MARKETPLACE)
          ================================================================ -->
-    <section class="uf-hero apple-spring-enter" aria-labelledby="hero-main-heading">
-      <div class="uf-hero-grid">
-        <div>
-          <div class="lg-pill uf-mode-chip">
-            <span class="uf-mode-dot" aria-hidden="true"></span>
-            <span id="hero-role-indicator">Individual Buyer · 1–5 kg Retail Packs</span>
+    <div id="view-marketplace" class="uf-view is-active" data-view="marketplace">
+      <section class="uf-hero" aria-labelledby="hero-main-heading">
+        <div class="uf-hero-grid">
+          <div>
+            <div class="lg-pill uf-mode-chip">
+              <span class="uf-mode-dot" aria-hidden="true"></span>
+              <span id="hero-role-indicator">Individual Buyer · 1–5 kg Retail Packs</span>
+            </div>
+
+            <h1 id="hero-main-heading" class="uf-hero-title">
+              Imperfect <em>Form</em>,<br>Verified Purity.
+            </h1>
+
+            <p class="uf-hero-lead">
+              Supermarket cosmetic standards reject <strong>34% of healthy local harvests</strong> for a curved stem, twin root, or sugar freckle.
+              <strong>UglyFood AI</strong> pairs computer vision freshness grading with direct farm-to-kitchen delivery—offering
+              <strong>100% safe produce at up to 52% off</strong> while returning <strong>89% of every peso</strong> directly to local growers.
+            </p>
+
+            <div class="uf-hero-ctas">
+              <a href="#marketplace" class="lg-btn lg-btn--prominent" id="hero-shop-cta">
+                Shop Rescued Produce &darr;
+              </a>
+              <button type="button" class="lg-btn lg-btn--bronze" id="hero-scan-cta">
+                Scan &amp; Sell Crops &nearr;
+              </button>
+            </div>
           </div>
 
-          <h1 id="hero-main-heading" class="uf-hero-title">
-            Imperfect <em>Form</em>,<br>Verified Purity.
-          </h1>
+          <!-- Curved Concentric Liquid Glass Specimen Card -->
+          <div class="lg-card uf-hero-glass-frame">
+            <div class="uf-hero-media-wrap">
+              <img src="./assets/carrots.jpg" alt="Heirloom twisted twin organic carrots freshly harvested">
+              <div class="lg-media-dimmer" aria-hidden="true"></div>
+              <div class="lg-clear uf-hero-media-top-pill">
+                <span style="width:7px;height:7px;border-radius:50%;background:#63c192;display:inline-block;"></span>
+                AI Verified · 99.4% Freshness
+              </div>
+              <div class="lg-clear uf-media-hud-bar">
+                <span>Twin Highland Carrots · Atok, Benguet</span>
+                <span class="uf-tabular">₱68 / kg (-48%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <p class="uf-hero-lead">
-            Supermarket cosmetic standards reject <strong>34% of healthy local harvests</strong> for a curved stem, twin root, or sugar freckle.
-            <strong>UglyFood AI</strong> pairs computer vision freshness grading with direct farm-to-kitchen delivery—offering
-            <strong>100% safe produce at up to 52% off</strong> while returning <strong>89% of every peso</strong> directly to local growers.
+        <!-- 4 Curved Liquid Glass Live Impact Cards -->
+        <div class="uf-impact-strip" aria-label="Live Platform Metrics">
+          <div class="lg-card uf-stat-glass-card">
+            <span class="uf-kicker">Food Rescued</span>
+            <div id="ticker-waste-kg" class="uf-stat-value uf-tabular">148,920 kg</div>
+            <span class="uf-stat-sub">Diverted directly from farm waste</span>
+          </div>
+          <div class="lg-card uf-stat-glass-card">
+            <span class="uf-kicker">Farmer Earnings</span>
+            <div id="ticker-farmer-php" class="uf-stat-value uf-tabular">₱6,420,500</div>
+            <span class="uf-stat-sub">89% direct payout to smallholders</span>
+          </div>
+          <div class="lg-card uf-stat-glass-card">
+            <span class="uf-kicker">Buyer Savings</span>
+            <div id="ticker-savings-pct" class="uf-stat-value uf-tabular">48% Off</div>
+            <span class="uf-stat-sub">Average savings vs. supermarket retail</span>
+          </div>
+          <div class="lg-card uf-stat-glass-card">
+            <span class="uf-kicker">Your Monthly Impact</span>
+            <div id="personal-saved-summary" class="uf-stat-value uf-tabular">18.5 kg · ₱1,140</div>
+            <span class="uf-stat-sub">Rescued through your direct orders</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="marketplace" class="uf-section" aria-labelledby="marketplace-heading">
+        <div class="uf-section-header">
+          <div>
+            <span class="uf-kicker">Direct Harvest Exchange</span>
+            <h2 id="marketplace-heading" class="uf-section-title">
+              AI-Verified <em>Rescued</em> Marketplace
+            </h2>
+          </div>
+          <p id="marketplace-mode-note" class="uf-section-note">
+            Individual Buyer mode — showing 1 kg retail packs harvested within 24 hours and verified 100% safe by computer vision.
           </p>
+        </div>
 
-          <div class="uf-hero-ctas">
-            <a href="#marketplace" class="lg-btn lg-btn--prominent" data-jump-section="marketplace">
-              Shop Rescued Produce &darr;
-            </a>
-            <button type="button" class="lg-btn lg-btn--bronze" id="hero-scan-cta">
-              Scan &amp; Sell Crops &nearr;
-            </button>
+        <!-- Curved Liquid Glass Filter Bar -->
+        <div class="lg-card uf-filter-bar" aria-label="Marketplace Filters">
+          <div class="uf-filter-grid">
+            <div class="uf-field">
+              <label for="filter-search" class="uf-field-label">Search produce, defect, or farm</label>
+              <input
+                type="search"
+                id="filter-search"
+                class="uf-input"
+                placeholder="e.g. Twisted carrots, mangoes, Benguet..."
+              >
+            </div>
+
+            <div class="uf-field">
+              <label for="filter-grade" class="uf-field-label">AI Visual Grade</label>
+              <select id="filter-grade" class="uf-select">
+                <option value="All">All Grades (100% Safe)</option>
+                <option value="Grade A-">Grade A- · Slight Blemish</option>
+                <option value="Grade B">Grade B · Oddly Shaped</option>
+                <option value="Grade C">Grade C · Bulk &amp; Culinary</option>
+              </select>
+            </div>
+
+            <div class="uf-field">
+              <label for="filter-region" class="uf-field-label">Regional Hub</label>
+              <select id="filter-region" class="uf-select">
+                <option value="All">All Philippine Farm Hubs</option>
+                <option value="Benguet">Benguet (&lt; 50 km Hub)</option>
+                <option value="Laguna">Laguna (&lt; 35 km Hub)</option>
+                <option value="Bukidnon">Bukidnon Terraces</option>
+                <option value="Zambales">Zambales Valley</option>
+                <option value="Batangas">Batangas Ridges</option>
+              </select>
+            </div>
+
+            <div class="uf-field">
+              <label for="filter-max-price" class="uf-field-label">
+                <span>Max Price</span>
+                <strong id="filter-price-display" class="uf-tabular" style="color:var(--accent-bronze);">₱250 / kg</strong>
+              </label>
+              <input
+                type="range"
+                id="filter-max-price"
+                class="lg-range-slider"
+                min="40"
+                max="250"
+                step="5"
+                value="250"
+              >
+            </div>
+          </div>
+
+          <div class="uf-filter-bottom">
+            <div class="uf-category-row" role="group" aria-label="Produce category">
+              <button type="button" class="lg-btn is-active" data-category-pill="All">All Harvests</button>
+              <button type="button" class="lg-btn" data-category-pill="Vegetables">Vegetables</button>
+              <button type="button" class="lg-btn" data-category-pill="Fruits">Fruits</button>
+              <button type="button" class="lg-btn" data-category-pill="Root Crops">Root Crops</button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <span id="marketplace-count-label" class="uf-tabular" style="font-size:0.8rem;color:var(--ink-secondary);font-weight:600;">10 verified lots</span>
+              <button type="button" id="reset-filters-btn" class="lg-btn" style="padding:0.45rem 0.9rem;font-size:0.78rem;">
+                Reset
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Curved Concentric Liquid Glass Specimen Card (No 3D object!) -->
-        <div class="lg-card uf-hero-glass-frame">
-          <div class="uf-hero-media-wrap">
-            <img src="./assets/carrots.jpg" alt="Heirloom twisted twin organic carrots freshly harvested">
-            <div class="lg-media-dimmer" aria-hidden="true"></div>
-            <div class="lg-clear uf-hero-media-top-pill">
-              <span style="width:7px;height:7px;border-radius:50%;background:#63c192;display:inline-block;"></span>
-              AI Verified · 99.4% Freshness
-            </div>
-            <div class="lg-clear uf-media-hud-bar">
-              <span>Twin Highland Carrots · Atok, Benguet</span>
-              <span class="uf-tabular">₱68 / kg (-48%)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4 Curved Liquid Glass Live Impact Cards -->
-      <div class="uf-impact-strip" aria-label="Live Platform Metrics">
-        <div class="lg-card uf-stat-glass-card">
-          <span class="uf-kicker">Food Rescued</span>
-          <div id="ticker-waste-kg" class="uf-stat-value uf-tabular">148,920 kg</div>
-          <span class="uf-stat-sub">Diverted directly from farm waste</span>
-        </div>
-        <div class="lg-card uf-stat-glass-card">
-          <span class="uf-kicker">Farmer Earnings</span>
-          <div id="ticker-farmer-php" class="uf-stat-value uf-tabular">₱6,420,500</div>
-          <span class="uf-stat-sub">89% direct payout to smallholders</span>
-        </div>
-        <div class="lg-card uf-stat-glass-card">
-          <span class="uf-kicker">Buyer Savings</span>
-          <div id="ticker-savings-pct" class="uf-stat-value uf-tabular">48% Off</div>
-          <span class="uf-stat-sub">Average savings vs. supermarket retail</span>
-        </div>
-        <div class="lg-card uf-stat-glass-card">
-          <span class="uf-kicker">Your Monthly Impact</span>
-          <div id="personal-saved-summary" class="uf-stat-value uf-tabular">18.5 kg · ₱1,140</div>
-          <span class="uf-stat-sub">Rescued through your direct orders</span>
-        </div>
-      </div>
-    </section>
+        <!-- Curved Liquid Glass Product Cards Grid -->
+        <div id="marketplace-grid" class="uf-market-grid" aria-live="polite"></div>
+      </section>
+    </div>
 
     <!-- ================================================================
-         SECTION 01: MARKETPLACE (Full Curved Liquid Glass Cards)
+         VIEW 02: AI PRODUCE SCANNER & COMPUTER VISION GRADER
          ================================================================ -->
-    <section id="marketplace" class="uf-section" aria-labelledby="marketplace-heading">
-      <div class="uf-section-header">
-        <div>
-          <span class="uf-kicker">Direct Harvest Exchange</span>
-          <h2 id="marketplace-heading" class="uf-section-title">
-            AI-Verified <em>Rescued</em> Marketplace
-          </h2>
-        </div>
-        <p id="marketplace-mode-note" class="uf-section-note">
-          Individual Buyer mode — showing 1 kg retail packs harvested within 24 hours and verified 100% safe by computer vision.
-        </p>
-      </div>
-
-      <!-- Curved Liquid Glass Filter Bar -->
-      <div class="lg-card uf-filter-bar" aria-label="Marketplace Filters">
-        <div class="uf-filter-grid">
-          <div class="uf-field">
-            <label for="filter-search" class="uf-field-label">Search produce, defect, or farm</label>
-            <input
-              type="search"
-              id="filter-search"
-              class="uf-input"
-              placeholder="e.g. Twisted carrots, mangoes, Benguet..."
-            >
-          </div>
-
-          <div class="uf-field">
-            <label for="filter-grade" class="uf-field-label">AI Visual Grade</label>
-            <select id="filter-grade" class="uf-select">
-              <option value="All">All Grades (100% Safe)</option>
-              <option value="Grade A-">Grade A- · Slight Blemish</option>
-              <option value="Grade B">Grade B · Oddly Shaped</option>
-              <option value="Grade C">Grade C · Bulk &amp; Culinary</option>
-            </select>
-          </div>
-
-          <div class="uf-field">
-            <label for="filter-region" class="uf-field-label">Regional Hub</label>
-            <select id="filter-region" class="uf-select">
-              <option value="All">All Philippine Farm Hubs</option>
-              <option value="Benguet">Benguet (&lt; 50 km Hub)</option>
-              <option value="Laguna">Laguna (&lt; 35 km Hub)</option>
-              <option value="Bukidnon">Bukidnon Terraces</option>
-              <option value="Zambales">Zambales Valley</option>
-              <option value="Batangas">Batangas Ridges</option>
-            </select>
-          </div>
-
-          <div class="uf-field">
-            <label for="filter-max-price" class="uf-field-label">
-              <span>Max Price</span>
-              <strong id="filter-price-display" class="uf-tabular" style="color:var(--accent-bronze);">₱250 / kg</strong>
-            </label>
-            <input
-              type="range"
-              id="filter-max-price"
-              class="lg-range-slider"
-              min="40"
-              max="250"
-              step="5"
-              value="250"
-            >
-          </div>
-        </div>
-
-        <div class="uf-filter-bottom">
-          <div class="uf-category-row" role="group" aria-label="Produce category">
-            <button type="button" class="lg-btn is-active" data-category-pill="All">All Harvests</button>
-            <button type="button" class="lg-btn" data-category-pill="Vegetables">Vegetables</button>
-            <button type="button" class="lg-btn" data-category-pill="Fruits">Fruits</button>
-            <button type="button" class="lg-btn" data-category-pill="Root Crops">Root Crops</button>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <span id="marketplace-count-label" class="uf-tabular" style="font-size:0.8rem;color:var(--ink-secondary);font-weight:600;">10 verified lots</span>
-            <button type="button" id="reset-filters-btn" class="lg-btn" style="padding:0.45rem 0.9rem;font-size:0.78rem;">
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Curved Liquid Glass Product Cards Grid -->
-      <div id="marketplace-grid" class="uf-market-grid" aria-live="polite"></div>
-    </section>
-
-    <!-- ================================================================
-         SECTION 02: AI PRODUCE SCANNER & COMPUTER VISION GRADER
-         ================================================================ -->
-    <section id="scanner" class="uf-section" aria-labelledby="scanner-heading">
+    <div id="view-scanner" class="uf-view" data-view="scanner">
+      <section id="scanner" class="uf-section uf-view-section" aria-labelledby="scanner-heading">
       <div class="uf-section-header">
         <div>
           <span class="uf-kicker">Computer Vision Grader · Farmer Tool</span>
@@ -465,12 +465,14 @@
           </form>
         </div>
       </div>
-    </section>
+      </section>
+    </div>
 
     <!-- ================================================================
-         SECTION 03: FARMER DASHBOARD & PARTNER FARMS (Zero SDGs, Zero Square Tables)
+         VIEW 03: FARMER DASHBOARD & PARTNER FARMS
          ================================================================ -->
-    <section id="farmer-dashboard" class="uf-section" aria-labelledby="farmer-heading">
+    <div id="view-farmer-dashboard" class="uf-view" data-view="farmer-dashboard">
+      <section id="farmer-dashboard" class="uf-section uf-view-section" aria-labelledby="farmer-heading">
       <div class="uf-section-header">
         <div>
           <span class="uf-kicker">Supplier Atelier · Direct Smallholder Control</span>
@@ -539,7 +541,8 @@
 
         <div id="partner-farms-grid" class="uf-farms-grid"></div>
       </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <!-- ====================================================================

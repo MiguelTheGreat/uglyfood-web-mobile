@@ -483,8 +483,21 @@ body.is-mobile-frame-mode .uf-farms-grid {
 }
 
 /* --------------------------------------------------------------------------
-   5. SECTION HEADERS
+   5. DEDICATED VIEW SWITCHING & SECTION HEADERS
    -------------------------------------------------------------------------- */
+.uf-view {
+  display: none;
+}
+
+.uf-view.is-active {
+  display: block;
+  animation: appleSpringIn 0.48s var(--apple-spring) both;
+}
+
+.uf-view-section {
+  padding-top: clamp(6.75rem, 12vh, 8.25rem) !important;
+}
+
 .uf-section {
   padding: clamp(2.75rem, 6vh, 4.25rem) 0;
   scroll-margin-top: 5.5rem;
@@ -1314,8 +1327,9 @@ body.is-mobile-frame-mode .uf-farms-grid {
     font-size: 0.78rem;
   }
 
-  .uf-hero {
-    padding-top: 8.6rem;
+  .uf-hero,
+  .uf-view-section {
+    padding-top: 8.6rem !important;
   }
 
   .uf-section {
