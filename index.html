@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UglyFood AI. | Archival Harvest Marketplace &amp; Computer Vision Grader</title>
+  <meta name="description" content="UglyFood AI connects local farmers directly with households and commercial kitchens to buy and sell AI-verified safe, imperfect produce at 45–52% below retail prices.">
+
+  <!-- Lumina Design System Typography Triad -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Lumina Canonical Core Stylesheets -->
+  <link rel="stylesheet" href="./lib/lumina-tokens.css">
+  <link rel="stylesheet" href="./lib/lumina-animations.css">
+  <link rel="stylesheet" href="./lib/lumina-components.css">
+
+  <!-- Apple HIG Liquid Glass Chrome + UglyFood AI Application Styles -->
+  <link rel="stylesheet" href="./css/liquid-glass.css">
+  <link rel="stylesheet" href="./css/uglyfood.css">
+</head>
+<body>
+  <!-- Progressive Enhancement SVG Filter for Optical Liquid Glass Edge Refraction -->
+  <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
+    <defs>
+      <filter id="liquid-glass-refract" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Lumina Tactile Museum Atmosphere -->
+  <div class="paper-grain" aria-hidden="true"></div>
+  <div class="ambient-vignette" aria-hidden="true"></div>
+  <div class="lumina-scroll-progress" aria-hidden="true"></div>
+
+  <!-- Apple HIG Soft Scroll Edge Effects (Behind Fixed Top & Bottom Liquid Glass Chrome) -->
+  <div class="scroll-edge-top" aria-hidden="true"></div>
+  <div class="scroll-edge-bottom" aria-hidden="true"></div>
+
+  <!-- Lumina Dual-Ring Magnetic Custom Cursor -->
+  <div id="cursor-ring" aria-hidden="true"><span id="cursor-label"></span></div>
+  <div id="cursor-dot" aria-hidden="true"></div>
+
+  <!-- Lumina 4-Panel Split-Curtain Intro -->
+  <div id="intro-overlay" class="lumina-curtain" aria-hidden="true">
+    <div class="curtain-panel"></div>
+    <div class="curtain-panel"></div>
+    <div class="curtain-panel"></div>
+    <div class="curtain-panel"></div>
+    <div class="curtain-content">
+      <div class="reveal-mask">
+        <p id="intro-text" class="reveal-up" style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.75rem,4.8vw,3.25rem);letter-spacing:0.28em;color:#f5f2e9;margin:0;">UGLYFOOD AI.</p>
+      </div>
+      <div class="reveal-rule" style="color:#f5f2e9;"></div>
+      <div class="reveal-mask">
+        <p id="intro-subtext" class="reveal-up" style="font-family:var(--font-serif);font-style:italic;font-size:clamp(1rem,2vw,1.3rem);letter-spacing:0.14em;color:rgba(245,242,233,0.76);margin:0;">Archival Harvest Marketplace &amp; Computer Vision Grader</p>
+      </div>
+      <div class="reveal-progress-track"><div class="reveal-progress-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       FLOATING APPLE LIQUID GLASS HEADER CHROME
+       Strictly separated pill groups:
+       1. Brand + Text Navigation Pill
+       2. Demo Role Switcher Segmented Pill (B2C · B2B · Farmer)
+       3. Icon-Only Utility Group (Search, Mobile Frame Toggle, Theme, Cart)
+       ==================================================================== -->
+  <header class="uf-floating-header">
+    <!-- Capsule 1: Brand + Text Navigation -->
+    <div class="liquid-glass liquid-glass--refractive uf-nav-capsule">
+      <a href="#top" class="lumina-brand hover-target">
+        UGLYFOOD.
+        <span class="uf-brand-tag">AI</span>
+      </a>
+      <nav class="uf-nav-links" aria-label="Primary navigation">
+        <a href="#marketplace" class="lumina-menu-item hover-target">Marketplace</a>
+        <a href="#scanner" class="lumina-menu-item hover-target">AI Scanner</a>
+        <a href="#farmer-dashboard" class="lumina-menu-item hover-target">Supplier Atelier</a>
+        <a href="#impact-tracker" class="lumina-menu-item hover-target">Impact Ledger</a>
+      </nav>
+    </div>
+
+    <!-- Capsule 2: Demo Mode Role Switcher (Fluid Morphing GlassEffectContainer) -->
+    <div class="liquid-glass liquid-glass--refractive uf-role-capsule" role="group" aria-label="Demo User Role Switcher">
+      <span class="uf-role-label">ROLE:</span>
+      <div class="lg-segmented-pill">
+        <button type="button" class="lg-segment-btn is-active hover-target" data-role-btn="b2c" aria-pressed="true">
+          Individual (B2C)
+        </button>
+        <button type="button" class="lg-segment-btn hover-target" data-role-btn="b2b" aria-pressed="false">
+          Commercial (B2B)
+        </button>
+        <button type="button" class="lg-segment-btn hover-target" data-role-btn="farmer" aria-pressed="false">
+          Local Farmer
+        </button>
+      </div>
+    </div>
+
+    <!-- Capsule 3: Separated Icon-Only Utility Pills (HIG Rule 6) -->
+    <div class="uf-utility-group">
+      <!-- Separated Semantic Search Pill -->
+      <div class="liquid-glass liquid-glass--refractive uf-icon-pill">
+        <button type="button" class="uf-icon-btn hover-target" data-focus-search aria-label="Search Rescued Produce" title="Search Rescued Produce">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Frame Toggle + Theme Switcher + Cart Drawer Trigger -->
+      <div class="liquid-glass liquid-glass--refractive uf-icon-pill">
+        <button type="button" id="mobile-frame-toggle-btn" class="uf-icon-btn hover-target" aria-label="Toggle Mobile Viewport Preview Frame" title="Toggle Mobile App Preview Frame">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+        </button>
+
+        <button type="button" id="theme-toggle-btn" class="uf-icon-btn hover-target" aria-label="Toggle Museum Paper and Gallery Noir Theme" title="Toggle Light / Noir Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <button type="button" id="header-cart-btn" class="uf-icon-btn hover-target" data-open-cart aria-label="Open Rescued Harvest Cart" title="Open Rescued Harvest Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="uf-cart-badge" data-cart-badge>3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       FLOATING MOBILE LIQUID GLASS TAB DOCK (Minimizes on Scroll Down)
+       With Visually Separated Semantic Search Orb at Trailing End
+       ==================================================================== -->
+  <div id="mobile-liquid-dock" class="lg-mobile-dock" role="navigation" aria-label="Mobile quick navigation">
+    <div class="liquid-glass liquid-glass--refractive lg-mobile-tab-pill">
+      <button type="button" class="lg-mobile-tab is-active" data-mobile-nav="marketplace">Market</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="scanner">AI Scan</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="farmer-dashboard">Farmer</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="impact-tracker">Impact</button>
+      <button type="button" class="lg-mobile-tab" data-mobile-nav="cart">
+        Cart (<span data-cart-badge>3</span>)
+      </button>
+    </div>
+    <!-- Separated Semantic Search Tab Orb per Apple HIG -->
+    <button type="button" class="liquid-glass liquid-glass--refractive lg-semantic-search-orb" data-focus-search aria-label="Quick Search Produce">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ====================================================================
+       MAIN PAGE SHELL
+       ==================================================================== -->
+  <main id="top" class="uf-page-shell">
+
+    <!-- ================================================================
+         HERO SECTION & LIVE IMPACT TICKER
+         ================================================================ -->
+    <section class="uf-hero" aria-labelledby="hero-main-heading">
+      <div class="uf-hero-grid">
+        <div>
+          <div class="uf-role-banner">
+            <span class="uf-role-dot" aria-hidden="true"></span>
+            <span id="hero-role-indicator" class="lumina-label" style="color:var(--ink-primary);">
+              ACTIVE VIEW: INDIVIDUAL BUYER (B2C RETAIL PACKS · 1–5 KG)
+            </span>
+          </div>
+
+          <span class="lumina-kicker" style="display:block;">EDITION 01 &middot; DIRECT FARM-TO-BUYER AI MARKETPLACE</span>
+          <div class="reveal-mask">
+            <h1 id="hero-main-heading" class="uf-hero-title reveal-up">
+              Imperfect <em>Form</em>,<br>Verified Purity.
+            </h1>
+          </div>
+
+          <p class="uf-hero-lead">
+            Supermarket cosmetic quotas reject <strong>34% of healthy Philippine harvests</strong> for a curved stem, twin root, or sugar freckle.
+            <strong>UglyFood AI</strong> pairs multispectral computer vision grading with direct smallholder farm logistics—delivering
+            <strong>100% edible, lab-verified produce at up to 52% off</strong> while returning <strong>89% of every peso</strong> directly to local growers.
+          </p>
+
+          <div class="uf-hero-ctas">
+            <a href="#marketplace" class="lumina-cta hover-target">
+              Shop Rescued Produce &darr;
+            </a>
+            <a href="#scanner" class="ctrl-btn liquid-glass--prominent hover-target" onclick="document.querySelector('[data-role-btn=farmer]')?.click()">
+              Scan &amp; Sell Crops &nearr;
+            </a>
+            <button type="button" class="ctrl-btn hover-target" onclick="window.LuminaDesign && window.LuminaDesign.playCurtain({ title: 'UGLYFOOD AI.', subtitle: 'Archival Harvest Marketplace', holdMs: 680 })">
+              Replay Curtain
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Lumina 3D Isometric Etched Folio Slab + Hero Specimen Frame -->
+        <div class="uf-hero-showcase">
+          <!-- Card Archetype 01: 3D Isometric Etched Folio Slab -->
+          <div class="folio-stage" data-cursor-inspect="ARCHIVE" onclick="document.getElementById('marketplace')?.scrollIntoView({behavior:'smooth'})">
+            <div class="folio-shadow"></div>
+            <div class="folio-book">
+              <div class="folio-front">
+                <div class="folio-plate">
+                  <div class="folio-top-meta"><span>HARVEST VOL. 01</span><span>CV-NET v4.2</span></div>
+                  <div>
+                    <div class="folio-cut-mark"></div>
+                    <h2 class="folio-cover-title">The Rescued<br>Botanical Ledger</h2>
+                    <div class="folio-cover-rule"></div>
+                    <p class="folio-cover-epigraph">Ten curated smallholder lots verified 100% pathogen-free.</p>
+                  </div>
+                  <div class="folio-bottom-meta">89% DIRECT FARMER PAYOUT</div>
+                </div>
+              </div>
+              <div class="folio-edge-right"></div>
+              <div class="folio-edge-bottom"></div>
+            </div>
+          </div>
+
+          <!-- Specimen Photography Preview with Clear Liquid Glass + Mandatory 35% Dimming Layer -->
+          <div class="uf-hero-specimen-card">
+            <div class="uf-specimen-media-wrap">
+              <img src="./assets/carrots.jpg" alt="Heirloom twisted twin carrots on warm museum paper">
+              <!-- Official 35% Dark Dimming Layer Behind Clear Liquid Glass Over Bright Media -->
+              <div class="lg-media-dimmer" aria-hidden="true"></div>
+              <div class="liquid-glass--clear uf-media-hud-bar">
+                <span class="uf-media-hud-text">LOT #ATK-904 &middot; TWIN HIGHLAND CARROTS</span>
+                <span class="uf-media-hud-text">PASSED &middot; 99.4% CONF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Impact Ticker (Mocked & Dynamically Updated on Scan/Checkout) -->
+      <div class="uf-impact-ticker" aria-label="Live Platform Impact Metrics">
+        <div class="uf-ticker-cell">
+          <span class="lumina-kicker">FOOD WASTE DIVERTED</span>
+          <div id="ticker-waste-kg" class="uf-ticker-value">148,920 kg</div>
+          <span class="uf-ticker-sub">Rescued from landfill methane decay</span>
+        </div>
+        <div class="uf-ticker-cell">
+          <span class="lumina-kicker">DIRECT FARMER EARNINGS</span>
+          <div id="ticker-farmer-php" class="uf-ticker-value">₱6,420,500</div>
+          <span class="uf-ticker-sub">89% net payout vs. 32% middleman rate</span>
+        </div>
+        <div class="uf-ticker-cell">
+          <span class="lumina-kicker">AVERAGE BUYER SAVINGS</span>
+          <div id="ticker-savings-pct" class="uf-ticker-value">48%</div>
+          <span class="uf-ticker-sub">Across B2C retail &amp; B2B bulk crates</span>
+        </div>
+        <div class="uf-ticker-cell">
+          <span class="lumina-kicker">AI-VERIFIED SAFE LOTS</span>
+          <div id="ticker-batches" class="uf-ticker-value">3,842</div>
+          <span class="uf-ticker-sub">100% edibility &amp; zero-rot certified</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         SECTION 01: MARKETPLACE (B2C & B2B Buyer View)
+         Opaque Lumina Museum Paper / Gallery Noir Cards in Content Layer
+         ================================================================ -->
+    <section id="marketplace" class="uf-section" aria-labelledby="marketplace-heading">
+      <div class="uf-section-header">
+        <div>
+          <span class="lumina-kicker">01 &middot; DISINTERMEDIATED HARVEST EXCHANGE</span>
+          <h2 id="marketplace-heading" class="uf-section-title">
+            AI-Verified <em>Rescued</em> Marketplace
+          </h2>
+        </div>
+        <p id="marketplace-mode-note" class="uf-section-note">
+          Individual B2C Mode active — showing 1 kg retail packs harvested within 24 hours and verified 100% safe by computer vision.
+        </p>
+      </div>
+
+      <!-- Search, Filters & Content-Layer Transient Liquid Glass Slider -->
+      <div class="uf-market-controls" aria-label="Marketplace Filters">
+        <div class="uf-filter-top-row">
+          <div class="uf-field-group">
+            <label for="filter-search" class="uf-field-label">
+              <span>SEARCH CROP, DEFECT, OR FARM</span>
+            </label>
+            <input
+              type="search"
+              id="filter-search"
+              class="uf-input"
+              placeholder="e.g. Twisted carrots, mangoes, Benguet, sugar freckles..."
+            >
+          </div>
+
+          <div class="uf-field-group">
+            <label for="filter-grade" class="uf-field-label">
+              <span>AI VISUAL GRADE</span>
+            </label>
+            <select id="filter-grade" class="uf-select">
+              <option value="All">All AI Visual Grades (100% Safe)</option>
+              <option value="Grade A-">Grade A- &middot; Slight Cosmetic Blemish</option>
+              <option value="Grade B">Grade B &middot; Oddly Shaped / Curved</option>
+              <option value="Grade C">Grade C &middot; Processing &amp; Bulk Ready</option>
+            </select>
+          </div>
+
+          <div class="uf-field-group">
+            <label for="filter-region" class="uf-field-label">
+              <span>REGIONAL HUB / DISTANCE</span>
+            </label>
+            <select id="filter-region" class="uf-select">
+              <option value="All">All Philippine Farm Hubs</option>
+              <option value="Benguet">Benguet (&lt; 50 km Cold Chain)</option>
+              <option value="Laguna">Laguna (&lt; 35 km Basin Hub)</option>
+              <option value="Bukidnon">Bukidnon Volcanic Terraces</option>
+              <option value="Zambales">Zambales Coastal Valley</option>
+              <option value="Batangas">Batangas Volcanic Ridges</option>
+            </select>
+          </div>
+
+          <!-- Official HIG Content-Layer Exception: Slider thumb transforms into Liquid Glass ONLY while actively dragged -->
+          <div class="uf-field-group">
+            <label for="filter-max-price" class="uf-field-label">
+              <span>MAX PRICE CEILING</span>
+              <strong id="filter-price-display" style="color:var(--accent-warm);">₱250 / kg</strong>
+            </label>
+            <input
+              type="range"
+              id="filter-max-price"
+              class="lg-range-slider"
+              min="40"
+              max="250"
+              step="5"
+              value="250"
+            >
+          </div>
+        </div>
+
+        <div class="uf-filter-bottom-row">
+          <div class="uf-category-pills" role="group" aria-label="Filter by produce category">
+            <button type="button" class="ctrl-btn is-active hover-target" data-category-pill="All">All Harvests</button>
+            <button type="button" class="ctrl-btn hover-target" data-category-pill="Vegetables">Vegetables</button>
+            <button type="button" class="ctrl-btn hover-target" data-category-pill="Fruits">Fruits</button>
+            <button type="button" class="ctrl-btn hover-target" data-category-pill="Root Crops">Root Crops</button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.85rem;">
+            <span id="marketplace-count-label" class="lumina-label">SHOWING 10 OF 10 AI-VERIFIED HARVEST LOTS</span>
+            <button type="button" id="reset-filters-btn" class="ctrl-btn hover-target" style="padding:0.42rem 0.85rem;font-size:0.48rem;">
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid (Populated by js/uglyfood-app.js) -->
+      <div id="marketplace-grid" class="uf-market-grid" aria-live="polite"></div>
+    </section>
+
+    <!-- ================================================================
+         SECTION 02: AI PRODUCE SCANNER & COMPUTER VISION GRADER (Farmer View)
+         ================================================================ -->
+    <section id="scanner" class="uf-section" aria-labelledby="scanner-heading">
+      <div class="uf-section-header">
+        <div>
+          <span class="lumina-kicker">02 &middot; MULTISPECTRAL COMPUTER VISION GRADER (FARMER VIEW)</span>
+          <h2 id="scanner-heading" class="uf-section-title">
+            AI Produce <em>Scanner</em> &amp; Instant Listing
+          </h2>
+        </div>
+        <p class="uf-section-note">
+          Click any sample imperfect harvest below—or drop your own crop photo—to simulate optical defect mapping, safety verification, and one-click publishing to the live Marketplace.
+        </p>
+      </div>
+
+      <div class="uf-scanner-layout">
+        <!-- Left Column: Preset Selector, CV Laser Viewport & Drag-and-Drop Uploader -->
+        <div class="uf-scanner-stage-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="lumina-kicker">1. SELECT SAMPLE IMPERFECT CROP OR UPLOAD PHOTO</span>
+            <button type="button" id="trigger-cv-scan-btn" class="ctrl-btn hover-target" style="padding:0.42rem 0.85rem;font-size:0.48rem;">
+              Re-Run Laser Scan
+            </button>
+          </div>
+
+          <!-- 4 One-Click Sample Imperfect Crop Presets -->
+          <div class="uf-preset-strip" role="group" aria-label="Sample Imperfect Crop Presets">
+            <button type="button" class="uf-preset-btn is-selected hover-target" data-scanner-preset="preset-carrots">
+              <img src="./assets/carrots.jpg" alt="Twisted Carrots preset">
+              <span class="uf-preset-name">01 · Twisted Carrots</span>
+            </button>
+            <button type="button" class="uf-preset-btn hover-target" data-scanner-preset="preset-mangoes">
+              <img src="./assets/mangoes.jpg" alt="Spotted Mangoes preset">
+              <span class="uf-preset-name">02 · Spotted Mangoes</span>
+            </button>
+            <button type="button" class="uf-preset-btn hover-target" data-scanner-preset="preset-tomatoes">
+              <img src="./assets/tomatoes.jpg" alt="Oversized Tomatoes preset">
+              <span class="uf-preset-name">03 · Ribbed Tomatoes</span>
+            </button>
+            <button type="button" class="uf-preset-btn hover-target" data-scanner-preset="preset-eggplants">
+              <img src="./assets/eggplants.jpg" alt="Curved Eggplants preset">
+              <span class="uf-preset-name">04 · Curved Eggplants</span>
+            </button>
+          </div>
+
+          <!-- Simulated Computer Vision Viewport with Clear Liquid Glass HUD + Mandatory 35% Dimming -->
+          <div id="cv-viewport" class="uf-cv-viewport is-analyzed" data-cursor-inspect="CV-SCAN">
+            <img id="cv-preview-img" src="./assets/carrots.jpg" alt="Active crop specimen under computer vision inspection">
+            <!-- Animated Laser Line -->
+            <div class="uf-cv-laser" aria-hidden="true"></div>
+            <!-- Bounding Box Overlay Container -->
+            <div id="cv-boxes-layer" class="uf-cv-boxes" aria-hidden="true"></div>
+            <!-- Official 35% Dimming Layer Behind Clear Liquid Glass HUD Over Rich Media -->
+            <div class="lg-media-dimmer" aria-hidden="true"></div>
+            <div class="liquid-glass--clear uf-media-hud-bar">
+              <span id="cv-hud-status" class="uf-media-hud-text">PASSED · 100% SAFE FOR CONSUMPTION</span>
+              <span id="cv-hud-confidence" class="uf-media-hud-text">Grade B · Oddly Shaped (99.4% CONF)</span>
+            </div>
+          </div>
+
+          <!-- Drag-and-Drop / File Upload Zone -->
+          <div id="scanner-upload-zone" class="uf-upload-zone hover-target" role="button" tabindex="0" aria-label="Upload or drag-and-drop custom crop image">
+            <div>
+              <span class="lumina-kicker" style="display:block;">CUSTOM HARVEST PHOTO UPLOAD</span>
+              <span style="font-size:0.82rem;color:var(--ink-secondary);">Drag &amp; drop a crop photo here, or click to browse local image files</span>
+            </div>
+            <span class="ctrl-btn" style="pointer-events:none;">Choose File &nearr;</span>
+            <input type="file" id="scanner-file-input" accept="image/*" style="display:none;">
+          </div>
+        </div>
+
+        <!-- Right Column: Automated Grading Output & One-Click Publish Form -->
+        <div class="uf-scanner-output-card">
+          <div>
+            <span class="lumina-kicker">2. AUTOMATED COMPUTER VISION GRADING &amp; TELEMETRY</span>
+            <h3 class="lumina-heading" style="font-size:1.65rem;margin:0.25rem 0 0.75rem;">
+              Edibility &amp; Fair Pricing Verification
+            </h3>
+            <div id="cv-telemetry-console" class="uf-cv-telemetry" aria-live="polite">
+              [CV-NET v4.2] Spectral reflectance 680nm: 99.4% epidermal continuity. Twin taproot bifurcation detected (cosmetic only). Zero Erwinia soft-rot or fungal spore signature. Status: PASSED.
+            </div>
+          </div>
+
+          <div class="uf-score-grid">
+            <div class="uf-score-cell">
+              <span class="lumina-label">AI VISUAL GRADE</span>
+              <div id="scan-out-grade" class="uf-score-val" style="color:var(--accent-warm);">Grade B</div>
+            </div>
+            <div class="uf-score-cell">
+              <span class="lumina-label">FRESHNESS INDEX</span>
+              <div id="scan-out-freshness" class="uf-score-val" style="color:var(--emerald-trust);">99%</div>
+            </div>
+            <div class="uf-score-cell">
+              <span class="lumina-label">SAFETY STATUS</span>
+              <div id="scan-out-safety" class="uf-score-val" style="color:var(--emerald-trust);">PASSED</div>
+            </div>
+          </div>
+
+          <!-- Pre-Filled One-Click Publish Form -->
+          <form id="scanner-publish-form" style="display:flex;flex-direction:column;gap:0.9rem;border-top:1px solid var(--border-hairline);padding-top:1.1rem;">
+            <span class="lumina-kicker">3. ONE-CLICK PUBLISH TO LIVE MARKETPLACE</span>
+
+            <div class="uf-form-grid-2">
+              <div class="uf-field-group">
+                <label for="publish-crop-title" class="uf-field-label">CROP LOT TITLE</label>
+                <input type="text" id="publish-crop-title" class="uf-input" value="Twisted Highland Carrots" required>
+              </div>
+              <div class="uf-field-group">
+                <label for="publish-crop-category" class="uf-field-label">CATEGORY</label>
+                <select id="publish-crop-category" class="uf-select">
+                  <option value="Root Crops">Root Crops</option>
+                  <option value="Vegetables">Vegetables</option>
+                  <option value="Fruits">Fruits</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="uf-form-grid-2">
+              <div class="uf-field-group">
+                <label for="publish-price-b2c" class="uf-field-label">B2C RETAIL PRICE (₱ / 1 KG)</label>
+                <input type="number" id="publish-price-b2c" class="uf-input" value="66" min="15" max="500" required>
+              </div>
+              <div class="uf-field-group">
+                <label for="publish-price-b2b" class="uf-field-label">B2B BULK PRICE (₱ / 25 KG CRATE)</label>
+                <input type="number" id="publish-price-b2b" class="uf-input" value="1420" min="250" max="10000" required>
+              </div>
+            </div>
+
+            <div class="uf-form-grid-2">
+              <div class="uf-field-group">
+                <label for="publish-crop-weight" class="uf-field-label">AVAILABLE HARVEST WEIGHT (KG)</label>
+                <input type="number" id="publish-crop-weight" class="uf-input" value="180" min="10" max="5000" required>
+              </div>
+              <div class="uf-field-group">
+                <label for="publish-farm-name" class="uf-field-label">FARM COLLECTIVE &amp; REGION</label>
+                <input type="text" id="publish-farm-name" class="uf-input" value="Atok Highland Collective · Benguet (< 50 km Hub)" required>
+              </div>
+            </div>
+
+            <div class="uf-field-group">
+              <label for="publish-defect-note" class="uf-field-label">AI COSMETIC IMPERFECTION NOTE (BUYER TRANSPARENCY)</label>
+              <input type="text" id="publish-defect-note" class="uf-input" value="Intertwined twin taproot curvature (34% axial deviation) — 0% vascular bruising" required>
+            </div>
+
+            <button type="submit" class="lumina-cta hover-target" style="justify-content:center;width:100%;margin-top:0.35rem;">
+              Publish Verified Crop to Live Marketplace &nearr;
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         SECTION 03: FARMER DASHBOARD (Supplier Atelier View) & PARTNER FARMS
+         ================================================================ -->
+    <section id="farmer-dashboard" class="uf-section" aria-labelledby="farmer-heading">
+      <div class="uf-section-header">
+        <div>
+          <span class="lumina-kicker">03 &middot; SUPPLIER ATELIER &amp; SMALLHOLDER LEDGER</span>
+          <h2 id="farmer-heading" class="uf-section-title">
+            Local Farmer <em>Dashboard</em> &amp; Direct Orders
+          </h2>
+        </div>
+        <p class="uf-section-note">
+          Manage active harvest lots, toggle live availability with transient Liquid Glass switches, and monitor disintermediated B2C &amp; B2B purchase orders.
+        </p>
+      </div>
+
+      <!-- Summary KPI Cards -->
+      <div class="uf-farmer-kpis">
+        <div class="uf-kpi-card">
+          <span class="lumina-kicker">TOTAL REVENUE FROM IMPERFECT CROPS</span>
+          <div id="farmer-kpi-revenue" class="uf-kpi-number">₱184,688</div>
+          <span class="lumina-epigraph">89% direct net retention (zero Divisoria broker cut)</span>
+        </div>
+        <div class="uf-kpi-card">
+          <span class="lumina-kicker">TOTAL KILOGRAMS RESCUED</span>
+          <div id="farmer-kpi-kg" class="uf-kpi-number">7,160 kg</div>
+          <span class="lumina-epigraph">Grade A-, B &amp; C harvests monetized this quarter</span>
+        </div>
+        <div class="uf-kpi-card">
+          <span class="lumina-kicker">ACTIVE MARKETPLACE LISTINGS</span>
+          <div id="farmer-kpi-listings" class="uf-kpi-number">10 Active / 10 Total</div>
+          <span class="lumina-epigraph">Synced with live B2C &amp; B2B Marketplace inventory</span>
+        </div>
+      </div>
+
+      <!-- Active Inventory Table + Incoming Direct Orders Table -->
+      <div class="uf-farmer-grid">
+        <div class="uf-table-card">
+          <div class="uf-table-head">
+            <div>
+              <span class="lumina-kicker">LIVE HARVEST INVENTORY</span>
+              <h3 class="lumina-heading" style="font-size:1.35rem;margin:0.15rem 0 0;">Manage Active Crop Lots</h3>
+            </div>
+            <a href="#scanner" class="ctrl-btn hover-target" style="padding:0.42rem 0.85rem;font-size:0.48rem;">+ Scan New Lot</a>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="uf-data-table" aria-label="Manage Active Listings">
+              <thead>
+                <tr>
+                  <th>Harvest Lot &amp; Grade</th>
+                  <th>Stock</th>
+                  <th>B2C / B2B Rate</th>
+                  <th>Live</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="farmer-inventory-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="uf-table-card">
+          <div class="uf-table-head">
+            <div>
+              <span class="lumina-kicker">DISINTERMEDIATED DISPATCH</span>
+              <h3 class="lumina-heading" style="font-size:1.35rem;margin:0.15rem 0 0;">Incoming B2C &amp; B2B Orders</h3>
+            </div>
+            <span class="lumina-label" style="color:var(--emerald-trust);">LIVE FEED</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="uf-data-table" aria-label="Incoming Buyer Orders">
+              <thead>
+                <tr>
+                  <th>Order &amp; Buyer</th>
+                  <th>Harvest Lot &amp; Volume</th>
+                  <th>Payout &amp; Status</th>
+                </tr>
+              </thead>
+              <tbody id="farmer-orders-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lumina Card Archetype 03: Horizontal Volume Index Bands (Partner Smallholder Farms) -->
+      <div style="margin-top:3rem;">
+        <div class="subsection-label" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+          <span class="lumina-kicker">PARTNER SMALLHOLDER COLLECTIVES &middot; LUMINA VOLUME INDEX BANDS</span>
+          <span class="lumina-label">5 REGIONAL FARM HUBS</span>
+        </div>
+
+        <div class="volume-band-list">
+          <article class="volume-band" data-cursor-inspect="BENGUET" onclick="document.getElementById('filter-region').value='Benguet';document.getElementById('filter-region').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+            <div class="volume-band-aura"></div>
+            <div class="volume-band-inner">
+              <div>
+                <span class="lumina-kicker">FARM ARCHIVE 01 &middot; BENGUET (2,100M ELEVATION)</span>
+                <h3 class="volume-band-title">Atok Highland Collective</h3>
+                <p class="volume-band-epigraph">Manong Ernesto &amp; 14 Igorot smallholders rescuing frost-sweetened twin carrots, knotted Granola potatoes, and native ginger.</p>
+              </div>
+              <div class="volume-band-right">
+                <span class="lumina-label">38,400 KG DIVERTED</span>
+                <span class="volume-band-cta">FILTER LOTS &rarr;</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="volume-band" data-cursor-inspect="BUKIDNON" onclick="document.getElementById('filter-region').value='Bukidnon';document.getElementById('filter-region').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+            <div class="volume-band-aura"></div>
+            <div class="volume-band-inner">
+              <div>
+                <span class="lumina-kicker">FARM ARCHIVE 02 &middot; BUKIDNON VOLCANIC FOOTHILLS</span>
+                <h3 class="volume-band-title">Bukidnon Volcanic Terraces</h3>
+                <p class="volume-band-epigraph">Aling Marites &amp; Kitanglad growers cultivating deeply ribbed cat-faced heirloom beefsteak tomatoes.</p>
+              </div>
+              <div class="volume-band-right">
+                <span class="lumina-label">31,200 KG DIVERTED</span>
+                <span class="volume-band-cta">FILTER LOTS &rarr;</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="volume-band" data-cursor-inspect="ZAMBALES" onclick="document.getElementById('filter-region').value='Zambales';document.getElementById('filter-region').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+            <div class="volume-band-aura"></div>
+            <div class="volume-band-inner">
+              <div>
+                <span class="lumina-kicker">FARM ARCHIVE 03 &middot; ZAMBALES COASTAL VALLEY</span>
+                <h3 class="volume-band-title">Zambales Orchard Cooperative</h3>
+                <p class="volume-band-epigraph">Kuya Dante &amp; Palauig Mango Guild harvesting 19.2° Brix sugar-freckled Carabao mangoes at peak tree maturity.</p>
+              </div>
+              <div class="volume-band-right">
+                <span class="lumina-label">27,850 KG DIVERTED</span>
+                <span class="volume-band-cta">FILTER LOTS &rarr;</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="volume-band" data-cursor-inspect="LAGUNA" onclick="document.getElementById('filter-region').value='Laguna';document.getElementById('filter-region').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+            <div class="volume-band-aura"></div>
+            <div class="volume-band-inner">
+              <div>
+                <span class="lumina-kicker">FARM ARCHIVE 04 &middot; LAGUNA LAKEFRONT BASIN</span>
+                <h3 class="volume-band-title">Calauan Lakefront Plots</h3>
+                <p class="volume-band-epigraph">Nanay Rosa &amp; Southern Tagalog permaculture plots supplying crescent-curved talong, warted kalabasa, and Lakatan bananas.</p>
+              </div>
+              <div class="volume-band-right">
+                <span class="lumina-label">24,100 KG DIVERTED</span>
+                <span class="volume-band-cta">FILTER LOTS &rarr;</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         SECTION 04: SUSTAINABILITY & SOCIAL IMPACT DASHBOARD (UN SDGs)
+         Features Lumina Accordion Exhibition Strips & 5 Share Card Archetypes
+         ================================================================ -->
+    <section id="impact-tracker" class="uf-section" aria-labelledby="impact-heading" style="border-bottom:none;">
+      <div class="uf-section-header">
+        <div>
+          <span class="lumina-kicker">04 &middot; SUSTAINABILITY &amp; ETHICAL SUPPLY LEDGER</span>
+          <h2 id="impact-heading" class="uf-section-title">
+            UN SDG <em>Impact</em> &amp; Archival Keepsake
+          </h2>
+        </div>
+        <p class="uf-section-note">
+          Every rescued harvest lot directly advances four United Nations Sustainable Development Goals while eliminating landfill methane emissions.
+        </p>
+      </div>
+
+      <!-- Top Row: Personal Impact Summary + Comparative Economic Retention Chart -->
+      <div class="uf-impact-top-grid">
+        <div class="uf-personal-impact-card">
+          <div>
+            <span class="lumina-kicker">PERSONAL IMPACT LEDGER (ACTIVE DEMO USER)</span>
+            <blockquote id="personal-impact-quote" class="lumina-heading" style="font-size:clamp(1.55rem,2.5vw,2.1rem);margin:0.55rem 0 1rem;">
+              &ldquo;Your direct farm orders have rescued <em>18.5 kg</em> of nutrient-dense produce and saved <em>₱1,140</em> this month.&rdquo;
+            </blockquote>
+          </div>
+
+          <div class="uf-score-grid">
+            <div class="uf-score-cell">
+              <span class="lumina-label">FOOD RESCUED</span>
+              <div id="personal-saved-kg" class="uf-score-val" style="color:var(--emerald-trust);">18.5 kg</div>
+            </div>
+            <div class="uf-score-cell">
+              <span class="lumina-label">PESOS SAVED</span>
+              <div id="personal-saved-php" class="uf-score-val" style="color:var(--accent-warm);">₱1,140</div>
+            </div>
+            <div class="uf-score-cell">
+              <span class="lumina-label">METHANE AVOIDED</span>
+              <div id="personal-saved-co2" class="uf-score-val">46.2 kg CO₂e</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="uf-chart-card">
+          <div>
+            <span class="lumina-kicker">DISINTERMEDIATION ECONOMICS &amp; WASTE REDUCTION</span>
+            <h3 class="lumina-heading" style="font-size:1.5rem;margin:0.25rem 0 0.85rem;">
+              Farmer Revenue Share &amp; Regional Diversion
+            </h3>
+          </div>
+
+          <div class="uf-bar-chart">
+            <div class="uf-bar-row">
+              <span class="lumina-label" style="color:var(--ink-primary);">UglyFood AI Direct</span>
+              <div class="uf-bar-track"><div class="uf-bar-fill" style="width:89%;background:var(--emerald-trust);"></div></div>
+              <strong style="text-align:right;color:var(--emerald-trust);">89% Payout</strong>
+            </div>
+            <div class="uf-bar-row">
+              <span class="lumina-label">Traditional 4-Tier Broker</span>
+              <div class="uf-bar-track"><div class="uf-bar-fill" style="width:32%;background:var(--ink-muted);"></div></div>
+              <span style="text-align:right;color:var(--ink-secondary);">32% Payout</span>
+            </div>
+            <div class="uf-bar-row">
+              <span class="lumina-label">Benguet Root Rescue</span>
+              <div class="uf-bar-track"><div class="uf-bar-fill" style="width:94%;"></div></div>
+              <strong style="text-align:right;">38.4 Tons</strong>
+            </div>
+            <div class="uf-bar-row">
+              <span class="lumina-label">Bukidnon &amp; Zambales</span>
+              <div class="uf-bar-track"><div class="uf-bar-fill" style="width:82%;"></div></div>
+              <strong style="text-align:right;">59.0 Tons</strong>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--ink-secondary);padding-top:0.5rem;border-top:1px solid var(--border-hairline);">
+            <span>Source: UglyFood AI Regional Logistics Audit</span>
+            <span>Zero Cosmetic Rejection Policy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lumina Card Archetype 02: Accordion Exhibition Strips (4 UN SDGs) -->
+      <div style="margin-bottom:2.75rem;">
+        <div class="subsection-label" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+          <span class="lumina-kicker">UNITED NATIONS SUSTAINABLE DEVELOPMENT GOALS &middot; ACCORDION EXHIBITION STRIPS</span>
+          <span class="lumina-label">HOVER OR TAP STRIP TO EXPAND</span>
+        </div>
+
+        <div class="accordion-stage">
+          <article class="accordion-strip" data-cursor-inspect="SDG 01">
+            <div class="accordion-aura"></div>
+            <span class="accordion-index">SDG 01 &middot; NO POVERTY</span>
+            <div class="accordion-body">
+              <h3 class="accordion-title">No Poverty</h3>
+              <p class="accordion-excerpt">
+                Unlocks ₱6.42M+ in new smallholder income by monetizing the 34% of harvests previously discarded at the farm gate without compensation.
+              </p>
+            </div>
+          </article>
+
+          <article class="accordion-strip" data-cursor-inspect="SDG 02">
+            <div class="accordion-aura"></div>
+            <span class="accordion-index">SDG 02 &middot; ZERO HUNGER</span>
+            <div class="accordion-body">
+              <h3 class="accordion-title">Zero Hunger</h3>
+              <p class="accordion-excerpt">
+                Makes fresh, micronutrient-dense highland vegetables and fruits accessible to urban families and community kitchens at 45–52% below supermarket prices.
+              </p>
+            </div>
+          </article>
+
+          <article class="accordion-strip" data-cursor-inspect="SDG 10">
+            <div class="accordion-aura"></div>
+            <span class="accordion-index">SDG 10 &middot; REDUCED INEQUALITIES</span>
+            <div class="accordion-body">
+              <h3 class="accordion-title">Reduced Inequalities</h3>
+              <p class="accordion-excerpt">
+                Replaces predatory four-tier middleman pricing with transparent AI grading and 89% direct farm-to-buyer settlement within 24 hours.
+              </p>
+            </div>
+          </article>
+
+          <article class="accordion-strip" data-cursor-inspect="SDG 12">
+            <div class="accordion-aura"></div>
+            <span class="accordion-index">SDG 12 &middot; RESPONSIBLE CONSUMPTION</span>
+            <div class="accordion-body">
+              <h3 class="accordion-title">Responsible Production</h3>
+              <p class="accordion-excerpt">
+                Diverts 148,920 kg of edible organic matter from landfills, preventing over 372 metric tons of CO₂-equivalent methane emissions.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Lumina Card Archetype 05: 5 Editorial Share Card Archetypes + Card Archetype 04: Colophon Cards -->
+      <div class="uf-share-section">
+        <div id="impact-share-card" class="share-card-frame" data-style="etched">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="lumina-kicker">UGLYFOOD AI &middot; SDG LEDGER</span>
+            <span class="lumina-label">CV-VERIFIED</span>
+          </div>
+          <blockquote id="share-card-quote-text" class="lumina-epigraph" style="font-size:1.35rem;margin:0;">
+            &ldquo;We rescued 18.5 kg of imperfect local harvests—unlocking ₱1,140 in direct farm-to-table value with zero middleman waste.&rdquo;
+          </blockquote>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:0.75rem;border-top:1px solid var(--border-hairline);">
+            <span class="lumina-label">89% FARMER PAYOUT</span>
+            <span class="lumina-kicker">EDITION I</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+          <div>
+            <span class="lumina-kicker">LUMINA SHARE CARD ARCHETYPES &amp; AI GRADING RUBRIC</span>
+            <h3 class="lumina-heading" style="font-size:2rem;margin:0.3rem 0 0.65rem;">
+              Export Your <em>Verified</em> Food-Rescue Keepsake
+            </h3>
+            <p style="font-size:0.94rem;color:var(--ink-secondary);line-height:1.65;margin:0;">
+              Switch between all five canonical <strong>Lumina Design System</strong> share card surfaces below, or inspect our three-tier Computer Vision Grading Rubric where every tier strictly passes 100% food safety checks.
+            </p>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" role="group" aria-label="Share Card Archetype Switcher">
+            <button type="button" class="ctrl-btn is-active hover-target" data-share-style-btn="etched">01 · Etched</button>
+            <button type="button" class="ctrl-btn hover-target" data-share-style-btn="museum">02 · Museum</button>
+            <button type="button" class="ctrl-btn hover-target" data-share-style-btn="noir">03 · Noir</button>
+            <button type="button" class="ctrl-btn hover-target" data-share-style-btn="broadsheet">04 · Broadsheet</button>
+            <button type="button" class="ctrl-btn hover-target" data-share-style-btn="keepsake">05 · Keepsake</button>
+            <button type="button" id="copy-impact-card-btn" class="lumina-cta hover-target" style="padding:0.58rem 1.1rem;font-size:0.54rem;">
+              Copy Impact Citation &nearr;
+            </button>
+          </div>
+
+          <!-- Lumina Card Archetype 04: Colophon Cards for AI Grading Rubric -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;">
+            <div class="colophon-card hover-target" onclick="document.getElementById('filter-grade').value='Grade A-';document.getElementById('filter-grade').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+              <div>
+                <h3>GRADE A- &middot; SLIGHT BLEMISH</h3>
+                <p>98–99% Fresh &middot; Sugar freckles or seam lines &middot; 46% OFF</p>
+              </div>
+              <span class="colophon-arrow">&nearr;</span>
+            </div>
+
+            <div class="colophon-card hover-target" onclick="document.getElementById('filter-grade').value='Grade B';document.getElementById('filter-grade').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+              <div>
+                <h3>GRADE B &middot; ODDLY SHAPED</h3>
+                <p>98–99% Fresh &middot; Twin roots or crescent curves &middot; 48% OFF</p>
+              </div>
+              <span class="colophon-arrow">&nearr;</span>
+            </div>
+
+            <div class="colophon-card hover-target" onclick="document.getElementById('filter-grade').value='Grade C';document.getElementById('filter-grade').dispatchEvent(new Event('change'));document.getElementById('marketplace').scrollIntoView({behavior:'smooth'});">
+              <div>
+                <h3>GRADE C &middot; BULK &amp; PROCESSING</h3>
+                <p>97–99% Fresh &middot; High-brix culinary &amp; sauce lots &middot; 52% OFF</p>
+              </div>
+              <span class="colophon-arrow">&nearr;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+       CONCENTRIC INSET LIQUID GLASS SHEET 01: PRODUCT DETAIL & AI TRUST REPORT
+       outerRadius = 28px, padding = 12px, innerRadius = 16px
+       ==================================================================== -->
+  <div id="trust-report-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="AI Quality Assurance Report">
+    <div class="lg-sheet uf-trust-sheet">
+      <div id="trust-report-content" class="lg-sheet-inner uf-trust-inner"></div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       CONCENTRIC INSET LIQUID GLASS SHEET 02: SLIDE-OVER HARVEST CART & CHECKOUT
+       outerRadius = 28px, padding = 12px, innerRadius = 16px
+       ==================================================================== -->
+  <div id="cart-sheet-backdrop" class="lg-sheet-backdrop uf-cart-backdrop" role="dialog" aria-modal="true" aria-label="Rescued Harvest Cart">
+    <div class="lg-sheet uf-cart-sheet">
+      <div class="lg-sheet-inner uf-cart-inner">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;border-bottom:1px solid var(--border-hairline);">
+            <div>
+              <span class="lumina-kicker">DIRECT FARM DISPATCH</span>
+              <h2 class="lumina-heading" style="font-size:1.65rem;margin:0.15rem 0 0;">Rescued Harvest Basket</h2>
+            </div>
+            <button type="button" id="close-cart-btn" class="lumina-nav-arrow hover-target" aria-label="Close Cart Drawer">&times;</button>
+          </div>
+
+          <div id="cart-items-container" style="margin-top:0.5rem;"></div>
+        </div>
+
+        <div id="cart-summary-footer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       FOOTER
+       ==================================================================== -->
+  <footer style="max-width:1280px;margin:0 auto;padding:2.5rem clamp(1.25rem,4vw,3rem) 6rem;border-top:1px solid var(--border-hairline);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+    <div>
+      <span class="lumina-brand" style="font-size:0.88rem;">UGLYFOOD AI.</span>
+      <p style="font-size:0.8rem;color:var(--ink-secondary);margin:0.35rem 0 0;">
+        Built with the <a href="https://github.com/MiguelTheGreat/lumina-design-system" target="_blank" rel="noopener" style="color:var(--accent-warm);">Lumina Museum Design Language</a> &amp; Apple HIG Liquid Glass Chrome.
+      </p>
+    </div>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <a href="#top" class="ctrl-btn hover-target">Back to Top &uarr;</a>
+      <a href="https://github.com/MiguelTheGreat/uglyfood-web-mobile" target="_blank" rel="noopener" class="ctrl-btn hover-target">GitHub Repository &nearr;</a>
+    </div>
+  </footer>
+
+  <!-- Lumina Motion Engine + UglyFood AI Dataset & Controller -->
+  <script src="./lib/lumina-motion.js"></script>
+  <script src="./js/uglyfood-data.js"></script>
+  <script src="./js/uglyfood-app.js"></script>
+</body>
+</html>

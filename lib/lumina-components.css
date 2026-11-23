@@ -1,0 +1,790 @@
+/* ==========================================================================
+   LUMINA DESIGN SYSTEM — REUSABLE COMPONENTS & CARD DESIGNS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BRAND WORDMARK & NAVIGATION ITEMS
+   -------------------------------------------------------------------------- */
+.lumina-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--ink-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: letter-spacing 0.5s var(--ease-expo), opacity 0.3s ease;
+}
+
+.lumina-brand:hover {
+  letter-spacing: 0.4em;
+}
+
+.lumina-menu-item {
+  font-family: var(--font-display);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: var(--ink-primary);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0.35rem 0;
+  background: none;
+  border: none;
+  transition: color 0.3s ease;
+}
+
+.lumina-menu-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--ink-primary);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.45s var(--ease-expo);
+}
+
+.lumina-menu-item:hover::after,
+.lumina-menu-item.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* --------------------------------------------------------------------------
+   2. BUTTONS & CONTROLS
+   -------------------------------------------------------------------------- */
+
+/* Signature Ink-Fill Pill Action Button */
+.ctrl-btn {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  padding: 0.62rem 1.15rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  z-index: 1;
+  transition:
+    color 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.4s var(--ease-expo),
+    background-color 0.35s ease;
+}
+
+.ctrl-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink-primary);
+  transform: translateY(102%);
+  transition: transform 0.45s var(--ease-expo);
+  z-index: -1;
+}
+
+.ctrl-btn:hover,
+.ctrl-btn.is-active {
+  color: var(--bg-paper);
+  border-color: var(--ink-primary);
+  transform: translateY(-2px);
+}
+
+.ctrl-btn:hover::before,
+.ctrl-btn.is-active::before {
+  transform: translateY(0%);
+}
+
+/* Sharp Editorial Outline CTA */
+.lumina-cta {
+  padding: 0.88rem 1.75rem;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+  border: 1px solid var(--ink-primary);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  z-index: 1;
+  transition: transform 0.45s var(--ease-expo), color 0.35s ease;
+}
+
+.lumina-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink-primary);
+  transform: translateY(102%);
+  transition: transform 0.45s var(--ease-expo);
+  z-index: -1;
+}
+
+.lumina-cta:hover {
+  color: var(--bg-paper);
+  transform: translateY(-3px);
+}
+
+.lumina-cta:hover::before {
+  transform: translateY(0%);
+}
+
+/* Circular Glass Navigation Arrow */
+.lumina-nav-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--ink-primary);
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.35s var(--ease-expo),
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.lumina-nav-arrow:hover {
+  background: var(--ink-primary);
+  color: var(--bg-paper);
+  border-color: var(--ink-primary);
+  transform: scale(1.07);
+}
+
+/* --------------------------------------------------------------------------
+   3. CARD DESIGN 01 — 3D ISOMETRIC ETCHED FOLIO SLAB
+   -------------------------------------------------------------------------- */
+.folio-stage {
+  position: relative;
+  width: min(310px, 78vw);
+  height: min(310px, 78vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1150px;
+  cursor: pointer;
+}
+
+.folio-shadow {
+  position: absolute;
+  bottom: -4%;
+  left: 14%;
+  right: 14%;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(22, 20, 17, 0.26) 0%, rgba(22, 20, 17, 0.08) 55%, transparent 78%);
+  filter: blur(10px);
+  transform: skewX(18deg);
+  transition: transform 0.75s var(--ease-expo), opacity 0.65s ease;
+  pointer-events: none;
+}
+
+.folio-stage:hover .folio-shadow {
+  transform: skewX(12deg) scale(1.06);
+  opacity: 0.72;
+}
+
+.folio-book {
+  position: relative;
+  width: 86%;
+  height: 86%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform: rotateY(26deg) rotateX(4deg);
+  transition: transform 0.85s var(--ease-expo);
+  will-change: transform;
+}
+
+.folio-stage:hover .folio-book {
+  transform: rotateY(10deg) rotateX(2deg) translateY(-6px) translateZ(14px);
+}
+
+.folio-front {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(6px);
+  border-radius: var(--radius-slab);
+  background:
+    repeating-linear-gradient(0deg, rgba(26, 25, 23, 0.015) 0px, rgba(26, 25, 23, 0.015) 1px, transparent 1px, transparent 4px),
+    linear-gradient(142deg, #fbf9f3 0%, #f2ecdf 56%, #e7dfd0 100%);
+  border: 1px solid rgba(166, 124, 82, 0.38);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.78),
+    var(--shadow-slab);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backface-visibility: hidden;
+}
+
+[data-theme="dark"] .folio-front {
+  background:
+    repeating-linear-gradient(0deg, rgba(239, 234, 224, 0.025) 0px, rgba(239, 234, 224, 0.025) 1px, transparent 1px, transparent 4px),
+    linear-gradient(142deg, #211f1c 0%, #191714 58%, #131210 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(239, 234, 224, 0.08),
+    var(--shadow-slab);
+}
+
+.folio-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-slab);
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.42) 0%, transparent 44%, rgba(26, 25, 23, 0.08) 100%);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .folio-front::after {
+  background: linear-gradient(118deg, rgba(255, 255, 255, 0.09) 0%, transparent 44%, rgba(0, 0, 0, 0.22) 100%);
+}
+
+.folio-plate {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--border-strong);
+  box-shadow:
+    inset 0 0 0 3px var(--bg-paper-focus),
+    inset 0 0 0 4px rgba(166, 124, 82, 0.5);
+  padding: 1rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.folio-top-meta {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 0.44rem;
+  letter-spacing: 0.22em;
+  color: var(--accent-warm);
+  text-transform: uppercase;
+}
+
+.folio-cut-mark {
+  width: 1px;
+  height: 18px;
+  background: linear-gradient(180deg, transparent, var(--accent-warm), transparent);
+  margin: 0 auto 0.35rem;
+}
+
+.folio-cover-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.folio-cover-rule {
+  width: 38px;
+  height: 1px;
+  background: rgba(166, 124, 82, 0.65);
+  margin: 0.45rem auto;
+}
+
+.folio-cover-epigraph {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+.folio-bottom-meta {
+  font-family: var(--font-display);
+  font-size: 0.42rem;
+  letter-spacing: 0.24em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.folio-edge-right {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  right: 0;
+  width: 12px;
+  transform-origin: right center;
+  transform: translateZ(6px) rotateY(-90deg);
+  background: linear-gradient(180deg, var(--accent-warm-light) 0%, var(--accent-warm) 50%, var(--accent-warm-dark) 100%);
+}
+
+.folio-edge-bottom {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 0;
+  height: 12px;
+  transform-origin: bottom center;
+  transform: translateZ(6px) rotateX(90deg);
+  background: linear-gradient(90deg, var(--accent-warm-dark) 0%, var(--accent-warm) 50%, var(--accent-warm-light) 100%);
+}
+
+.slab-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--accent-warm-light) 0%, var(--accent-warm) 58%, var(--accent-warm-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   4. CARD DESIGN 02 — ACCORDION EXHIBITION STRIPS
+   -------------------------------------------------------------------------- */
+.accordion-stage {
+  display: flex;
+  width: 100%;
+  height: 360px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper);
+  overflow: hidden;
+  border-radius: var(--radius-sharp);
+}
+
+.accordion-strip {
+  position: relative;
+  flex: 1;
+  min-width: 54px;
+  height: 100%;
+  border-right: 1px solid var(--border-hairline);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 1.25rem;
+  transition:
+    flex 0.95s var(--ease-accordion),
+    background-color 0.6s ease;
+}
+
+.accordion-strip:last-child {
+  border-right: none;
+}
+
+.accordion-stage:hover .accordion-strip {
+  flex: 0.72;
+}
+
+.accordion-stage .accordion-strip:hover {
+  flex: 2.6;
+  background-color: var(--bg-paper-focus);
+}
+
+.accordion-aura {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(166, 124, 82, 0.14) 0%, transparent 65%);
+  transition: opacity 0.5s ease;
+}
+
+.accordion-strip:hover .accordion-aura {
+  opacity: 1;
+}
+
+.accordion-index {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: 0.56rem;
+  letter-spacing: 0.24em;
+  color: var(--accent-warm);
+}
+
+.accordion-body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.accordion-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 500;
+  color: var(--ink-primary);
+  margin: 0;
+  white-space: nowrap;
+  transition: transform 0.6s var(--ease-expo);
+}
+
+.accordion-strip:hover .accordion-title {
+  transform: translateX(6px);
+}
+
+.accordion-excerpt {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.96rem;
+  color: var(--ink-secondary);
+  margin: 0;
+  opacity: 0;
+  max-width: 280px;
+  transform: translateY(10px);
+  transition: opacity 0.45s ease 0.12s, transform 0.6s var(--ease-expo) 0.12s;
+}
+
+.accordion-strip:hover .accordion-excerpt {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   5. CARD DESIGN 03 — HORIZONTAL VOLUME INDEX BAND
+   -------------------------------------------------------------------------- */
+.volume-band-list {
+  border-top: 1px solid var(--border-hairline);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.volume-band {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--border-hairline);
+  padding: 1.85rem 2rem;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 0.55s ease;
+}
+
+.volume-band:last-child {
+  border-bottom: none;
+}
+
+.volume-band:hover {
+  background-color: var(--bg-paper-focus);
+}
+
+.volume-band-aura {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 253, 248, 0.92) 0%, rgba(245, 242, 233, 0.12) 60%, transparent 100%);
+  transition: opacity 0.5s ease;
+}
+
+[data-theme="dark"] .volume-band-aura {
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(52, 47, 40, 0.65) 0%, rgba(24, 22, 19, 0.12) 60%, transparent 100%);
+}
+
+.volume-band:hover .volume-band-aura {
+  opacity: 1;
+}
+
+.volume-band-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.volume-band-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  line-height: 1.1;
+  color: var(--ink-primary);
+  margin: 0.3rem 0 0;
+  transition: transform 0.65s var(--ease-expo);
+}
+
+.volume-band:hover .volume-band-title {
+  transform: translateX(8px);
+}
+
+.volume-band-epigraph {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-secondary);
+  margin: 0.25rem 0 0;
+  opacity: 0.78;
+  transition: opacity 0.45s ease, transform 0.65s var(--ease-expo);
+}
+
+.volume-band:hover .volume-band-epigraph {
+  opacity: 1;
+  transform: translateX(8px);
+}
+
+.volume-band-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.volume-band-cta {
+  font-family: var(--font-display);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+  opacity: 0.62;
+  transition: opacity 0.4s ease, transform 0.55s var(--ease-expo), color 0.35s ease;
+}
+
+.volume-band:hover .volume-band-cta {
+  opacity: 1;
+  color: var(--accent-warm);
+  transform: translateX(6px);
+}
+
+/* --------------------------------------------------------------------------
+   6. CARD DESIGN 04 — GLASSMORPHIC COLOPHON / ACTION CARD
+   -------------------------------------------------------------------------- */
+.colophon-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  background: var(--surface-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hairline);
+  padding: 1.2rem 1.6rem;
+  width: 100%;
+  border-radius: var(--radius-sharp);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform 0.65s var(--ease-expo),
+    background-color 0.35s ease,
+    box-shadow 0.4s ease,
+    border-color 0.35s ease;
+}
+
+.colophon-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ink-primary);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.45s var(--ease-expo);
+}
+
+.colophon-card:hover {
+  background: var(--surface-card-hover);
+  border-color: var(--border-strong);
+  transform: translateX(-8px) scale(1.01);
+  box-shadow: var(--shadow-elevated);
+}
+
+.colophon-card:hover::before {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+
+.colophon-card h3 {
+  font-family: var(--font-display);
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin: 0 0 0.3rem;
+}
+
+.colophon-card p {
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.colophon-arrow {
+  font-size: 1.1rem;
+  color: var(--ink-secondary);
+  transition: transform 0.45s var(--ease-expo), color 0.3s ease;
+}
+
+.colophon-card:hover .colophon-arrow {
+  transform: translate(5px, -3px);
+  color: var(--ink-primary);
+}
+
+/* --------------------------------------------------------------------------
+   7. CARD DESIGN 05 — 5 EDITORIAL SHARE CARD ARCHETYPES
+   -------------------------------------------------------------------------- */
+.share-card-frame {
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 4 / 5;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  border-radius: var(--radius-sharp);
+  transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+  box-shadow: var(--shadow-elevated);
+}
+
+.share-card-frame[data-style="etched"] {
+  background: #f3efe5;
+  color: #191816;
+  border: 1px solid rgba(26, 25, 23, 0.22);
+  box-shadow: inset 0 0 0 12px #f3efe5, inset 0 0 0 13px rgba(166, 124, 82, 0.45), var(--shadow-elevated);
+}
+
+.share-card-frame[data-style="museum"] {
+  background: #f5f2e9;
+  color: #1a1917;
+  border: 1px solid rgba(26, 25, 23, 0.14);
+}
+
+.share-card-frame[data-style="noir"] {
+  background: #151412;
+  color: #f5f2e9;
+  border: 1px solid rgba(245, 242, 233, 0.16);
+}
+
+.share-card-frame[data-style="broadsheet"] {
+  background: #faf8f2;
+  color: #181715;
+  border: 1px solid rgba(26, 25, 23, 0.18);
+  border-top: 3px solid #181715;
+}
+
+.share-card-frame[data-style="keepsake"] {
+  background: #fcfbf8;
+  color: #1a1917;
+  border: 1px solid rgba(26, 25, 23, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(166, 124, 82, 0.28), var(--shadow-elevated);
+}
+
+/* --------------------------------------------------------------------------
+   8. FLOATING PILL TOAST & GLASSMORPHIC MODAL
+   -------------------------------------------------------------------------- */
+.lumina-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: var(--z-toast);
+  background: rgba(22, 21, 19, 0.92);
+  color: #f5f2e9;
+  border: 1px solid rgba(245, 242, 233, 0.16);
+  backdrop-filter: blur(12px);
+  padding: 0.68rem 1.35rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.45s var(--ease-expo);
+}
+
+.lumina-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.lumina-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: rgba(19, 18, 16, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-expo);
+}
+
+.lumina-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lumina-modal {
+  width: 100%;
+  max-width: 560px;
+  background: var(--bg-paper-focus);
+  color: var(--ink-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sharp);
+  padding: 2rem;
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.5s var(--ease-expo);
+}
+
+.lumina-modal-backdrop.is-open .lumina-modal {
+  transform: translateY(0) scale(1);
+}

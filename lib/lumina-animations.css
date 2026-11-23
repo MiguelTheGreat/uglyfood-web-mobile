@@ -1,0 +1,304 @@
+/* ==========================================================================
+   LUMINA DESIGN SYSTEM — SIGNATURE ANIMATIONS & MOTION PRIMITIVES
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOP SCROLL PROGRESS HAIRLINE
+   -------------------------------------------------------------------------- */
+.lumina-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+  background: linear-gradient(90deg, var(--ink-primary), var(--accent-warm));
+  z-index: var(--z-progress);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. 4-PANEL SPLIT-CURTAIN INTRO & PAGE TRANSITION
+   -------------------------------------------------------------------------- */
+.lumina-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-curtain);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: all;
+  overflow: hidden;
+}
+
+.lumina-curtain.curtain-hidden {
+  display: none !important;
+}
+
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25.2%;
+  background-color: var(--surface-curtain);
+  transform: scaleY(1);
+  transform-origin: top center;
+  transition: transform 0.72s var(--ease-expo);
+  will-change: transform;
+}
+
+.curtain-panel:nth-child(1) { left: 0%;  transition-delay: 0.02s; }
+.curtain-panel:nth-child(2) { left: 25%; transition-delay: 0.07s; }
+.curtain-panel:nth-child(3) { left: 50%; transition-delay: 0.12s; }
+.curtain-panel:nth-child(4) { left: 75%; transition-delay: 0.17s; }
+
+.lumina-curtain.curtain-open {
+  pointer-events: none;
+}
+
+.lumina-curtain.curtain-open .curtain-panel {
+  transform: scaleY(0);
+  transform-origin: top center;
+}
+
+.lumina-curtain.curtain-closing {
+  pointer-events: all;
+}
+
+.lumina-curtain.curtain-closing .curtain-panel {
+  transform: scaleY(1);
+  transform-origin: bottom center;
+}
+
+.curtain-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 1.5rem;
+  opacity: 1;
+  transition: opacity 0.3s var(--ease-quart), transform 0.45s var(--ease-expo);
+}
+
+.lumina-curtain.curtain-open .curtain-content {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px) scale(0.96);
+}
+
+/* --------------------------------------------------------------------------
+   3. MASKED TYPOGRAPHY REVEAL (revealUp + expandRule + fillProgress)
+   -------------------------------------------------------------------------- */
+.reveal-mask {
+  overflow: hidden;
+  padding: 0.18rem 0;
+}
+
+.reveal-up {
+  transform: translateY(115%);
+  animation: luminaRevealUp 0.75s var(--ease-expo) var(--reveal-delay, 0.08s) forwards;
+}
+
+.reveal-rule {
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+  margin: 1rem auto;
+  animation: luminaExpandRule 0.6s var(--ease-expo) var(--rule-delay, 0.2s) forwards;
+}
+
+.reveal-progress-track {
+  width: 140px;
+  height: 1px;
+  background: rgba(245, 242, 233, 0.16);
+  margin: 1.4rem auto 0;
+  overflow: hidden;
+}
+
+.reveal-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: #f5f2e9;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: luminaFillProgress 0.55s var(--ease-expo) 0.1s forwards;
+}
+
+@keyframes luminaRevealUp {
+  from { transform: translateY(115%); }
+  to   { transform: translateY(0%); }
+}
+
+@keyframes luminaExpandRule {
+  from { width: 0; }
+  to   { width: 120px; }
+}
+
+@keyframes luminaFillProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* --------------------------------------------------------------------------
+   4. DUAL-RING MAGNETIC CUSTOM CURSOR & CLICK RIPPLE
+   -------------------------------------------------------------------------- */
+#cursor-dot,
+#cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  will-change: transform, width, height, opacity;
+}
+
+#cursor-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--ink-primary);
+  transition: transform 0.2s var(--ease-expo), opacity 0.3s ease;
+}
+
+#cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(26, 25, 23, 0.48);
+  background: rgba(245, 242, 233, 0.08);
+  backdrop-filter: blur(1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.44rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bg-paper);
+  transition:
+    width 0.38s var(--ease-expo),
+    height 0.38s var(--ease-expo),
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+[data-theme="dark"] #cursor-ring {
+  border-color: rgba(239, 234, 224, 0.5);
+  background: rgba(20, 19, 17, 0.14);
+}
+
+body.cursor-hover #cursor-ring {
+  width: 54px;
+  height: 54px;
+  border-color: var(--ink-primary);
+  background: rgba(26, 25, 23, 0.06);
+}
+
+body.cursor-hover #cursor-dot {
+  opacity: 0;
+}
+
+body.cursor-painting #cursor-ring {
+  width: 50px;
+  height: 50px;
+  border-color: var(--accent-warm);
+  background: rgba(166, 124, 82, 0.12);
+}
+
+body.cursor-inspect #cursor-ring {
+  width: 78px;
+  height: 78px;
+  background: rgba(26, 25, 23, 0.9);
+  border-color: var(--ink-primary);
+  color: #f5f2e9;
+}
+
+[data-theme="dark"] body.cursor-inspect #cursor-ring {
+  background: rgba(239, 234, 224, 0.92);
+  color: #131210;
+  border-color: #efeae0;
+}
+
+body.cursor-inspect #cursor-dot {
+  opacity: 0;
+}
+
+body.modal-open #cursor-ring,
+body.modal-open #cursor-dot,
+body.cursor-hidden #cursor-ring,
+body.cursor-hidden #cursor-dot {
+  opacity: 0;
+}
+
+.cursor-ripple {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(26, 25, 23, 0.42);
+  pointer-events: none;
+  z-index: var(--z-ripple);
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: luminaRippleExpand 0.7s var(--ease-expo) forwards;
+}
+
+[data-theme="dark"] .cursor-ripple {
+  border-color: rgba(239, 234, 224, 0.42);
+}
+
+@keyframes luminaRippleExpand {
+  0%   { opacity: 0.65; transform: translate(-50%, -50%) scale(0.4); }
+  100% { opacity: 0;    transform: translate(-50%, -50%) scale(3.4); }
+}
+
+@media (hover: none) {
+  #cursor-ring,
+  #cursor-dot {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. 90-DEGREE ROTATING & SPREADING DIVIDER LINES
+   -------------------------------------------------------------------------- */
+.grid-rot-stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.grid-rot-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 1px;
+  margin-left: -70%;
+  margin-top: -0.5px;
+  background: var(--border-strong);
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: transform 0.65s var(--ease-accordion), opacity 0.36s ease;
+}
+
+/* --------------------------------------------------------------------------
+   6. STAGGERED BLUR-SLIDE ENTRANCE
+   -------------------------------------------------------------------------- */
+.blur-slide-item {
+  opacity: 0;
+  transform: translateX(64px) scale(0.96);
+  filter: blur(6px);
+  transition:
+    transform 0.75s var(--ease-expo),
+    opacity 0.65s var(--ease-expo),
+    filter 0.65s var(--ease-expo);
+}
+
+.blur-slide-item.is-visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  filter: blur(0px);
+}

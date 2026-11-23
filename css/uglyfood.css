@@ -1,0 +1,1175 @@
+/* ==========================================================================
+   UGLYFOOD AI — ARCHIVAL HARVEST MARKETPLACE & MOBILE EXPERIENCE
+   Built on Lumina Museum Design System + Apple HIG Liquid Glass Chrome
+   ========================================================================== */
+
+:root {
+  --emerald-trust: #2d6a4f;
+  --emerald-trust-bg: rgba(45, 106, 79, 0.11);
+  --emerald-trust-border: rgba(45, 106, 79, 0.34);
+  --amber-grade: #9e6b34;
+  --amber-grade-bg: rgba(166, 124, 82, 0.12);
+  --crimson-alert: #9e3b33;
+}
+
+[data-theme="dark"] {
+  --emerald-trust: #69b58e;
+  --emerald-trust-bg: rgba(105, 181, 142, 0.14);
+  --emerald-trust-border: rgba(105, 181, 142, 0.36);
+  --amber-grade: #d7b184;
+  --amber-grade-bg: rgba(201, 158, 110, 0.14);
+  --crimson-alert: #e07a72;
+}
+
+/* --------------------------------------------------------------------------
+   1. FLOATING LIQUID GLASS HEADER CHROME (Detached Pill Architecture)
+   -------------------------------------------------------------------------- */
+.uf-floating-header {
+  position: fixed;
+  top: 1rem;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.uf-floating-header > * {
+  pointer-events: auto;
+}
+
+/* Group 1: Brand + Primary Text Navigation Pill (Never mixed with icon-only buttons) */
+.uf-nav-capsule {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 1.6vw, 1.55rem);
+  padding: 0.58rem 1.25rem;
+}
+
+.uf-brand-tag {
+  font-family: var(--font-display);
+  font-size: 0.44rem;
+  letter-spacing: 0.22em;
+  padding: 0.22rem 0.48rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sharp);
+  color: var(--accent-warm);
+}
+
+.uf-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.4vw, 1.35rem);
+}
+
+/* Group 2: Persistent Demo Role Switcher Capsule (B2C / B2B / Farmer) */
+.uf-role-capsule {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.35rem;
+}
+
+.uf-role-label {
+  font-family: var(--font-display);
+  font-size: 0.44rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  padding-left: 0.65rem;
+  padding-right: 0.25rem;
+}
+
+/* Group 3: Separated Icon-Only Utility Pills (HIG Rule: Icon buttons in separate glass group) */
+.uf-utility-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.uf-icon-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem;
+}
+
+.uf-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ink-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.28s var(--lg-spring), color 0.25s ease, transform 0.28s var(--lg-spring);
+}
+
+.uf-icon-btn:hover,
+.uf-icon-btn.is-active {
+  background: var(--ink-primary);
+  color: var(--bg-paper);
+  transform: scale(1.06);
+}
+
+.uf-icon-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.75;
+}
+
+.uf-cart-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent-warm);
+  color: #fcfaf4;
+  font-family: var(--font-display);
+  font-size: 0.46rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--bg-paper);
+}
+
+/* --------------------------------------------------------------------------
+   2. PAGE SHELL & MOBILE SIMULATOR FRAME MODE
+   -------------------------------------------------------------------------- */
+.uf-page-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3rem) 7rem;
+  transition: max-width 0.55s var(--ease-expo), padding 0.55s var(--ease-expo);
+}
+
+/* Optional Mobile Simulator Mode for Desktop Reviewers */
+body.is-mobile-frame-mode {
+  background: var(--bg-paper-deep);
+}
+
+body.is-mobile-frame-mode .uf-page-shell {
+  max-width: 430px;
+  margin: 5.5rem auto 3rem;
+  padding: 0 1.15rem 6.5rem;
+  background: var(--bg-paper);
+  border: 8px solid var(--ink-primary);
+  border-radius: 44px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+  position: relative;
+}
+
+body.is-mobile-frame-mode .lg-mobile-dock {
+  display: flex !important;
+}
+
+body.is-mobile-frame-mode .uf-hero-grid,
+body.is-mobile-frame-mode .uf-market-grid,
+body.is-mobile-frame-mode .uf-scanner-layout,
+body.is-mobile-frame-mode .uf-farmer-kpis,
+body.is-mobile-frame-mode .uf-farmer-grid,
+body.is-mobile-frame-mode .uf-impact-top-grid,
+body.is-mobile-frame-mode .uf-share-section {
+  grid-template-columns: 1fr !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. HERO SECTION & LIVE IMPACT TICKER
+   -------------------------------------------------------------------------- */
+.uf-hero {
+  padding: clamp(7.25rem, 14vh, 9.75rem) 0 clamp(3.5rem, 7vh, 5rem);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.uf-hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(2rem, 4.5vw, 4rem);
+  align-items: center;
+}
+
+.uf-role-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  margin-bottom: 1rem;
+}
+
+.uf-role-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--emerald-trust);
+}
+
+.uf-hero-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5.4vw, 4.5rem);
+  line-height: 1.03;
+  letter-spacing: -0.015em;
+  margin: 0.45rem 0 1.25rem;
+}
+
+.uf-hero-title em {
+  font-style: italic;
+  color: var(--accent-warm);
+}
+
+.uf-hero-lead {
+  font-size: 1.02rem;
+  line-height: 1.68;
+  color: var(--ink-secondary);
+  max-width: 580px;
+  margin: 0 0 1.85rem;
+}
+
+.uf-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Hero Specimen Visual Showcase (Folio Slab + Media Specimen Frame) */
+.uf-hero-showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.35rem;
+  position: relative;
+}
+
+.uf-hero-specimen-card {
+  width: 100%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 0.85rem;
+  box-shadow: var(--shadow-elevated);
+}
+
+.uf-specimen-media-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--radius-sharp);
+}
+
+.uf-specimen-media-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.85s var(--ease-expo);
+}
+
+.uf-hero-specimen-card:hover .uf-specimen-media-wrap img {
+  transform: scale(1.04);
+}
+
+/* Clear Liquid Glass overlay over Hero Bright Media with mandatory 35% Dimming */
+.uf-media-hud-bar {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+}
+
+.uf-media-hud-text {
+  font-family: var(--font-display);
+  font-size: 0.48rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fcfaf4;
+}
+
+/* Live Impact Ticker Strip */
+.uf-impact-ticker {
+  margin-top: 2.75rem;
+  border-top: 1px solid var(--border-hairline);
+  border-bottom: 1px solid var(--border-hairline);
+  background: var(--bg-paper-focus);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.uf-ticker-cell {
+  padding: 1.35rem 1.5rem;
+  border-right: 1px solid var(--border-hairline);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.uf-ticker-cell:last-child {
+  border-right: none;
+}
+
+.uf-ticker-value {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 2.8vw, 2.45rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.uf-ticker-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   4. SECTION HEADERS & TOOLBARS
+   -------------------------------------------------------------------------- */
+.uf-section {
+  padding: clamp(3.75rem, 7.5vh, 5.5rem) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.uf-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.25rem;
+}
+
+.uf-section-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  line-height: 1.06;
+  margin: 0.4rem 0 0;
+}
+
+.uf-section-title em {
+  font-style: italic;
+  color: var(--ink-secondary);
+}
+
+.uf-section-note {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-secondary);
+  max-width: 440px;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. MARKETPLACE (B2C & B2B Buyer View) — Opaque Lumina Content Layer
+   -------------------------------------------------------------------------- */
+.uf-market-controls {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.uf-filter-top-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+.uf-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.uf-field-label {
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+.uf-input,
+.uf-select {
+  width: 100%;
+  padding: 0.68rem 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--ink-primary);
+  background: var(--bg-paper);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sharp);
+  outline: none;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.uf-input:focus,
+.uf-select:focus {
+  border-color: var(--accent-warm);
+  background: var(--bg-paper-focus);
+}
+
+.uf-filter-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid var(--border-hairline);
+}
+
+.uf-category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+/* Product Grid — Opaque Museum Paper / Gallery Noir Cards (Never Liquid Glass!) */
+.uf-market-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.uf-product-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform 0.55s var(--ease-expo),
+    border-color 0.35s ease,
+    box-shadow 0.45s ease;
+}
+
+.uf-product-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-warm);
+  box-shadow: var(--shadow-elevated);
+}
+
+.uf-product-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-hairline);
+  background: var(--bg-paper-deep);
+  cursor: pointer;
+}
+
+.uf-product-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.75s var(--ease-expo);
+}
+
+.uf-product-card:hover .uf-product-media img {
+  transform: scale(1.05);
+}
+
+.uf-badge-row-top {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.4rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.uf-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.62rem;
+  background: var(--bg-paper-focus);
+  border: 1px solid var(--emerald-trust-border);
+  color: var(--emerald-trust);
+  border-radius: var(--radius-sharp);
+  font-family: var(--font-display);
+  font-size: 0.46rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.uf-discount-tag {
+  padding: 0.32rem 0.58rem;
+  background: var(--ink-primary);
+  color: var(--bg-paper);
+  border-radius: var(--radius-sharp);
+  font-family: var(--font-display);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.uf-new-scan-ribbon {
+  position: absolute;
+  bottom: 0.65rem;
+  left: 0.75rem;
+  z-index: 2;
+  padding: 0.25rem 0.55rem;
+  background: var(--accent-warm);
+  color: #fcfaf4;
+  font-family: var(--font-display);
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  border-radius: var(--radius-sharp);
+}
+
+.uf-product-body {
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.uf-product-meta-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.uf-grade-pill {
+  font-family: var(--font-display);
+  font-size: 0.46rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 0.24rem 0.52rem;
+  background: var(--amber-grade-bg);
+  color: var(--amber-grade);
+  border: 1px solid rgba(166, 124, 82, 0.3);
+  border-radius: var(--radius-sharp);
+}
+
+.uf-product-title {
+  font-family: var(--font-serif);
+  font-size: 1.48rem;
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--ink-primary);
+}
+
+.uf-product-farm {
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.uf-product-defect-note {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--ink-secondary);
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-paper);
+  border-left: 2px solid var(--accent-warm);
+  margin: 0;
+}
+
+.uf-product-pricing-box {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-hairline);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.uf-price-primary {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.uf-price-unit {
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  color: var(--ink-secondary);
+}
+
+.uf-price-strike {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  text-decoration: line-through;
+  margin-left: 0.45rem;
+}
+
+.uf-product-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 0.55rem;
+  padding: 0 1.35rem 1.35rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. AI PRODUCE SCANNER & COMPUTER VISION GRADER (Farmer View)
+   -------------------------------------------------------------------------- */
+.uf-scanner-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.uf-scanner-stage-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.uf-preset-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+
+.uf-preset-btn {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper);
+  border-radius: var(--radius-sharp);
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: border-color 0.3s ease, transform 0.35s var(--ease-expo), background-color 0.3s ease;
+}
+
+.uf-preset-btn:hover,
+.uf-preset-btn.is-selected {
+  border-color: var(--accent-warm);
+  background: var(--bg-paper-focus);
+  transform: translateY(-2px);
+}
+
+.uf-preset-btn img {
+  width: 100%;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.uf-preset-name {
+  font-family: var(--font-display);
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+  line-height: 1.3;
+}
+
+/* Computer Vision Viewport with Clear Liquid Glass + 35% Dimmer */
+.uf-cv-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sharp);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background: #131210;
+}
+
+.uf-cv-viewport img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Scanning Laser Line */
+.uf-cv-laser {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #69b58e 20%, #fcfaf4 50%, #69b58e 80%, transparent 100%);
+  box-shadow: 0 0 18px 4px rgba(105, 181, 142, 0.75);
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.uf-cv-viewport.is-scanning .uf-cv-laser {
+  opacity: 1;
+  animation: ufLaserSweep 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes ufLaserSweep {
+  0%   { top: 4%; }
+  50%  { top: 92%; }
+  100% { top: 4%; }
+}
+
+/* Computer Vision Bounding Boxes */
+.uf-cv-boxes {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.uf-cv-box {
+  position: absolute;
+  border: 1.5px dashed rgba(252, 250, 244, 0.88);
+  background: rgba(166, 124, 82, 0.16);
+  border-radius: 3px;
+  padding: 0.25rem 0.45rem;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.45s var(--ease-expo), transform 0.45s var(--ease-expo);
+}
+
+.uf-cv-viewport.is-analyzed .uf-cv-box {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.uf-cv-box--safe {
+  border-color: #69b58e;
+  border-style: solid;
+  background: rgba(45, 106, 79, 0.22);
+}
+
+.uf-cv-box-tag {
+  display: inline-block;
+  background: rgba(19, 18, 16, 0.86);
+  color: #fcfaf4;
+  font-family: var(--font-display);
+  font-size: 0.42rem;
+  letter-spacing: 0.14em;
+  padding: 0.2rem 0.4rem;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* Upload Dropzone Bar */
+.uf-upload-zone {
+  border: 1px dashed var(--border-strong);
+  background: var(--bg-paper);
+  border-radius: var(--radius-sharp);
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.uf-upload-zone:hover {
+  border-color: var(--accent-warm);
+  background: var(--bg-paper-focus);
+}
+
+/* Automated Grading Output & One-Click Publish Panel */
+.uf-scanner-output-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.uf-cv-telemetry {
+  background: #161513;
+  color: #e7e0d2;
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-sharp);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.74rem;
+  line-height: 1.55;
+  border-left: 3px solid var(--accent-warm);
+}
+
+.uf-score-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.uf-score-cell {
+  border: 1px solid var(--border-hairline);
+  background: var(--bg-paper);
+  padding: 0.75rem;
+  border-radius: var(--radius-sharp);
+  text-align: center;
+}
+
+.uf-score-val {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.uf-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. FARMER DASHBOARD (Supplier Atelier View)
+   -------------------------------------------------------------------------- */
+.uf-farmer-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.25rem;
+}
+
+.uf-kpi-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 1.45rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.uf-kpi-number {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.05;
+  color: var(--ink-primary);
+}
+
+.uf-farmer-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.uf-table-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  overflow: hidden;
+}
+
+.uf-table-head {
+  padding: 1.15rem 1.4rem;
+  border-bottom: 1px solid var(--border-hairline);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uf-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.uf-data-table th {
+  text-align: left;
+  padding: 0.75rem 1.1rem;
+  font-family: var(--font-display);
+  font-size: 0.46rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  border-bottom: 1px solid var(--border-hairline);
+  background: var(--bg-paper);
+}
+
+.uf-data-table td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border-hairline);
+  vertical-align: middle;
+}
+
+.uf-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. SUSTAINABILITY & SOCIAL IMPACT DASHBOARD (UN SDGs & Share Cards)
+   -------------------------------------------------------------------------- */
+.uf-impact-top-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  align-items: stretch;
+}
+
+.uf-personal-impact-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 1.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.uf-chart-card {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-paper-focus);
+  border-radius: var(--radius-sharp);
+  padding: 1.65rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.uf-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.uf-bar-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 68px;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.82rem;
+}
+
+.uf-bar-track {
+  height: 10px;
+  background: var(--bg-paper-deep);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.uf-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ink-primary), var(--accent-warm));
+  border-radius: 999px;
+  transition: width 0.85s var(--ease-expo);
+}
+
+.uf-share-section {
+  margin-top: 2.75rem;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   9. CONCENTRIC INSET MODAL (AI TRUST REPORT) & SLIDE-OVER CART SHEET
+   -------------------------------------------------------------------------- */
+.uf-modal-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.uf-trust-sheet {
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(28px) scale(0.96);
+}
+
+.lg-sheet-backdrop.is-open .uf-trust-sheet {
+  transform: translateY(0) scale(1);
+}
+
+.uf-trust-inner {
+  padding: 1.75rem;
+}
+
+.uf-trust-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 1.65rem;
+}
+
+/* Slide-Over Concentric Cart Drawer */
+.uf-cart-backdrop {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.uf-cart-sheet {
+  width: 100%;
+  max-width: 460px;
+  height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(108%);
+}
+
+.lg-sheet-backdrop.is-open .uf-cart-sheet {
+  transform: translateX(0);
+}
+
+.uf-cart-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.uf-cart-item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.uf-cart-item img {
+  width: 64px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: var(--radius-sharp);
+}
+
+.uf-qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.uf-qty-btn {
+  border: none;
+  background: transparent;
+  color: var(--ink-primary);
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.uf-qty-btn:hover {
+  background: var(--ink-primary);
+  color: var(--bg-paper);
+}
+
+/* --------------------------------------------------------------------------
+   10. RESPONSIVE BREAKPOINTS (Mobile-First & Tablet Adaptation)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1040px) {
+  .uf-nav-links {
+    display: none;
+  }
+  .lg-mobile-dock {
+    display: flex;
+  }
+  .uf-hero-grid,
+  .uf-scanner-layout,
+  .uf-farmer-grid,
+  .uf-impact-top-grid,
+  .uf-share-section,
+  .uf-trust-grid {
+    grid-template-columns: 1fr;
+  }
+  .uf-impact-ticker {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .uf-filter-top-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .uf-farmer-kpis {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .uf-floating-header {
+    top: 0.65rem;
+    padding: 0 0.75rem;
+  }
+  .uf-role-label {
+    display: none;
+  }
+  .lg-segment-btn {
+    padding: 0.45rem 0.62rem;
+    font-size: 0.46rem;
+  }
+  .uf-impact-ticker,
+  .uf-filter-top-row,
+  .uf-preset-strip,
+  .uf-form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .uf-bar-row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+}
