@@ -23,23 +23,12 @@
   <link rel="stylesheet" href="./css/uglyfood.css">
 </head>
 <body>
-  <!-- Progressive Enhancement SVG Filter for Optical Liquid Glass Edge Refraction -->
-  <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
-    <defs>
-      <filter id="liquid-glass-refract" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-      </filter>
-    </defs>
-  </svg>
-
-  <!-- Luminous Organic Ambient Mesh (Refracts Through All Liquid Glass Surfaces) -->
+  <!-- Luminous Organic Ambient Mesh (100% GPU-Composited Zero-Blur Gradients) -->
   <div class="lg-ambient-mesh" aria-hidden="true">
     <div class="lg-orb lg-orb--1"></div>
     <div class="lg-orb lg-orb--2"></div>
     <div class="lg-orb lg-orb--3"></div>
   </div>
-  <div class="uf-grain" aria-hidden="true"></div>
 
   <!-- Apple HIG Soft Scroll Edge Effects -->
   <div class="scroll-edge-top" aria-hidden="true"></div>
@@ -47,7 +36,7 @@
 
   <!-- ====================================================================
        FLOATING APPLE LIQUID GLASS TOP HEADER
-       With Spring-Animated Sliding Glass Indicators
+       Single-Row Everywhere · Special Access Vault Instead of Role Switcher
        ==================================================================== -->
   <header class="uf-floating-header">
     <div class="uf-header-row">
@@ -65,24 +54,16 @@
         </nav>
       </div>
 
-      <!-- Capsule 2: Demo Role Switcher with Sliding Spring Glass Pill -->
-      <div class="lg-pill lg-refractive uf-role-pill" role="group" aria-label="Demo User Role Switcher">
-        <div id="role-switcher-track" class="lg-spring-track">
-          <div class="lg-spring-indicator" aria-hidden="true"></div>
-          <button type="button" class="lg-spring-item is-active" data-role-btn="b2c" aria-pressed="true">
-            B2C Buyer
-          </button>
-          <button type="button" class="lg-spring-item" data-role-btn="b2b" aria-pressed="false">
-            B2B Bulk
-          </button>
-          <button type="button" class="lg-spring-item" data-role-btn="farmer" aria-pressed="false">
-            Farmer
-          </button>
-        </div>
-      </div>
-
-      <!-- Capsule 3: Icon-Only Utility Pill -->
+      <!-- Capsule 2: Special Access + Utility Pill -->
       <div class="lg-pill lg-refractive uf-utility-pill">
+        <button type="button" id="special-access-btn" class="uf-special-access-trigger" aria-label="Open Special Access Portal" title="Special Access (Partner &amp; Wholesale Tiers)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span id="special-access-badge-text">Special Access</span>
+        </button>
+
         <button type="button" id="mobile-frame-toggle-btn" class="uf-icon-btn uf-desktop-only-btn" aria-label="Toggle Mobile Frame Preview" title="Preview Mobile Frame">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
@@ -580,6 +561,67 @@
         </div>
 
         <div id="cart-summary-footer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       CONCENTRIC INSET LIQUID GLASS SHEET 03: SPECIAL ACCESS PORTAL
+       ==================================================================== -->
+  <div id="special-access-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="Special Access Portal">
+    <div class="lg-sheet uf-special-access-sheet">
+      <div class="lg-sheet-inner uf-trust-inner">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding-bottom:1rem;border-bottom:1px solid var(--lg-border-subtle);margin-bottom:1.25rem;">
+          <div>
+            <span class="uf-kicker">Partner &amp; Wholesale Clearance</span>
+            <h2 class="uf-heading" style="font-size:1.75rem;margin-top:0.2rem;">Special <em>Access</em> Portal</h2>
+          </div>
+          <button type="button" id="close-special-access-btn" class="uf-close-orb" aria-label="Close Special Access">&times;</button>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--ink-secondary);line-height:1.55;margin:0 0 1.15rem;">
+          Select a partner clearance pass below or enter an access code (<strong style="color:var(--ink-primary);">BULK25</strong> or <strong style="color:var(--ink-primary);">FARM89</strong>) to unlock commercial wholesale crate pricing or direct farmer supply tools.
+        </p>
+
+        <div class="uf-access-cards-stack">
+          <button type="button" class="uf-access-tier-card is-active" data-access-tier="b2c">
+            <div>
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="uf-kicker">Standard Pass</span>
+                <span class="uf-access-active-dot">Active</span>
+              </div>
+              <div class="uf-heading" style="font-size:1.22rem;margin-top:0.2rem;">Personal Harvest Pass (1–5 kg Packs)</div>
+              <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:0.2rem;">Retail household packs at up to 48% off supermarket prices.</div>
+            </div>
+          </button>
+
+          <button type="button" class="uf-access-tier-card" data-access-tier="b2b">
+            <div>
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="uf-kicker" style="color:var(--accent-emerald);">Code: BULK25 · Commercial Pass</span>
+                <span class="uf-access-active-dot">Active</span>
+              </div>
+              <div class="uf-heading" style="font-size:1.22rem;margin-top:0.2rem;">Wholesale Commissary Access (25 kg Crates)</div>
+              <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:0.2rem;">Unlocks restaurant &amp; commissary bulk crate rates (-52% wholesale).</div>
+            </div>
+          </button>
+
+          <button type="button" class="uf-access-tier-card" data-access-tier="farmer">
+            <div>
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="uf-kicker">Code: FARM89 · Supplier Pass</span>
+                <span class="uf-access-active-dot">Active</span>
+              </div>
+              <div class="uf-heading" style="font-size:1.22rem;margin-top:0.2rem;">Direct Grower &amp; AI Scanner Access</div>
+              <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:0.2rem;">Opens the Farmer Supplier Atelier &amp; AI Crop Grader with 89% direct payout.</div>
+            </div>
+          </button>
+        </div>
+
+        <form id="special-access-code-form" style="margin-top:1.15rem;padding-top:1rem;border-top:1px solid var(--lg-border-subtle);display:flex;gap:0.55rem;">
+          <input type="text" id="special-access-code-input" class="uf-input" placeholder="Enter access code (e.g. BULK25 or FARM89)" style="flex:1;">
+          <button type="submit" class="lg-btn lg-btn--prominent">Unlock</button>
+        </form>
       </div>
     </div>
   </div>

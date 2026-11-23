@@ -101,7 +101,7 @@
   }
 
   function syncAllSpringIndicators(immediate = false) {
-    ['top-nav-track', 'role-switcher-track', 'mobile-nav-track'].forEach((id) => {
+    ['top-nav-track', 'mobile-nav-track'].forEach((id) => {
       positionSpringIndicator(document.getElementById(id), immediate);
     });
   }
@@ -189,7 +189,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     3. ROLE SWITCHER (B2C Buyer · B2B Bulk · Farmer)
+     3. SPECIAL ACCESS PORTAL (Standard · Wholesale Bulk · Grower Access)
      ------------------------------------------------------------------------ */
   function getActivePrice(crop, role = state.role) {
     if (role === 'b2b') {
@@ -208,6 +208,34 @@
       kgPerUnit: 1,
       discountPct: Math.round(((crop.marketPriceB2C - crop.priceB2C) / crop.marketPriceB2C) * 100)
     };
+  }
+
+  function syncSpecialAccessUI() {
+    const triggerBtn = document.getElementById('special-access-btn');
+    const badgeText = document.getElementById('special-access-badge-text');
+    if (triggerBtn && badgeText) {
+      const badgeLabels = {
+        b2c: 'Special Access',
+        b2b: 'VIP Bulk Active',
+        farmer: 'Grower Pass'
+      };
+      badgeText.textContent = badgeLabels[state.role] || 'Special Access';
+      triggerBtn.classList.toggle('is-unlocked', state.role !== 'b2c');
+    }
+
+    document.querySelectorAll('[data-access-tier]').forEach((card) => {
+      card.classList.toggle('is-active', card.getAttribute('data-access-tier') === state.role);
+    });
+
+    const roleBanner = document.getElementById('hero-role-indicator');
+    if (roleBanner) {
+      const labels = {
+        b2c: 'Personal Harvest Pass · 1–5 kg Retail Packs',
+        b2b: 'Special Access Unlocked · 25 kg Wholesale Crates (-52%)',
+        farmer: 'Special Access Unlocked · Direct Grower & AI Scanner'
+      };
+      roleBanner.textContent = labels[state.role] || labels.b2c;
+    }
   }
 
   function setRole(newRole, { scrollToSection = false } = {}) {
@@ -229,30 +257,12 @@
       }
     }
 
-    const roleTrack = document.getElementById('role-switcher-track');
-    if (roleTrack) {
-      roleTrack.querySelectorAll('[data-role-btn]').forEach((btn) => {
-        const isMatch = btn.getAttribute('data-role-btn') === newRole;
-        btn.classList.toggle('is-active', isMatch);
-        btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
-      });
-      positionSpringIndicator(roleTrack);
-    }
-
-    const roleBanner = document.getElementById('hero-role-indicator');
-    if (roleBanner) {
-      const labels = {
-        b2c: 'Individual Buyer · 1–5 kg Retail Packs',
-        b2b: 'Commercial Buyer · 25–100 kg Wholesale Crates',
-        farmer: 'Local Farmer · AI Crop Scanner & Supplier Atelier'
-      };
-      roleBanner.textContent = labels[newRole] || labels.b2c;
-    }
+    syncSpecialAccessUI();
 
     const toastLabels = {
-      b2c: 'Individual Buyer Mode (B2C Retail Pricing)',
-      b2b: 'Commercial Buyer Mode (B2B Wholesale Crates)',
-      farmer: 'Local Farmer Mode (AI Scanner & Dashboard)'
+      b2c: 'Standard Personal Harvest Pass Active',
+      b2b: 'Special Access Unlocked: Wholesale 25 kg Crate Pricing',
+      farmer: 'Special Access Unlocked: Direct Grower & AI Scanner'
     };
     showToast(toastLabels[newRole]);
 
@@ -261,8 +271,17 @@
     renderFarmerDashboard();
 
     if (scrollToSection) {
-      navigateToSection(newRole === 'farmer' ? 'scanner' : 'marketplace');
+      navigateToSection(newRole === 'farmer' ? 'farmer-dashboard' : 'marketplace');
     }
+  }
+
+  function openSpecialAccessModal() {
+    syncSpecialAccessUI();
+    document.getElementById('special-access-modal')?.classList.add('is-open');
+  }
+
+  function closeSpecialAccessModal() {
+    document.getElementById('special-access-modal')?.classList.remove('is-open');
   }
 
   /* ------------------------------------------------------------------------
@@ -1113,17 +1132,37 @@
       navigateToSection('scanner');
     });
 
-    // Role Switcher
-    document.querySelectorAll('[data-role-btn]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const nextRole = btn.getAttribute('data-role-btn');
-        setRole(nextRole, { scrollToSection: false });
-        if (nextRole === 'farmer') {
-          navigateToSection('farmer-dashboard');
-        } else if (ui.activeView !== 'marketplace') {
-          navigateToSection('marketplace');
-        }
+    // Special Access Portal Trigger & Tier Selection
+    syncSpecialAccessUI();
+    document.getElementById('special-access-btn')?.addEventListener('click', openSpecialAccessModal);
+    document.getElementById('close-special-access-btn')?.addEventListener('click', closeSpecialAccessModal);
+    document.getElementById('special-access-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'special-access-modal') closeSpecialAccessModal();
+    });
+
+    document.querySelectorAll('[data-access-tier]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const tier = card.getAttribute('data-access-tier');
+        setRole(tier, { scrollToSection: true });
+        closeSpecialAccessModal();
       });
+    });
+
+    document.getElementById('special-access-code-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('special-access-code-input');
+      const code = (input?.value || '').trim().toUpperCase();
+      if (code === 'BULK25' || code === 'VIP' || code === 'B2B') {
+        setRole('b2b', { scrollToSection: true });
+        if (input) input.value = '';
+        closeSpecialAccessModal();
+      } else if (code === 'FARM89' || code === 'FARMER' || code === 'GROWER') {
+        setRole('farmer', { scrollToSection: true });
+        if (input) input.value = '';
+        closeSpecialAccessModal();
+      } else {
+        showToast('Try code BULK25 (Wholesale) or FARM89 (Grower)');
+      }
     });
 
     // Theme Toggle
@@ -1224,6 +1263,7 @@
       if (e.key === 'Escape') {
         closeProductReportModal();
         closeCartDrawer();
+        closeSpecialAccessModal();
       }
     });
 

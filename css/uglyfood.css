@@ -159,17 +159,108 @@ body {
   padding: 0.48rem 0.92rem;
 }
 
-/* Role Switcher Capsule */
-.uf-role-pill {
+/* Special Access Trigger Pill inside Header Utility Capsule */
+.uf-special-access-trigger {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem;
-  flex-shrink: 0;
+  gap: 0.4rem;
+  padding: 0.48rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(168, 118, 70, 0.35);
+  background: rgba(168, 118, 70, 0.14);
+  color: var(--accent-bronze-deep);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.3s var(--apple-spring-bouncy),
+    background-color 0.22s ease,
+    color 0.22s ease;
 }
 
-.uf-role-pill .lg-spring-item {
-  font-size: 0.78rem;
-  padding: 0.5rem 0.92rem;
+[data-theme="dark"] .uf-special-access-trigger {
+  color: var(--accent-bronze);
+  border-color: rgba(212, 163, 115, 0.35);
+}
+
+.uf-special-access-trigger:hover,
+.uf-special-access-trigger.is-unlocked {
+  background: var(--lg-prominent-bronze);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.38);
+  transform: scale(1.03);
+}
+
+.uf-special-access-trigger:active {
+  transform: scale(0.95);
+}
+
+.uf-special-access-trigger svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.1;
+}
+
+.uf-special-access-sheet {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translate3d(0, 28px, 0) scale(0.95);
+}
+
+.lg-sheet-backdrop.is-open .uf-special-access-sheet {
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.uf-access-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.uf-access-tier-card {
+  width: 100%;
+  text-align: left;
+  border-radius: 20px;
+  border: 1.5px solid var(--lg-border-subtle);
+  background: var(--lg-surface-bg);
+  padding: 1rem 1.15rem;
+  cursor: pointer;
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  transform: translate3d(0, 0, 0);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.3s var(--apple-spring);
+}
+
+.uf-access-tier-card:hover {
+  border-color: var(--accent-bronze);
+  transform: translate3d(0, -2px, 0);
+}
+
+.uf-access-tier-card.is-active {
+  border-color: var(--accent-emerald);
+  background: var(--accent-emerald-soft);
+}
+
+.uf-access-active-dot {
+  display: none;
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 0.14rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-emerald);
+  color: #ffffff;
+}
+
+.uf-access-tier-card.is-active .uf-access-active-dot {
+  display: inline-block;
 }
 
 /* Icon-Only Utility Capsule */
@@ -1307,36 +1398,18 @@ body.is-mobile-frame-mode .uf-farms-grid {
     padding: 0.48rem 0.95rem;
   }
 
-  .uf-role-pill {
-    order: 3;
-    width: 100%;
-    padding: 4px;
-  }
-
-  .uf-role-pill .lg-spring-track {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 0;
-  }
-
-  .uf-role-pill .lg-spring-indicator {
-    top: 0;
-    bottom: 0;
-  }
-
-  .uf-role-pill .lg-spring-item {
-    padding: 0.54rem 0.4rem;
-    font-size: 0.78rem;
+  .uf-special-access-trigger {
+    padding: 0.42rem 0.75rem;
+    font-size: 0.72rem;
   }
 
   .uf-hero,
   .uf-view-section {
-    padding-top: 8.6rem !important;
+    padding-top: 5.5rem !important;
   }
 
   .uf-section {
-    scroll-margin-top: 7.75rem;
+    scroll-margin-top: 5.25rem;
   }
 
   .uf-hero-grid,

@@ -108,7 +108,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   1. LUMINOUS ORGANIC AMBIENT MESH (Gives Liquid Glass Rich Color to Refract)
+   1. LUMINOUS ORGANIC AMBIENT MESH (100% GPU-Composited Zero-Blur Gradients)
    -------------------------------------------------------------------------- */
 .lg-ambient-mesh {
   position: fixed;
@@ -116,100 +116,106 @@
   z-index: var(--z-mesh);
   pointer-events: none;
   overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  contain: strict;
 }
 
 .lg-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.52;
-  will-change: transform;
-  transition: opacity 0.5s ease;
+  opacity: 0.65;
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
 }
 
 .lg-orb--1 {
-  width: min(580px, 85vw);
-  height: min(580px, 85vw);
-  top: -12%;
-  right: -8%;
-  background: radial-gradient(circle, rgba(226, 173, 118, 0.58) 0%, rgba(226, 173, 118, 0) 70%);
+  width: min(680px, 95vw);
+  height: min(680px, 95vw);
+  top: -16%;
+  right: -12%;
+  background: radial-gradient(circle, rgba(226, 173, 118, 0.36) 0%, rgba(226, 173, 118, 0.12) 42%, rgba(226, 173, 118, 0) 72%);
 }
 
 .lg-orb--2 {
-  width: min(520px, 80vw);
-  height: min(520px, 80vw);
-  top: 34%;
-  left: -14%;
-  background: radial-gradient(circle, rgba(108, 172, 132, 0.44) 0%, rgba(108, 172, 132, 0) 70%);
+  width: min(620px, 90vw);
+  height: min(620px, 90vw);
+  top: 30%;
+  left: -18%;
+  background: radial-gradient(circle, rgba(108, 172, 132, 0.28) 0%, rgba(108, 172, 132, 0.09) 42%, rgba(108, 172, 132, 0) 72%);
 }
 
 .lg-orb--3 {
-  width: min(620px, 90vw);
-  height: min(620px, 90vw);
-  bottom: -14%;
-  right: 12%;
-  background: radial-gradient(circle, rgba(214, 155, 108, 0.42) 0%, rgba(214, 155, 108, 0) 70%);
+  width: min(700px, 95vw);
+  height: min(700px, 95vw);
+  bottom: -18%;
+  right: 8%;
+  background: radial-gradient(circle, rgba(214, 155, 108, 0.26) 0%, rgba(214, 155, 108, 0.08) 42%, rgba(214, 155, 108, 0) 72%);
 }
 
 [data-theme="dark"] .lg-orb--1 {
-  background: radial-gradient(circle, rgba(196, 136, 74, 0.34) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(196, 136, 74, 0.22) 0%, rgba(196, 136, 74, 0.06) 45%, transparent 72%);
 }
 
 [data-theme="dark"] .lg-orb--2 {
-  background: radial-gradient(circle, rgba(64, 146, 104, 0.28) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(64, 146, 104, 0.18) 0%, rgba(64, 146, 104, 0.05) 45%, transparent 72%);
 }
 
 [data-theme="dark"] .lg-orb--3 {
-  background: radial-gradient(circle, rgba(180, 120, 72, 0.26) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(180, 120, 72, 0.16) 0%, rgba(180, 120, 72, 0.05) 45%, transparent 72%);
 }
 
 /* --------------------------------------------------------------------------
-   2. CORE LIQUID GLASS SURFACES (Curved Cards, Floating Pills, Prominent CTAs)
+   2. CORE LIQUID GLASS SURFACES (Hardware-Accelerated GPU Layer Promotion)
    -------------------------------------------------------------------------- */
 .lg-card {
   position: relative;
   border-radius: var(--radius-card);
   background: var(--lg-surface-bg);
-  backdrop-filter: blur(26px) saturate(195%) brightness(1.04);
-  -webkit-backdrop-filter: blur(26px) saturate(195%) brightness(1.04);
+  backdrop-filter: blur(14px) saturate(165%);
+  -webkit-backdrop-filter: blur(14px) saturate(165%);
   border: 1px solid var(--lg-border);
   box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-shadow-card);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: layout paint style;
   transition:
-    transform 0.42s var(--apple-spring),
-    background-color 0.3s ease,
-    box-shadow 0.42s var(--apple-spring),
-    border-color 0.3s ease;
+    transform 0.34s var(--apple-spring),
+    background-color 0.24s ease,
+    border-color 0.24s ease;
 }
 
 .lg-card--interactive:hover {
-  transform: translateY(-4px) scale(1.008);
+  transform: translate3d(0, -3px, 0);
   background: var(--lg-surface-hover);
-  box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), 0 22px 48px rgba(32, 26, 18, 0.13);
 }
 
 .lg-card--interactive:active {
-  transform: translateY(-1px) scale(0.992);
+  transform: translate3d(0, -1px, 0) scale(0.992);
 }
 
-/* Floating Chrome Capsule (Header, Role Switcher, Mobile Dock) */
+/* Floating Chrome Capsule (Header, Mobile Dock, Special Access) */
 .lg-pill {
   position: relative;
   border-radius: var(--radius-pill);
   background: var(--lg-chrome-bg);
-  backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
-  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
   border: 1px solid var(--lg-border);
   box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-shadow-chrome);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
   transition:
-    transform 0.38s var(--apple-spring),
-    background-color 0.28s ease,
-    box-shadow 0.38s var(--apple-spring);
+    transform 0.34s var(--apple-spring),
+    background-color 0.24s ease;
 }
 
-@supports (backdrop-filter: url(#liquid-glass-refract)) {
-  .lg-refractive {
-    backdrop-filter: url(#liquid-glass-refract) blur(22px) saturate(200%) brightness(1.05);
-  }
+.lg-refractive {
+  backdrop-filter: blur(18px) saturate(185%);
+  -webkit-backdrop-filter: blur(18px) saturate(185%);
 }
 
 /* Clear Liquid Glass over Rich Media + Mandatory 35% Dimmer */
@@ -226,17 +232,19 @@
   z-index: 2;
   border-radius: var(--radius-pill);
   background: var(--lg-clear-bg);
-  backdrop-filter: blur(14px) saturate(195%) brightness(1.06);
-  -webkit-backdrop-filter: blur(14px) saturate(195%) brightness(1.06);
+  backdrop-filter: blur(10px) saturate(170%);
+  -webkit-backdrop-filter: blur(10px) saturate(170%);
   border: 1px solid rgba(255, 255, 255, 0.38);
   box-shadow:
     inset 0 1px 1.5px rgba(255, 255, 255, 0.62),
     inset 0 -1px 1.5px rgba(255, 255, 255, 0.15),
-    0 10px 26px rgba(0, 0, 0, 0.24);
+    0 8px 20px rgba(0, 0, 0, 0.22);
   color: #ffffff;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
-/* Glass Buttons (Always Pill-Shaped, Never Square) */
+/* Glass Buttons (GPU Accelerated, Zero Heavy Nested Backdrop Blur) */
 .lg-btn {
   display: inline-flex;
   align-items: center;
@@ -249,19 +257,18 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink-primary);
-  background: var(--lg-chrome-bg);
-  backdrop-filter: blur(18px) saturate(185%);
-  -webkit-backdrop-filter: blur(18px) saturate(185%);
+  background: var(--lg-sheet-inner-bg);
   border: 1px solid var(--lg-border);
-  box-shadow: var(--lg-specular-top), 0 6px 18px rgba(26, 25, 23, 0.08);
+  box-shadow: var(--lg-specular-top), 0 4px 12px rgba(26, 25, 23, 0.06);
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   transition:
-    transform 0.36s var(--apple-spring-bouncy),
-    background 0.26s ease,
-    color 0.24s ease,
-    box-shadow 0.32s ease;
+    transform 0.3s var(--apple-spring-bouncy),
+    background 0.22s ease,
+    color 0.22s ease;
 }
 
 .lg-btn:hover {
@@ -378,18 +385,15 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. SCROLL EDGE EFFECTS (Soft Top & Bottom Glass Haze)
+   4. SCROLL EDGE EFFECTS (Zero-Lag GPU Gradient Haze)
    -------------------------------------------------------------------------- */
 .scroll-edge-top {
   pointer-events: none;
   position: fixed;
   inset: 0 0 auto 0;
-  height: 98px;
-  background: linear-gradient(to bottom, var(--lg-scroll-edge), transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+  height: 76px;
+  background: linear-gradient(to bottom, var(--lg-scroll-edge) 15%, transparent 100%);
+  transform: translate3d(0, 0, 0);
   z-index: var(--z-edge);
 }
 
@@ -397,12 +401,9 @@
   pointer-events: none;
   position: fixed;
   inset: auto 0 0 0;
-  height: 96px;
-  background: linear-gradient(to top, var(--lg-scroll-edge), transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  mask-image: linear-gradient(to top, black 35%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 35%, transparent 100%);
+  height: 76px;
+  background: linear-gradient(to top, var(--lg-scroll-edge) 15%, transparent 100%);
+  transform: translate3d(0, 0, 0);
   z-index: var(--z-edge);
 }
 
@@ -414,12 +415,13 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
-  background: rgba(18, 17, 15, 0.42);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(18, 17, 15, 0.48);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.38s var(--apple-spring);
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.32s var(--apple-spring);
 }
 
 .lg-sheet-backdrop.is-open {
@@ -429,13 +431,16 @@
 
 .lg-sheet {
   background: var(--lg-sheet-bg);
-  backdrop-filter: blur(34px) saturate(210%);
-  -webkit-backdrop-filter: blur(34px) saturate(210%);
+  backdrop-filter: blur(22px) saturate(185%);
+  -webkit-backdrop-filter: blur(22px) saturate(185%);
   border: 1px solid var(--lg-border);
   box-shadow: var(--lg-specular-top), var(--lg-specular-bottom), var(--lg-shadow-sheet);
   border-radius: var(--radius-sheet);
   padding: var(--radius-sheet-pad);
-  transition: transform 0.52s var(--apple-spring), opacity 0.36s ease;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  transition: transform 0.42s var(--apple-spring), opacity 0.3s ease;
 }
 
 .lg-sheet-inner {
