@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uglyfood-liquid-glass-v6';
+const CACHE_NAME = 'uglyfood-liquid-glass-v7';
 const ASSETS = [
   './',
   './index.html',

@@ -470,16 +470,26 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
 }
 
 .uf-sort-select {
-  padding: 0.72rem 1rem;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0.72rem 2.4rem 0.72rem 1.05rem;
   border-radius: var(--radius-pill);
   border: 1px solid var(--lg-border);
-  background: var(--lg-surface-bg);
+  background-color: var(--lg-surface-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2359544c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  background-size: 15px 15px;
   color: var(--ink-primary);
   font-family: var(--font-sans);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   outline: none;
   cursor: pointer;
+}
+
+[data-theme="dark"] .uf-sort-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f4efe6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 }
 
 /* Horizontal Swipeable Category Chips (Instacart / GrabMart Style) */
@@ -1345,16 +1355,23 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
     display: none !important;
   }
 
+  /* Perfectly centered UglyFood logo pill matching utility pill height */
+  .uf-brand-nav-pill {
+    height: 46px;
+    padding: 0 1.2rem;
+    justify-content: center;
+  }
+
+  .uf-brand {
+    line-height: 1;
+  }
+
   .uf-mobile-dock {
     display: block;
   }
 
-  .uf-live-cart-bar {
-    bottom: 5.35rem;
-  }
-
   .uf-back-to-top {
-    bottom: 9.25rem;
+    bottom: 5.5rem;
     right: 0.85rem;
     width: 44px;
     height: 44px;
