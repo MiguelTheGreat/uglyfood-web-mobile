@@ -458,11 +458,11 @@
               <div class="uf-score-grid" style="margin-bottom:0.85rem;">
                 <div class="uf-score-pill-card">
                   <span style="font-size:0.7rem;color:var(--ink-secondary);font-weight:600;">Freshness</span>
-                  <div class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">${crop.freshnessScore}%</div>
+                  <div class="uf-score-val uf-tabular" style="color:var(--accent-primary);">${crop.freshnessScore}%</div>
                 </div>
                 <div class="uf-score-pill-card">
                   <span style="font-size:0.7rem;color:var(--ink-secondary);font-weight:600;">Edibility</span>
-                  <div class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">${crop.edibilityScore}%</div>
+                  <div class="uf-score-val uf-tabular" style="color:var(--accent-primary);">${crop.edibilityScore}%</div>
                 </div>
                 <div class="uf-score-pill-card">
                   <span style="font-size:0.7rem;color:var(--ink-secondary);font-weight:600;">Savings</span>
@@ -485,7 +485,7 @@
                 <div>
                   <span class="uf-price-main uf-tabular" style="font-size:1.55rem;">${formatPhp(totalCost)}</span>
                   <span class="uf-price-strike uf-tabular">${formatPhp(pricing.market * ui.modalQty)}</span>
-                  <div style="font-size:0.76rem;color:var(--accent-emerald);font-weight:700;">Save ${formatPhp(totalSaved)}</div>
+                  <div style="font-size:0.76rem;color:var(--accent-primary);font-weight:700;">Save ${formatPhp(totalSaved)}</div>
                 </div>
 
                 <div class="uf-qty-stepper">
@@ -495,7 +495,7 @@
                 </div>
               </div>
 
-              <button type="button" class="lg-btn lg-btn--emerald" id="modal-add-cart-btn" style="width:100%;padding:0.86rem;font-size:0.9rem;">
+              <button type="button" class="lg-btn lg-btn--tangerine" id="modal-add-cart-btn" style="width:100%;padding:0.86rem;font-size:0.9rem;">
                 Add to Basket · ${formatPhp(totalCost)}
               </button>
             </div>
@@ -756,7 +756,7 @@
             </div>
             <div style="font-weight:700;font-size:0.88rem;">${ord.buyerName.replace(/\s*\(B2[BC]\)/g, '')}</div>
             <div style="font-size:0.8rem;color:var(--ink-secondary);">${ord.cropTitle} · ${ord.quantityLabel}</div>
-            <div style="font-size:0.74rem;font-weight:600;color:var(--accent-emerald);">${ord.status}</div>
+            <div style="font-size:0.74rem;font-weight:600;color:var(--accent-primary);">${ord.status}</div>
           </div>
         `
         )

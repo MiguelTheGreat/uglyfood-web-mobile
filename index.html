@@ -3,27 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UglyFood — Cheap, Fresh Imperfect Produce Delivered Direct</title>
-  <meta name="description" content="Buy weird-looking, super fresh vegetables and fruits straight from local farms for up to 52% less than supermarket prices.">
+  <title>UglyFood v2.0 — Stupid Cheap, Super Fresh Imperfect Produce</title>
+  <meta name="description" content="Save up to 52% on weirdly shaped, super fresh local vegetables and fruits delivered straight from farms.">
 
-  <meta name="theme-color" content="#f6f2e9">
+  <meta name="theme-color" content="#fff9f5">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
   <link rel="manifest" href="./manifest.json">
 
-  <!-- Fraunces (Warm Organic Serif) + Plus Jakarta Sans (Clean Grocery UI) -->
+  <!-- User-Centric Fonts: Bricolage Grotesque + DM Sans (Zero Monospace) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,500&display=swap" rel="stylesheet">
 
-  <!-- GPU-Accelerated Apple Liquid Glass + Grocery App Styles -->
+  <!-- UglyFood v2.0 Citrus Tangerine Liquid Glass Styles -->
   <link rel="stylesheet" href="./css/liquid-glass.css">
   <link rel="stylesheet" href="./css/uglyfood.css">
 </head>
 <body>
-  <!-- Luminous Organic Ambient Mesh (100% GPU-Composited Zero-Blur Gradients) -->
+  <!-- Luminous Citrus-Apricot Ambient Mesh (100% GPU Zero-Blur Gradients) -->
   <div class="lg-ambient-mesh" aria-hidden="true">
     <div class="lg-orb lg-orb--1"></div>
     <div class="lg-orb lg-orb--2"></div>
@@ -39,48 +39,72 @@
        ==================================================================== -->
   <header class="uf-floating-header">
     <div class="uf-header-row">
-      <!-- Brand + Desktop View Switcher -->
-      <div class="lg-pill lg-refractive uf-brand-nav-pill">
+      <!-- Brand + Desktop Nav with Refractive Liquid Glass Sliding Bubble -->
+      <div class="lg-pill uf-brand-nav-pill">
         <a href="#marketplace" class="uf-brand">
-          UglyFood
+          UglyFood<span class="uf-brand-dot" aria-hidden="true"></span>
         </a>
 
         <nav id="top-nav-track" class="lg-spring-track uf-top-nav-track" aria-label="Primary navigation">
           <div class="lg-spring-indicator" aria-hidden="true"></div>
-          <a href="#marketplace" class="lg-spring-item is-active" data-top-nav="marketplace">Shop</a>
-          <a href="#scanner" class="lg-spring-item" data-top-nav="scanner">AI Scan</a>
-          <a href="#farmer-dashboard" class="lg-spring-item" data-top-nav="farmer-dashboard">Sell</a>
+
+          <a href="#marketplace" class="lg-spring-item is-active" data-top-nav="marketplace">
+            <!-- Fun Chunky Flame-Tag Deals Icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12.7 2.4a1 1 0 0 0-1.5.3C9.6 5.4 7 7.6 7 11.4A5 5 0 0 0 12 16.5a5 5 0 0 0 5-5c0-3.3-2-6.1-4.3-9.1ZM12 20a7 7 0 0 1-7-7c0-1.6.5-3.1 1.3-4.4a1 1 0 0 0-1.5-1.2A9 9 0 1 0 21 13a9.3 9.3 0 0 0-1.7-5.3 1 1 0 0 0-1.6 1.2A7 7 0 0 1 12 20Z" opacity="0.28"/>
+              <path d="M12.8 2.6c-.4-.6-1.2-.6-1.6 0C9.4 5.3 7 8 7 11.8a5 5 0 0 0 10 0c0-3.4-2-6.3-4.2-9.2Zm-.8 12.2a2.2 2.2 0 0 1-2.2-2.2c0-1.2.9-2.4 2.2-3.8 1.3 1.4 2.2 2.6 2.2 3.8A2.2 2.2 0 0 1 12 14.8Z"/>
+            </svg>
+            <span>Deals</span>
+          </a>
+
+          <a href="#scanner" class="lg-spring-item" data-top-nav="scanner">
+            <!-- Fun Sparkle AI Lens Icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M5 4a3 3 0 0 0-3 3v2a1 1 0 1 0 2 0V7a1 1 0 0 1 1-1h2a1 1 0 1 0 0-2H5Zm14 0h-2a1 1 0 1 0 0 2h2a1 1 0 0 1 1 1v2a1 1 0 1 0 2 0V7a3 3 0 0 0-3-3ZM4 15a1 1 0 1 0-2 0v2a3 3 0 0 0 3 3h2a1 1 0 1 0 0-2H5a1 1 0 0 1-1-1v-2Zm17-1a1 1 0 0 0-1 1v2a1 1 0 0 1-1 1h-2a1 1 0 1 0 0 2h2a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1Z" opacity="0.4"/>
+              <path d="M12 6.5l1.4 3.6 3.6 1.4-3.6 1.4-1.4 3.6-1.4-3.6L7 11.5l3.6-1.4L12 6.5Z"/>
+            </svg>
+            <span>AI Scan</span>
+          </a>
+
+          <a href="#farmer-dashboard" class="lg-spring-item" data-top-nav="farmer-dashboard">
+            <!-- Fun Crate / Market Stall Icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4 11h16v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8Z" opacity="0.32"/>
+              <path d="M3.4 9.5A2 2 0 0 1 2 7.6L3.6 4A2 2 0 0 1 5.4 3h13.2a2 2 0 0 1 1.8 1L22 7.6a2 2 0 0 1-1.4 1.9 3 3 0 0 1-4.6-.5 3 3 0 0 1-4 0 3 3 0 0 1-4 0 3 3 0 0 1-4.6.5ZM9 14a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1Zm6 0a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1Z"/>
+            </svg>
+            <span>Sell</span>
+          </a>
         </nav>
       </div>
 
-      <!-- Discreet Utility Capsule (Owner Testing Lock · Mobile Frame · Theme · Basket) -->
-      <div class="lg-pill lg-refractive uf-utility-pill">
+      <!-- Discreet Utility Capsule with Chunky Duotone Icons -->
+      <div class="lg-pill uf-utility-pill">
         <button type="button" id="owner-access-btn" class="uf-icon-btn" aria-label="Owner Access" title="Owner Testing Access">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="11" rx="3.5" opacity="0.32"/>
+            <path d="M8 10V7.5a4 4 0 1 1 8 0V10h-2V7.5a2 2 0 1 0-4 0V10H8Zm4 3.5a1.5 1.5 0 0 1 .75 2.8v1.2a.75.75 0 0 1-1.5 0v-1.2A1.5 1.5 0 0 1 12 13.5Z"/>
           </svg>
           <span class="uf-owner-dot" aria-hidden="true"></span>
         </button>
 
         <button type="button" id="mobile-frame-toggle-btn" class="uf-icon-btn uf-desktop-only-btn" aria-label="Toggle Mobile Frame Preview" title="Preview Mobile Frame">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
-            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="2.5" width="12" height="19" rx="3.2" opacity="0.28"/>
+            <path d="M8.5 2.5h7A2.5 2.5 0 0 1 18 5v14a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 6 19V5a2.5 2.5 0 0 1 2.5-2.5Zm0 2a.5.5 0 0 0-.5.5v14a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5h-7ZM11 17.5a1 1 0 1 0 2 0 1 1 0 0 0-2 0Z"/>
           </svg>
         </button>
 
         <button type="button" id="theme-toggle-btn" class="uf-icon-btn" aria-label="Toggle Light and Dark Theme" title="Switch Theme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.5 5.5 0 0 1-7.54-7.54A9 9 0 0 0 12 3Z"/>
+            <circle cx="17.5" cy="6.5" r="1.5" opacity="0.45"/>
           </svg>
         </button>
 
         <button type="button" id="header-cart-btn" class="uf-icon-btn" data-open-cart aria-label="Open Basket" title="Open Basket">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4.5 9.5h15l-1.4 8.7A3 3 0 0 1 15.1 21H8.9a3 3 0 0 1-3-2.8L4.5 9.5Z" opacity="0.32"/>
+            <path d="M8.2 9.5a3.8 3.8 0 1 1 7.6 0h2A5.8 5.8 0 0 0 6.2 9.5h2ZM3.5 9.5a1 1 0 0 1 1-1h15a1 1 0 0 1 .98 1.18l-1.4 8.7A3.2 3.2 0 0 1 15.9 21H8.1a3.2 3.2 0 0 1-3.18-2.62l-1.4-8.7a1 1 0 0 1-.02-.18Zm2.2 1 1.2 7.5a1.2 1.2 0 0 0 1.2 1h7.8a1.2 1.2 0 0 0 1.2-1l1.2-7.5H5.7Z"/>
           </svg>
           <span class="uf-cart-badge uf-tabular" data-cart-badge>3</span>
         </button>
@@ -89,48 +113,41 @@
   </header>
 
   <!-- ====================================================================
-       PERMANENTLY FIXED MOBILE BOTTOM LIQUID GLASS DOCK
+       PERMANENTLY FIXED MOBILE BOTTOM LIQUID GLASS DOCK (Emphasized Motion)
        ==================================================================== -->
   <nav id="mobile-liquid-dock" class="uf-mobile-dock" aria-label="Mobile navigation">
-    <div class="lg-pill lg-refractive uf-mobile-dock-pill">
+    <div class="lg-pill uf-mobile-dock-pill">
       <div id="mobile-nav-track" class="lg-spring-track uf-mobile-dock-track">
         <div class="lg-spring-indicator" aria-hidden="true"></div>
 
         <button type="button" class="lg-spring-item uf-mobile-tab-btn is-active" data-mobile-nav="marketplace">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M3 9l2-5h14l2 5"></path>
-            <path d="M3 9v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9"></path>
-            <path d="M9 13v4"></path>
-            <path d="M15 13v4"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.8 2.6c-.4-.6-1.2-.6-1.6 0C9.4 5.3 7 8 7 11.8a5 5 0 0 0 10 0c0-3.4-2-6.3-4.2-9.2Zm-.8 12.2a2.2 2.2 0 0 1-2.2-2.2c0-1.2.9-2.4 2.2-3.8 1.3 1.4 2.2 2.6 2.2 3.8A2.2 2.2 0 0 1 12 14.8Z"/>
+            <path d="M12 21a7.5 7.5 0 0 1-7.5-7.5c0-1.7.5-3.2 1.4-4.5a.9.9 0 0 1 1.5 1A5.7 5.7 0 0 0 12 19.2a5.7 5.7 0 0 0 4.6-9.2.9.9 0 0 1 1.5-1A7.5 7.5 0 0 1 12 21Z" opacity="0.35"/>
           </svg>
-          <span>Shop</span>
+          <span>Deals</span>
         </button>
 
         <button type="button" class="lg-spring-item uf-mobile-tab-btn" data-mobile-nav="scanner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
-            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
-            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
-            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
-            <line x1="7" y1="12" x2="17" y2="12"></line>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M5 4a3 3 0 0 0-3 3v2a1 1 0 1 0 2 0V7a1 1 0 0 1 1-1h2a1 1 0 1 0 0-2H5Zm14 0h-2a1 1 0 1 0 0 2h2a1 1 0 0 1 1 1v2a1 1 0 1 0 2 0V7a3 3 0 0 0-3-3ZM4 15a1 1 0 1 0-2 0v2a3 3 0 0 0 3 3h2a1 1 0 1 0 0-2H5a1 1 0 0 1-1-1v-2Zm17-1a1 1 0 0 0-1 1v2a1 1 0 0 1-1 1h-2a1 1 0 1 0 0 2h2a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1Z" opacity="0.45"/>
+            <path d="M12 6.5l1.5 3.8 3.8 1.5-3.8 1.5L12 17.1l-1.5-3.8-3.8-1.5 3.8-1.5L12 6.5Z"/>
           </svg>
           <span>AI Scan</span>
         </button>
 
         <button type="button" class="lg-spring-item uf-mobile-tab-btn" data-mobile-nav="farmer-dashboard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 22V12"></path>
-            <path d="M12 12C12 7 7 4 3 4c0 5 3 8 9 8z"></path>
-            <path d="M12 12c0-5 5-8 9-8 0 5-3 8-9 8z"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4 11h16v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8Z" opacity="0.35"/>
+            <path d="M3.4 9.5A2 2 0 0 1 2 7.6L3.6 4A2 2 0 0 1 5.4 3h13.2a2 2 0 0 1 1.8 1L22 7.6a2 2 0 0 1-1.4 1.9 3 3 0 0 1-4.6-.5 3 3 0 0 1-4 0 3 3 0 0 1-4 0 3 3 0 0 1-4.6.5ZM9 14a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1Zm6 0a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0v-2a1 1 0 0 0-1-1Z"/>
           </svg>
           <span>Sell</span>
         </button>
 
         <button type="button" class="lg-spring-item uf-mobile-tab-btn" data-mobile-nav="cart">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4.5 9.5h15l-1.4 8.7A3 3 0 0 1 15.1 21H8.9a3 3 0 0 1-3-2.8L4.5 9.5Z" opacity="0.35"/>
+            <path d="M8.2 9.5a3.8 3.8 0 1 1 7.6 0h2A5.8 5.8 0 0 0 6.2 9.5h2ZM3.5 9.5a1 1 0 0 1 1-1h15a1 1 0 0 1 .98 1.18l-1.4 8.7A3.2 3.2 0 0 1 15.9 21H8.1a3.2 3.2 0 0 1-3.18-2.62l-1.4-8.7a1 1 0 0 1-.02-.18Zm2.2 1 1.2 7.5a1.2 1.2 0 0 0 1.2 1h7.8a1.2 1.2 0 0 0 1.2-1l1.2-7.5H5.7Z"/>
           </svg>
           <span>Basket</span>
           <span class="uf-mobile-tab-badge uf-tabular" data-cart-badge>3</span>
@@ -145,26 +162,47 @@
   <main id="top" class="uf-page-shell">
 
     <!-- ================================================================
-         VIEW 01: GROCERY STOREFRONT (Immediate Shopping Experience)
+         VIEW 01: SAVINGS-FIRST GROCERY STOREFRONT
          ================================================================ -->
     <div id="view-marketplace" class="uf-view is-active" data-view="marketplace">
       <div class="uf-view-top-pad">
 
-        <!-- Delivery Slot + Instant Search + Swipeable Category Chips -->
         <div class="uf-grocery-top">
-          <div class="uf-delivery-strip">
+          <!-- Delivery Slot Pill -->
+          <div class="uf-top-utility-bar">
             <button type="button" id="delivery-slot-btn" class="uf-delivery-pill" title="Tap to switch delivery slot">
-              <span class="uf-delivery-dot" aria-hidden="true"></span>
+              <svg class="uf-delivery-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2a7 7 0 0 0-7 7c0 4.6 5.4 10.6 6.3 11.6a1 1 0 0 0 1.4 0C13.6 19.6 19 13.6 19 9a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
+              </svg>
               <span id="delivery-slot-text">Deliver to Metro Manila · Today, 2–4 PM</span>
               <span style="opacity:0.55;">&#9662;</span>
             </button>
           </div>
 
+          <!-- Live Savings Meter Card (Savings-Centric Core!) -->
+          <div class="lg-card uf-savings-meter-card">
+            <div class="uf-savings-meter-top">
+              <div class="uf-savings-headline">
+                <!-- Fun Coin Sparkle Icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent-gold);flex-shrink:0;" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9.5" opacity="0.28"/>
+                  <path d="M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm1 13.2v.8a1 1 0 1 1-2 0v-.8a3.2 3.2 0 0 1-2.2-1.2 1 1 0 1 1 1.5-1.3c.3.4.9.6 1.7.6s1.4-.3 1.4-.9c0-.5-.4-.8-1.6-1.1-1.9-.5-3-1.2-3-2.7 0-1.3.9-2.3 2.2-2.6v-.8a1 1 0 1 1 2 0v.8c.9.2 1.6.6 2 1.1a1 1 0 1 1-1.5 1.3c-.3-.3-.8-.5-1.4-.5-.8 0-1.3.3-1.3.8 0 .5.4.8 1.6 1.1 1.9.5 3 1.2 3 2.7 0 1.4-.9 2.4-2.4 2.7Z"/>
+                </svg>
+                <span>Saving <strong id="meter-savings-amt" class="uf-savings-amount uf-tabular">₱209</strong> in your basket today</span>
+              </div>
+              <span id="meter-delivery-hint" class="uf-tabular" style="font-size:0.76rem;font-weight:700;color:var(--ink-secondary);">Add ₱69 more for Free Delivery</span>
+            </div>
+            <div class="uf-savings-track">
+              <div id="meter-savings-fill" class="uf-savings-fill" style="width: 77%;"></div>
+            </div>
+          </div>
+
+          <!-- Instant Search + Custom Aligned Sort Dropdown -->
           <div class="uf-search-row">
             <div class="lg-card uf-search-shell">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="7.5"></circle>
+                <line x1="21" y1="21" x2="16.4" y2="16.4"></line>
               </svg>
               <input
                 type="search"
@@ -183,32 +221,51 @@
             </select>
           </div>
 
-          <!-- Horizontal Swipeable Grocery Category Chips -->
+          <!-- Swipeable Category Chips with Fun Icons -->
           <div class="uf-chip-scroller" role="group" aria-label="Produce Categories">
-            <button type="button" class="uf-cat-chip is-active" data-category-pill="All">All Deals</button>
-            <button type="button" class="uf-cat-chip" data-category-pill="Steals">Under ₱70</button>
-            <button type="button" class="uf-cat-chip" data-category-pill="Vegetables">Vegetables</button>
-            <button type="button" class="uf-cat-chip" data-category-pill="Fruits">Fruits</button>
-            <button type="button" class="uf-cat-chip" data-category-pill="Root Crops">Root Crops</button>
-            <button type="button" class="uf-cat-chip" data-category-pill="Benguet">Benguet Fresh</button>
-            <button type="button" class="uf-cat-chip" data-category-pill="Laguna">Laguna Local</button>
+            <button type="button" class="uf-cat-chip is-active" data-category-pill="All">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.8 2.6c-.4-.6-1.2-.6-1.6 0C9.4 5.3 7 8 7 11.8a5 5 0 0 0 10 0c0-3.4-2-6.3-4.2-9.2Z"/></svg>
+              <span>All Deals</span>
+            </button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Steals">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
+              <span>Under ₱70</span>
+            </button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Vegetables">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 3.5c-4.5 0-8.2 2.2-10.3 6.2-1.8 3.4-1.5 7.4-.9 9.5.2.6.8.9 1.4.8 2.2-.5 6.2-1.7 9-4.5 3-3 4.3-6.8 3.8-10.6-.1-.8-.8-1.4-1.6-1.4h-1.4Z"/></svg>
+              <span>Veggies</span>
+            </button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Fruits">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 6c0-2 1.8-3.5 4-3.5 0 2-1.8 3.5-4 3.5Z" opacity="0.5"/></svg>
+              <span>Fruits</span>
+            </button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Root Crops">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 4a3 3 0 0 0-3 3c0 1.4-3.5 5.4-7.5 9.4l-2 3.1a1 1 0 0 0 1.4 1.4l3.1-2c4-4 8-7.5 9.4-7.5a3 3 0 0 0 1.6-5.5L17 4Z"/></svg>
+              <span>Roots</span>
+            </button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Benguet">
+              <span>Benguet</span>
+            </button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Laguna">
+              <span>Laguna</span>
+            </button>
           </div>
         </div>
 
-        <!-- Flash Deals & Rescue Box Promo Shelf -->
+        <!-- Vibrant Citrus-Berry Flash Steals Promo Shelf -->
         <div class="uf-promo-shelf">
           <div class="uf-promo-card uf-promo-card--featured">
             <div>
-              <span class="uf-kicker" style="color:#a7e8c4;">Today's Flash Rescue Box</span>
+              <span class="uf-kicker" style="color:#ffe4a0;">Today's Crazy Steal · 51% Off</span>
               <h1 class="uf-promo-title" style="color:#ffffff;">5 kg Mystery Ugly Box</h1>
-              <p style="font-size:0.82rem;opacity:0.88;margin:0 0 0.85rem;line-height:1.4;">
-                Assorted weird-shaped veggies &amp; fruits harvested this morning. 100% crisp inside.
+              <p style="font-size:0.84rem;opacity:0.92;margin:0 0 0.85rem;line-height:1.4;">
+                Assorted crooked veggies &amp; sweet fruits picked this morning. Half the supermarket price.
               </p>
-              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
-                <button type="button" id="add-mystery-box-btn" class="lg-btn" style="padding:0.54rem 1.05rem;font-size:0.8rem;background:#ffffff;color:#143d28;border:none;">
+              <div style="display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;">
+                <button type="button" id="add-mystery-box-btn" class="lg-btn" style="padding:0.54rem 1.1rem;font-size:0.82rem;background:#ffffff;color:#d93d08;border:none;">
                   + Add Box · ₱249
                 </button>
-                <span class="uf-tabular" style="font-size:0.78rem;text-decoration:line-through;opacity:0.72;">₱510</span>
+                <span class="uf-tabular" style="font-size:0.8rem;text-decoration:line-through;opacity:0.78;">₱510</span>
               </div>
             </div>
             <img src="./assets/carrots.jpg" alt="Mystery Ugly Box assortment" class="uf-promo-thumb">
@@ -216,23 +273,21 @@
 
           <div class="lg-card uf-promo-card">
             <div>
-              <span class="uf-kicker" style="color:var(--accent-emerald);">Up to 52% Cheaper Than Supermarkets</span>
-              <h2 class="uf-promo-title">Ugly Outside.<br><em>Fresh</em> Inside.</h2>
-              <p style="font-size:0.8rem;color:var(--ink-secondary);margin:0 0 0.5rem;line-height:1.42;">
-                Direct from small farms and AI freshness-checked so you pay half price without sacrificing taste.
+              <span class="uf-kicker">Up to 52% Cheaper Than Supermarkets</span>
+              <h2 class="uf-promo-title">Weird Shape.<br><em>Ridiculous</em> Price.</h2>
+              <p style="font-size:0.82rem;color:var(--ink-secondary);margin:0;line-height:1.42;">
+                Every batch is AI freshness-verified straight from local farms—zero middleman markup.
               </p>
-              <span id="owner-mode-chip" style="display:none;font-size:0.72rem;font-weight:700;color:var(--accent-emerald);"></span>
+              <span id="owner-mode-chip" style="display:none;font-size:0.74rem;font-weight:800;color:var(--accent-primary);margin-top:0.4rem;"></span>
             </div>
             <img src="./assets/mangoes.jpg" alt="Fresh freckled Carabao mangoes" class="uf-promo-thumb">
           </div>
         </div>
 
-        <!-- Grocery Grid Header + 2-Col Mobile / 4-Col Desktop Product Grid -->
+        <!-- 2-Col Mobile / 4-Col Desktop Grocery Grid -->
         <div class="uf-grid-header">
-          <div>
-            <h2 class="uf-heading" style="font-size:clamp(1.35rem,2.4vw,1.75rem);">Freshly Rescued Today</h2>
-          </div>
-          <span id="marketplace-count-label" class="uf-tabular" style="font-size:0.8rem;font-weight:600;color:var(--ink-secondary);">10 deals available</span>
+          <h2 class="uf-heading" style="font-size:clamp(1.35rem,2.4vw,1.75rem);">Fresh Deals Today</h2>
+          <span id="marketplace-count-label" class="uf-tabular" style="font-size:0.8rem;font-weight:700;color:var(--ink-secondary);">10 deals</span>
         </div>
 
         <div id="marketplace-grid" class="uf-market-grid" aria-live="polite"></div>
@@ -240,7 +295,7 @@
     </div>
 
     <!-- ================================================================
-         VIEW 02: AI PRODUCE SCANNER (Separate Screen)
+         VIEW 02: AI PRODUCE SCANNER
          ================================================================ -->
     <div id="view-scanner" class="uf-view" data-view="scanner">
       <section id="scanner" class="uf-view-top-pad" aria-labelledby="scanner-heading">
@@ -252,15 +307,15 @@
             </h2>
           </div>
           <p class="uf-section-note">
-            Tap any sample imperfect harvest—or upload a crop photo—to verify safety, get a fair discount price, and list it straight to the Shop.
+            Pick any sample imperfect harvest—or upload a crop photo—to verify safety, price it fairly, and post straight to Deals.
           </p>
         </div>
 
         <div class="uf-scanner-layout">
           <div class="lg-card uf-scanner-card">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
-              <span class="uf-kicker">1. Pick Sample or Upload Photo</span>
-              <button type="button" id="trigger-cv-scan-btn" class="lg-btn" style="padding:0.44rem 0.9rem;font-size:0.76rem;">
+              <span class="uf-kicker">1. Pick Sample or Upload</span>
+              <button type="button" id="trigger-cv-scan-btn" class="lg-btn" style="padding:0.44rem 0.9rem;font-size:0.78rem;">
                 Re-Scan
               </button>
             </div>
@@ -316,21 +371,21 @@
 
             <div class="uf-score-grid">
               <div class="uf-score-pill-card">
-                <span style="font-size:0.7rem;font-weight:600;color:var(--ink-secondary);">Grade</span>
-                <div id="scan-out-grade" class="uf-score-val" style="color:var(--accent-bronze);">Grade B</div>
+                <span style="font-size:0.7rem;font-weight:700;color:var(--ink-secondary);">Grade</span>
+                <div id="scan-out-grade" class="uf-score-val" style="color:var(--accent-gold);">Grade B</div>
               </div>
               <div class="uf-score-pill-card">
-                <span style="font-size:0.7rem;font-weight:600;color:var(--ink-secondary);">Freshness</span>
-                <div id="scan-out-freshness" class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">99%</div>
+                <span style="font-size:0.7rem;font-weight:700;color:var(--ink-secondary);">Freshness</span>
+                <div id="scan-out-freshness" class="uf-score-val uf-tabular" style="color:var(--accent-primary);">99%</div>
               </div>
               <div class="uf-score-pill-card">
-                <span style="font-size:0.7rem;font-weight:600;color:var(--ink-secondary);">Safety</span>
-                <div id="scan-out-safety" class="uf-score-val" style="color:var(--accent-emerald);">Passed</div>
+                <span style="font-size:0.7rem;font-weight:700;color:var(--ink-secondary);">Safety</span>
+                <div id="scan-out-safety" class="uf-score-val" style="color:var(--accent-primary);">Passed</div>
               </div>
             </div>
 
             <form id="scanner-publish-form" style="display:flex;flex-direction:column;gap:0.8rem;padding-top:0.8rem;border-top:1px solid var(--lg-border-subtle);">
-              <span class="uf-kicker">3. Post Straight to Shop</span>
+              <span class="uf-kicker">3. Post Straight to Deals</span>
 
               <div class="uf-form-grid-2">
                 <div class="uf-field">
@@ -368,7 +423,7 @@
                 <input type="text" id="publish-defect-note" class="uf-input" value="Twisted twin roots — 100% crunchy &amp; sweet inside" required>
               </div>
 
-              <button type="submit" class="lg-btn lg-btn--emerald" style="width:100%;padding:0.86rem;font-size:0.9rem;">
+              <button type="submit" class="lg-btn lg-btn--tangerine" style="width:100%;padding:0.88rem;font-size:0.92rem;">
                 Post Deal to Shop &nearr;
               </button>
             </form>
@@ -378,7 +433,7 @@
     </div>
 
     <!-- ================================================================
-         VIEW 03: FARMER SELLER HUB (Separate Screen)
+         VIEW 03: SELLER HUB
          ================================================================ -->
     <div id="view-farmer-dashboard" class="uf-view" data-view="farmer-dashboard">
       <section id="farmer-dashboard" class="uf-view-top-pad" aria-labelledby="farmer-heading">
@@ -390,7 +445,7 @@
             </h2>
           </div>
           <p class="uf-section-note">
-            Manage live produce stock, pause/unpause items with one tap, and track direct incoming orders.
+            Manage live produce stock, toggle items with one tap, and track incoming direct orders.
           </p>
         </div>
 
@@ -403,7 +458,7 @@
           <div class="lg-card uf-kpi-glass-card">
             <span class="uf-kicker">Produce Rescued</span>
             <div id="farmer-kpi-kg" class="uf-kpi-number uf-tabular">7,160 kg</div>
-            <span style="font-size:0.78rem;color:var(--ink-secondary);">Saved from cosmetic rejection</span>
+            <span style="font-size:0.78rem;color:var(--ink-secondary);">Saved from cosmetic waste</span>
           </div>
           <div class="lg-card uf-kpi-glass-card">
             <span class="uf-kicker">Live Deals</span>
@@ -419,7 +474,7 @@
                 <span class="uf-kicker">Your Listings</span>
                 <h3 class="uf-heading" style="font-size:1.35rem;margin-top:0.15rem;">Live Stock</h3>
               </div>
-              <button type="button" class="lg-btn" style="padding:0.45rem 0.9rem;font-size:0.76rem;" data-jump-section="scanner">+ Scan New Crop</button>
+              <button type="button" class="lg-btn lg-btn--tangerine" style="padding:0.46rem 0.95rem;font-size:0.78rem;" data-jump-section="scanner">+ Scan New Crop</button>
             </div>
             <div id="farmer-inventory-list" class="uf-stack-list"></div>
           </div>
@@ -430,13 +485,13 @@
                 <span class="uf-kicker">Direct Orders</span>
                 <h3 class="uf-heading" style="font-size:1.35rem;margin-top:0.15rem;">Incoming Orders</h3>
               </div>
-              <span style="font-size:0.72rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:999px;background:var(--accent-emerald-soft);color:var(--accent-emerald);">Live</span>
+              <span style="font-size:0.72rem;font-weight:800;padding:0.2rem 0.65rem;border-radius:999px;background:var(--accent-primary-soft);color:var(--accent-primary);">Live</span>
             </div>
             <div id="farmer-orders-list" class="uf-stack-list"></div>
           </div>
         </div>
 
-        <div style="margin-top:2.25rem;">
+        <div style="margin-top:2.2rem;">
           <span class="uf-kicker">Partner Farms</span>
           <h3 class="uf-heading" style="font-size:1.55rem;margin:0.2rem 0 0;">Local Grower <em>Collectives</em></h3>
           <div id="partner-farms-grid" class="uf-farms-grid"></div>
@@ -445,18 +500,13 @@
     </div>
   </main>
 
-  <!-- ====================================================================
-       CONCENTRIC LIQUID GLASS SHEET 01: PRODUCT DETAIL & FRESHNESS REPORT
-       ==================================================================== -->
+  <!-- Concentric Liquid Glass Sheets: Product Detail, Basket, Owner Testing Access -->
   <div id="trust-report-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="Produce Details">
     <div class="lg-sheet uf-trust-sheet">
       <div id="trust-report-content" class="lg-sheet-inner uf-trust-inner"></div>
     </div>
   </div>
 
-  <!-- ====================================================================
-       CONCENTRIC LIQUID GLASS SHEET 02: GROCERY BASKET & 1-TAP CHECKOUT
-       ==================================================================== -->
   <div id="cart-sheet-backdrop" class="lg-sheet-backdrop uf-cart-backdrop" role="dialog" aria-modal="true" aria-label="Grocery Basket">
     <div class="lg-sheet uf-cart-sheet">
       <div class="lg-sheet-inner uf-cart-inner">
@@ -477,9 +527,6 @@
     </div>
   </div>
 
-  <!-- ====================================================================
-       CONCENTRIC LIQUID GLASS SHEET 03: OWNER TESTING ACCESS (Private)
-       ==================================================================== -->
   <div id="owner-access-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="Owner Testing Access">
     <div class="lg-sheet uf-owner-sheet">
       <div class="lg-sheet-inner uf-trust-inner">
@@ -497,12 +544,12 @@
           </p>
           <div style="display:flex;gap:0.5rem;">
             <input type="password" id="owner-passcode-input" class="uf-input" placeholder="Owner passcode (OWNER)" style="flex:1;">
-            <button type="submit" class="lg-btn lg-btn--prominent">Unlock</button>
+            <button type="submit" class="lg-btn lg-btn--tangerine">Unlock</button>
           </div>
         </form>
 
         <div id="owner-unlocked-panel" style="display:none;flex-direction:column;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--lg-border-subtle);">
-          <span class="uf-kicker" style="color:var(--accent-emerald);">Owner Testing Unlocked</span>
+          <span class="uf-kicker">Owner Testing Unlocked</span>
           <div class="uf-access-cards-stack">
             <button type="button" class="uf-access-tier-card is-active" data-owner-mode="retail">
               <div style="font-weight:700;font-size:0.9rem;">Standard Grocery Mode (1 kg Packs)</div>
@@ -523,7 +570,7 @@
   <div id="uf-toast" class="lg-toast" role="status" aria-live="polite"></div>
 
   <!-- Floating Apple Liquid Glass Back-to-Top Button -->
-  <button type="button" id="back-to-top-btn" class="lg-pill lg-refractive uf-back-to-top" aria-label="Back to top" title="Back to top">
+  <button type="button" id="back-to-top-btn" class="lg-pill uf-back-to-top" aria-label="Back to top" title="Back to top">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <line x1="12" y1="19" x2="12" y2="5"></line>
       <polyline points="5 12 12 5 19 12"></polyline>
