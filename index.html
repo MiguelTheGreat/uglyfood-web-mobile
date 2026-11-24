@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UglyFood AI — Rescued Harvest Marketplace &amp; AI Produce Grader</title>
-  <meta name="description" content="UglyFood AI connects local farmers directly with households and commercial kitchens to buy and sell AI-verified safe, imperfect produce at 45–52% below retail prices.">
+  <title>UglyFood — Cheap, Fresh Imperfect Produce Delivered Direct</title>
+  <meta name="description" content="Buy weird-looking, super fresh vegetables and fruits straight from local farms for up to 52% less than supermarket prices.">
 
   <meta name="theme-color" content="#f6f2e9">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,12 +13,12 @@
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
   <link rel="manifest" href="./manifest.json">
 
-  <!-- Fresh Organic Editorial Typography: Fraunces + Plus Jakarta Sans -->
+  <!-- Fraunces (Warm Organic Serif) + Plus Jakarta Sans (Clean Grocery UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Apple Liquid Glass Design System + UglyFood AI Styles -->
+  <!-- GPU-Accelerated Apple Liquid Glass + Grocery App Styles -->
   <link rel="stylesheet" href="./css/liquid-glass.css">
   <link rel="stylesheet" href="./css/uglyfood.css">
 </head>
@@ -30,38 +30,37 @@
     <div class="lg-orb lg-orb--3"></div>
   </div>
 
-  <!-- Apple HIG Soft Scroll Edge Effects -->
+  <!-- GPU Scroll Edge Haze -->
   <div class="scroll-edge-top" aria-hidden="true"></div>
   <div class="scroll-edge-bottom" aria-hidden="true"></div>
 
   <!-- ====================================================================
-       FLOATING APPLE LIQUID GLASS TOP HEADER
-       Single-Row Everywhere · Special Access Vault Instead of Role Switcher
+       SINGLE-ROW FLOATING APPLE LIQUID GLASS HEADER
        ==================================================================== -->
   <header class="uf-floating-header">
     <div class="uf-header-row">
-      <!-- Capsule 1: Brand + Top Navigation with Sliding Spring Glass Pill -->
+      <!-- Brand + Desktop View Switcher -->
       <div class="lg-pill lg-refractive uf-brand-nav-pill">
-        <a href="#top" class="uf-brand">
+        <a href="#marketplace" class="uf-brand">
           UglyFood
         </a>
 
         <nav id="top-nav-track" class="lg-spring-track uf-top-nav-track" aria-label="Primary navigation">
           <div class="lg-spring-indicator" aria-hidden="true"></div>
-          <a href="#marketplace" class="lg-spring-item is-active" data-top-nav="marketplace">Market</a>
+          <a href="#marketplace" class="lg-spring-item is-active" data-top-nav="marketplace">Shop</a>
           <a href="#scanner" class="lg-spring-item" data-top-nav="scanner">AI Scan</a>
-          <a href="#farmer-dashboard" class="lg-spring-item" data-top-nav="farmer-dashboard">Farmer</a>
+          <a href="#farmer-dashboard" class="lg-spring-item" data-top-nav="farmer-dashboard">Sell</a>
         </nav>
       </div>
 
-      <!-- Capsule 2: Special Access + Utility Pill -->
+      <!-- Discreet Utility Capsule (Owner Testing Lock · Mobile Frame · Theme · Basket) -->
       <div class="lg-pill lg-refractive uf-utility-pill">
-        <button type="button" id="special-access-btn" class="uf-special-access-trigger" aria-label="Open Special Access Portal" title="Special Access (Partner &amp; Wholesale Tiers)">
+        <button type="button" id="owner-access-btn" class="uf-icon-btn" aria-label="Owner Access" title="Owner Testing Access">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
-          <span id="special-access-badge-text">Special Access</span>
+          <span class="uf-owner-dot" aria-hidden="true"></span>
         </button>
 
         <button type="button" id="mobile-frame-toggle-btn" class="uf-icon-btn uf-desktop-only-btn" aria-label="Toggle Mobile Frame Preview" title="Preview Mobile Frame">
@@ -71,13 +70,13 @@
           </svg>
         </button>
 
-        <button type="button" id="theme-toggle-btn" class="uf-icon-btn" aria-label="Toggle Light and Dark Theme" title="Switch Light / Dark Theme">
+        <button type="button" id="theme-toggle-btn" class="uf-icon-btn" aria-label="Toggle Light and Dark Theme" title="Switch Theme">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
 
-        <button type="button" id="header-cart-btn" class="uf-icon-btn" data-open-cart aria-label="Open Rescued Harvest Cart" title="Open Cart">
+        <button type="button" id="header-cart-btn" class="uf-icon-btn" data-open-cart aria-label="Open Basket" title="Open Basket">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -90,10 +89,9 @@
   </header>
 
   <!-- ====================================================================
-       LARGE MOBILE FLOATING LIQUID GLASS TAB DOCK (Apple iOS 26 Style)
-       Generous 54px+ touch targets with sliding spring glass indicator
+       PERMANENTLY FIXED MOBILE BOTTOM LIQUID GLASS DOCK
        ==================================================================== -->
-  <nav id="mobile-liquid-dock" class="uf-mobile-dock" aria-label="Mobile quick navigation">
+  <nav id="mobile-liquid-dock" class="uf-mobile-dock" aria-label="Mobile navigation">
     <div class="lg-pill lg-refractive uf-mobile-dock-pill">
       <div id="mobile-nav-track" class="lg-spring-track uf-mobile-dock-track">
         <div class="lg-spring-indicator" aria-hidden="true"></div>
@@ -105,7 +103,7 @@
             <path d="M9 13v4"></path>
             <path d="M15 13v4"></path>
           </svg>
-          <span>Market</span>
+          <span>Shop</span>
         </button>
 
         <button type="button" class="lg-spring-item uf-mobile-tab-btn" data-mobile-nav="scanner">
@@ -125,7 +123,7 @@
             <path d="M12 12C12 7 7 4 3 4c0 5 3 8 9 8z"></path>
             <path d="M12 12c0-5 5-8 9-8 0 5-3 8-9 8z"></path>
           </svg>
-          <span>Farmer</span>
+          <span>Sell</span>
         </button>
 
         <button type="button" class="lg-spring-item uf-mobile-tab-btn" data-mobile-nav="cart">
@@ -134,7 +132,7 @@
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          <span>Cart</span>
+          <span>Basket</span>
           <span class="uf-mobile-tab-badge uf-tabular" data-cart-badge>3</span>
         </button>
       </div>
@@ -142,422 +140,351 @@
   </nav>
 
   <!-- ====================================================================
+       FLOATING LIVE BASKET BAR (Appears Whenever Basket Has Items)
+       ==================================================================== -->
+  <div id="live-cart-bar" class="lg-pill uf-live-cart-bar" role="button" tabindex="0" aria-label="View basket and checkout">
+    <div>
+      <div id="live-cart-main" class="uf-tabular" style="font-size:0.88rem;font-weight:700;">3 items · ₱231</div>
+      <div id="live-cart-savings" class="uf-tabular" style="font-size:0.74rem;opacity:0.82;">You save ₱209 vs. grocery retail</div>
+    </div>
+    <span class="uf-live-cart-pill-cta">Checkout &rarr;</span>
+  </div>
+
+  <!-- ====================================================================
        MAIN PAGE SHELL
        ==================================================================== -->
   <main id="top" class="uf-page-shell">
 
     <!-- ================================================================
-         VIEW 01: MARKET (HERO + AI-VERIFIED RESCUED MARKETPLACE)
+         VIEW 01: GROCERY STOREFRONT (Immediate Shopping Experience)
          ================================================================ -->
     <div id="view-marketplace" class="uf-view is-active" data-view="marketplace">
-      <section class="uf-hero" aria-labelledby="hero-main-heading">
-        <div class="uf-hero-grid">
-          <div>
-            <div class="lg-pill uf-mode-chip">
-              <span class="uf-mode-dot" aria-hidden="true"></span>
-              <span id="hero-role-indicator">Individual Buyer · 1–5 kg Retail Packs</span>
-            </div>
+      <div class="uf-view-top-pad">
 
-            <h1 id="hero-main-heading" class="uf-hero-title">
-              Imperfect <em>Form</em>,<br>Verified Purity.
-            </h1>
+        <!-- Delivery Slot + Instant Search + Swipeable Category Chips -->
+        <div class="uf-grocery-top">
+          <div class="uf-delivery-strip">
+            <button type="button" id="delivery-slot-btn" class="uf-delivery-pill" title="Tap to switch delivery slot">
+              <span class="uf-delivery-dot" aria-hidden="true"></span>
+              <span id="delivery-slot-text">Deliver to Metro Manila · Today, 2–4 PM</span>
+              <span style="opacity:0.55;">&#9662;</span>
+            </button>
 
-            <p class="uf-hero-lead">
-              Supermarket cosmetic standards reject <strong>34% of healthy local harvests</strong> for a curved stem, twin root, or sugar freckle.
-              <strong>UglyFood AI</strong> pairs computer vision freshness grading with direct farm-to-kitchen delivery—offering
-              <strong>100% safe produce at up to 52% off</strong> while returning <strong>89% of every peso</strong> directly to local growers.
-            </p>
-
-            <div class="uf-hero-ctas">
-              <a href="#marketplace" class="lg-btn lg-btn--prominent" id="hero-shop-cta">
-                Shop Rescued Produce &darr;
-              </a>
-              <button type="button" class="lg-btn lg-btn--bronze" id="hero-scan-cta">
-                Scan &amp; Sell Crops &nearr;
-              </button>
-            </div>
+            <span id="storefront-savings-pill" class="uf-savings-tag">
+              Up to 52% cheaper than supermarkets
+            </span>
           </div>
 
-          <!-- Curved Concentric Liquid Glass Specimen Card -->
-          <div class="lg-card uf-hero-glass-frame">
-            <div class="uf-hero-media-wrap">
-              <img src="./assets/carrots.jpg" alt="Heirloom twisted twin organic carrots freshly harvested">
-              <div class="lg-media-dimmer" aria-hidden="true"></div>
-              <div class="lg-clear uf-hero-media-top-pill">
-                <span style="width:7px;height:7px;border-radius:50%;background:#63c192;display:inline-block;"></span>
-                AI Verified · 99.4% Freshness
-              </div>
-              <div class="lg-clear uf-media-hud-bar">
-                <span>Twin Highland Carrots · Atok, Benguet</span>
-                <span class="uf-tabular">₱68 / kg (-48%)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4 Curved Liquid Glass Live Impact Cards -->
-        <div class="uf-impact-strip" aria-label="Live Platform Metrics">
-          <div class="lg-card uf-stat-glass-card">
-            <span class="uf-kicker">Food Rescued</span>
-            <div id="ticker-waste-kg" class="uf-stat-value uf-tabular">148,920 kg</div>
-            <span class="uf-stat-sub">Diverted directly from farm waste</span>
-          </div>
-          <div class="lg-card uf-stat-glass-card">
-            <span class="uf-kicker">Farmer Earnings</span>
-            <div id="ticker-farmer-php" class="uf-stat-value uf-tabular">₱6,420,500</div>
-            <span class="uf-stat-sub">89% direct payout to smallholders</span>
-          </div>
-          <div class="lg-card uf-stat-glass-card">
-            <span class="uf-kicker">Buyer Savings</span>
-            <div id="ticker-savings-pct" class="uf-stat-value uf-tabular">48% Off</div>
-            <span class="uf-stat-sub">Average savings vs. supermarket retail</span>
-          </div>
-          <div class="lg-card uf-stat-glass-card">
-            <span class="uf-kicker">Your Monthly Impact</span>
-            <div id="personal-saved-summary" class="uf-stat-value uf-tabular">18.5 kg · ₱1,140</div>
-            <span class="uf-stat-sub">Rescued through your direct orders</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="marketplace" class="uf-section" aria-labelledby="marketplace-heading">
-        <div class="uf-section-header">
-          <div>
-            <span class="uf-kicker">Direct Harvest Exchange</span>
-            <h2 id="marketplace-heading" class="uf-section-title">
-              AI-Verified <em>Rescued</em> Marketplace
-            </h2>
-          </div>
-          <p id="marketplace-mode-note" class="uf-section-note">
-            Individual Buyer mode — showing 1 kg retail packs harvested within 24 hours and verified 100% safe by computer vision.
-          </p>
-        </div>
-
-        <!-- Curved Liquid Glass Filter Bar -->
-        <div class="lg-card uf-filter-bar" aria-label="Marketplace Filters">
-          <div class="uf-filter-grid">
-            <div class="uf-field">
-              <label for="filter-search" class="uf-field-label">Search produce, defect, or farm</label>
+          <div class="uf-search-row">
+            <div class="lg-card uf-search-shell">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
               <input
                 type="search"
                 id="filter-search"
-                class="uf-input"
-                placeholder="e.g. Twisted carrots, mangoes, Benguet..."
+                class="uf-search-input"
+                placeholder="Search cheap carrots, mangoes, squash, tomatoes..."
+                aria-label="Search produce"
               >
             </div>
 
-            <div class="uf-field">
-              <label for="filter-grade" class="uf-field-label">AI Visual Grade</label>
-              <select id="filter-grade" class="uf-select">
-                <option value="All">All Grades (100% Safe)</option>
-                <option value="Grade A-">Grade A- · Slight Blemish</option>
-                <option value="Grade B">Grade B · Oddly Shaped</option>
-                <option value="Grade C">Grade C · Bulk &amp; Culinary</option>
-              </select>
-            </div>
-
-            <div class="uf-field">
-              <label for="filter-region" class="uf-field-label">Regional Hub</label>
-              <select id="filter-region" class="uf-select">
-                <option value="All">All Philippine Farm Hubs</option>
-                <option value="Benguet">Benguet (&lt; 50 km Hub)</option>
-                <option value="Laguna">Laguna (&lt; 35 km Hub)</option>
-                <option value="Bukidnon">Bukidnon Terraces</option>
-                <option value="Zambales">Zambales Valley</option>
-                <option value="Batangas">Batangas Ridges</option>
-              </select>
-            </div>
-
-            <div class="uf-field">
-              <label for="filter-max-price" class="uf-field-label">
-                <span>Max Price</span>
-                <strong id="filter-price-display" class="uf-tabular" style="color:var(--accent-bronze);">₱250 / kg</strong>
-              </label>
-              <input
-                type="range"
-                id="filter-max-price"
-                class="lg-range-slider"
-                min="40"
-                max="250"
-                step="5"
-                value="250"
-              >
-            </div>
+            <select id="filter-sort" class="uf-sort-select" aria-label="Sort produce">
+              <option value="featured">Sort: Best Steals</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="discount-desc">Biggest % Off</option>
+              <option value="fresh-desc">Freshest Harvest</option>
+            </select>
           </div>
 
-          <div class="uf-filter-bottom">
-            <div class="uf-category-row" role="group" aria-label="Produce category">
-              <button type="button" class="lg-btn is-active" data-category-pill="All">All Harvests</button>
-              <button type="button" class="lg-btn" data-category-pill="Vegetables">Vegetables</button>
-              <button type="button" class="lg-btn" data-category-pill="Fruits">Fruits</button>
-              <button type="button" class="lg-btn" data-category-pill="Root Crops">Root Crops</button>
-            </div>
-
-            <div style="display:flex;align-items:center;gap:0.75rem;">
-              <span id="marketplace-count-label" class="uf-tabular" style="font-size:0.8rem;color:var(--ink-secondary);font-weight:600;">10 verified lots</span>
-              <button type="button" id="reset-filters-btn" class="lg-btn" style="padding:0.45rem 0.9rem;font-size:0.78rem;">
-                Reset
-              </button>
-            </div>
+          <!-- Horizontal Swipeable Grocery Category Chips -->
+          <div class="uf-chip-scroller" role="group" aria-label="Produce Categories">
+            <button type="button" class="uf-cat-chip is-active" data-category-pill="All">All Deals</button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Steals">Under ₱70</button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Vegetables">Vegetables</button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Fruits">Fruits</button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Root Crops">Root Crops</button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Benguet">Benguet Fresh</button>
+            <button type="button" class="uf-cat-chip" data-category-pill="Laguna">Laguna Local</button>
           </div>
         </div>
 
-        <!-- Curved Liquid Glass Product Cards Grid -->
+        <!-- Flash Deals & Rescue Box Promo Shelf -->
+        <div class="uf-promo-shelf">
+          <div class="uf-promo-card uf-promo-card--featured">
+            <div>
+              <span class="uf-kicker" style="color:#a7e8c4;">Today's Flash Rescue Box</span>
+              <h1 class="uf-promo-title" style="color:#ffffff;">5 kg Mystery Ugly Box</h1>
+              <p style="font-size:0.82rem;opacity:0.88;margin:0 0 0.85rem;line-height:1.4;">
+                Assorted weird-shaped veggies &amp; fruits harvested this morning. 100% crisp inside.
+              </p>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <button type="button" id="add-mystery-box-btn" class="lg-btn" style="padding:0.54rem 1.05rem;font-size:0.8rem;background:#ffffff;color:#143d28;border:none;">
+                  + Add Box · ₱249
+                </button>
+                <span class="uf-tabular" style="font-size:0.78rem;text-decoration:line-through;opacity:0.72;">₱510</span>
+              </div>
+            </div>
+            <img src="./assets/carrots.jpg" alt="Mystery Ugly Box assortment" class="uf-promo-thumb">
+          </div>
+
+          <div class="lg-card uf-promo-card">
+            <div>
+              <span class="uf-kicker">Direct From Small Farms</span>
+              <h2 class="uf-promo-title">Ugly Outside.<br><em>Fresh</em> Inside.</h2>
+              <p style="font-size:0.8rem;color:var(--ink-secondary);margin:0 0 0.75rem;line-height:1.42;">
+                Every batch is AI freshness-checked so you pay half price without sacrificing taste.
+              </p>
+              <span id="owner-mode-chip" style="display:none;font-size:0.72rem;font-weight:700;color:var(--accent-emerald);"></span>
+            </div>
+            <img src="./assets/mangoes.jpg" alt="Fresh freckled Carabao mangoes" class="uf-promo-thumb">
+          </div>
+        </div>
+
+        <!-- Grocery Grid Header + 2-Col Mobile / 4-Col Desktop Product Grid -->
+        <div class="uf-grid-header">
+          <div>
+            <h2 class="uf-heading" style="font-size:clamp(1.35rem,2.4vw,1.75rem);">Freshly Rescued Today</h2>
+          </div>
+          <span id="marketplace-count-label" class="uf-tabular" style="font-size:0.8rem;font-weight:600;color:var(--ink-secondary);">10 deals available</span>
+        </div>
+
         <div id="marketplace-grid" class="uf-market-grid" aria-live="polite"></div>
-      </section>
+      </div>
     </div>
 
     <!-- ================================================================
-         VIEW 02: AI PRODUCE SCANNER & COMPUTER VISION GRADER
+         VIEW 02: AI PRODUCE SCANNER (Separate Screen)
          ================================================================ -->
     <div id="view-scanner" class="uf-view" data-view="scanner">
-      <section id="scanner" class="uf-section uf-view-section" aria-labelledby="scanner-heading">
-      <div class="uf-section-header">
-        <div>
-          <span class="uf-kicker">Computer Vision Grader · Farmer Tool</span>
-          <h2 id="scanner-heading" class="uf-section-title">
-            AI Produce <em>Scanner</em> &amp; Instant Listing
-          </h2>
-        </div>
-        <p class="uf-section-note">
-          Tap any sample imperfect harvest—or upload your own crop photo—to run an optical safety check and publish directly to the live Marketplace.
-        </p>
-      </div>
-
-      <div class="uf-scanner-layout">
-        <!-- Left Curved Liquid Glass Card: Presets, Laser Viewport & Upload -->
-        <div class="lg-card uf-scanner-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
-            <span class="uf-kicker">1. Pick Sample Crop or Upload</span>
-            <button type="button" id="trigger-cv-scan-btn" class="lg-btn" style="padding:0.46rem 0.95rem;font-size:0.78rem;">
-              Re-Scan Crop
-            </button>
-          </div>
-
-          <div class="uf-preset-strip" role="group" aria-label="Sample Imperfect Crops">
-            <button type="button" class="uf-preset-btn is-selected" data-scanner-preset="preset-carrots">
-              <img src="./assets/carrots.jpg" alt="Twisted Carrots preset">
-              <span class="uf-preset-name">Twisted Carrots</span>
-            </button>
-            <button type="button" class="uf-preset-btn" data-scanner-preset="preset-mangoes">
-              <img src="./assets/mangoes.jpg" alt="Spotted Mangoes preset">
-              <span class="uf-preset-name">Spotted Mangoes</span>
-            </button>
-            <button type="button" class="uf-preset-btn" data-scanner-preset="preset-tomatoes">
-              <img src="./assets/tomatoes.jpg" alt="Ribbed Tomatoes preset">
-              <span class="uf-preset-name">Ribbed Tomatoes</span>
-            </button>
-            <button type="button" class="uf-preset-btn" data-scanner-preset="preset-eggplants">
-              <img src="./assets/eggplants.jpg" alt="Curved Eggplants preset">
-              <span class="uf-preset-name">Curved Eggplants</span>
-            </button>
-          </div>
-
-          <!-- Rounded CV Viewport with Clear Liquid Glass HUD -->
-          <div id="cv-viewport" class="uf-cv-viewport is-analyzed">
-            <img id="cv-preview-img" src="./assets/carrots.jpg" alt="Crop specimen under computer vision analysis">
-            <div class="uf-cv-laser" aria-hidden="true"></div>
-            <div id="cv-boxes-layer" class="uf-cv-boxes" aria-hidden="true"></div>
-            <div class="lg-media-dimmer" aria-hidden="true"></div>
-            <div class="lg-clear uf-media-hud-bar">
-              <span id="cv-hud-status">Passed · 100% Safe for Consumption</span>
-              <span id="cv-hud-confidence" class="uf-tabular">Grade B · 99.4% Confidence</span>
-            </div>
-          </div>
-
-          <div id="scanner-upload-zone" class="uf-upload-zone" role="button" tabindex="0" aria-label="Upload custom crop image">
-            <div>
-              <div style="font-weight:700;font-size:0.86rem;color:var(--ink-primary);">Upload a Harvest Photo</div>
-              <div style="font-size:0.78rem;color:var(--ink-secondary);">Drag &amp; drop or tap to browse your camera roll</div>
-            </div>
-            <span class="lg-btn" style="padding:0.48rem 0.95rem;font-size:0.78rem;pointer-events:none;">Browse</span>
-            <input type="file" id="scanner-file-input" accept="image/*" style="display:none;">
-          </div>
-        </div>
-
-        <!-- Right Curved Liquid Glass Card: Automated Grading & One-Click Publish -->
-        <div class="lg-card uf-scanner-card">
+      <section id="scanner" class="uf-view-top-pad" aria-labelledby="scanner-heading">
+        <div class="uf-section-header">
           <div>
-            <span class="uf-kicker">2. Automated Safety &amp; Grading Output</span>
-            <h3 class="uf-heading" style="font-size:1.55rem;margin:0.25rem 0 0.75rem;">
-              Edibility &amp; Fair Pricing Report
-            </h3>
-            <div id="cv-telemetry-console" class="uf-cv-readout uf-tabular" aria-live="polite">
-              Optical scan confirms 99.4% epidermal continuity. Twin taproot curvature is purely cosmetic—zero soft rot or mold detected. Approved for direct harvest sale.
+            <span class="uf-kicker">Instant Freshness Grader</span>
+            <h2 id="scanner-heading" class="uf-section-title">
+              AI Produce <em>Scanner</em>
+            </h2>
+          </div>
+          <p class="uf-section-note">
+            Tap any sample imperfect harvest—or upload a crop photo—to verify safety, get a fair discount price, and list it straight to the Shop.
+          </p>
+        </div>
+
+        <div class="uf-scanner-layout">
+          <div class="lg-card uf-scanner-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+              <span class="uf-kicker">1. Pick Sample or Upload Photo</span>
+              <button type="button" id="trigger-cv-scan-btn" class="lg-btn" style="padding:0.44rem 0.9rem;font-size:0.76rem;">
+                Re-Scan
+              </button>
+            </div>
+
+            <div class="uf-preset-strip" role="group" aria-label="Sample Imperfect Crops">
+              <button type="button" class="uf-preset-btn is-selected" data-scanner-preset="preset-carrots">
+                <img src="./assets/carrots.jpg" alt="Twisted Carrots">
+                <span class="uf-preset-name">Twisted Carrots</span>
+              </button>
+              <button type="button" class="uf-preset-btn" data-scanner-preset="preset-mangoes">
+                <img src="./assets/mangoes.jpg" alt="Spotted Mangoes">
+                <span class="uf-preset-name">Spotted Mangoes</span>
+              </button>
+              <button type="button" class="uf-preset-btn" data-scanner-preset="preset-tomatoes">
+                <img src="./assets/tomatoes.jpg" alt="Ribbed Tomatoes">
+                <span class="uf-preset-name">Ribbed Tomatoes</span>
+              </button>
+              <button type="button" class="uf-preset-btn" data-scanner-preset="preset-eggplants">
+                <img src="./assets/eggplants.jpg" alt="Curved Eggplants">
+                <span class="uf-preset-name">Curved Eggplants</span>
+              </button>
+            </div>
+
+            <div id="cv-viewport" class="uf-cv-viewport is-analyzed">
+              <img id="cv-preview-img" src="./assets/carrots.jpg" alt="Crop specimen under inspection">
+              <div class="uf-cv-laser" aria-hidden="true"></div>
+              <div id="cv-boxes-layer" class="uf-cv-boxes" aria-hidden="true"></div>
+              <div class="lg-media-dimmer" aria-hidden="true"></div>
+              <div class="lg-clear uf-media-hud-bar">
+                <span id="cv-hud-status">Passed · 100% Safe to Eat</span>
+                <span id="cv-hud-confidence" class="uf-tabular">Grade B · 99.4%</span>
+              </div>
+            </div>
+
+            <div id="scanner-upload-zone" class="uf-upload-zone" role="button" tabindex="0" aria-label="Upload custom crop image">
+              <div>
+                <div style="font-weight:700;font-size:0.86rem;color:var(--ink-primary);">Upload a Produce Photo</div>
+                <div style="font-size:0.76rem;color:var(--ink-secondary);">Tap to pick from your phone or drop an image</div>
+              </div>
+              <span class="lg-btn" style="padding:0.46rem 0.9rem;font-size:0.76rem;pointer-events:none;">Browse</span>
+              <input type="file" id="scanner-file-input" accept="image/*" style="display:none;">
             </div>
           </div>
 
-          <div class="uf-score-grid">
-            <div class="uf-score-pill-card">
-              <span style="font-size:0.72rem;font-weight:600;color:var(--ink-secondary);">Visual Grade</span>
-              <div id="scan-out-grade" class="uf-score-val" style="color:var(--accent-bronze);">Grade B</div>
-            </div>
-            <div class="uf-score-pill-card">
-              <span style="font-size:0.72rem;font-weight:600;color:var(--ink-secondary);">Freshness</span>
-              <div id="scan-out-freshness" class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">99%</div>
-            </div>
-            <div class="uf-score-pill-card">
-              <span style="font-size:0.72rem;font-weight:600;color:var(--ink-secondary);">Safety Check</span>
-              <div id="scan-out-safety" class="uf-score-val" style="color:var(--accent-emerald);">Passed</div>
-            </div>
-          </div>
-
-          <form id="scanner-publish-form" style="display:flex;flex-direction:column;gap:0.85rem;padding-top:0.85rem;border-top:1px solid var(--lg-border-subtle);">
-            <span class="uf-kicker">3. One-Click Publish to Marketplace</span>
-
-            <div class="uf-form-grid-2">
-              <div class="uf-field">
-                <label for="publish-crop-title" class="uf-field-label">Crop Lot Title</label>
-                <input type="text" id="publish-crop-title" class="uf-input" value="Twisted Highland Carrots" required>
-              </div>
-              <div class="uf-field">
-                <label for="publish-crop-category" class="uf-field-label">Category</label>
-                <select id="publish-crop-category" class="uf-select">
-                  <option value="Root Crops">Root Crops</option>
-                  <option value="Vegetables">Vegetables</option>
-                  <option value="Fruits">Fruits</option>
-                </select>
+          <div class="lg-card uf-scanner-card">
+            <div>
+              <span class="uf-kicker">2. Automated Freshness Check</span>
+              <h3 class="uf-heading" style="font-size:1.45rem;margin:0.2rem 0 0.65rem;">Safety &amp; Fair Price Result</h3>
+              <div id="cv-telemetry-console" class="uf-cv-readout uf-tabular" aria-live="polite">
+                Optical scan confirms 99.4% epidermal continuity. Twin taproot curvature is purely cosmetic—zero rot or mold detected.
               </div>
             </div>
 
-            <div class="uf-form-grid-2">
-              <div class="uf-field">
-                <label for="publish-price-b2c" class="uf-field-label">Retail Price (₱ / 1 kg)</label>
-                <input type="number" id="publish-price-b2c" class="uf-input uf-tabular" value="66" min="15" max="500" required>
+            <div class="uf-score-grid">
+              <div class="uf-score-pill-card">
+                <span style="font-size:0.7rem;font-weight:600;color:var(--ink-secondary);">Grade</span>
+                <div id="scan-out-grade" class="uf-score-val" style="color:var(--accent-bronze);">Grade B</div>
               </div>
-              <div class="uf-field">
-                <label for="publish-price-b2b" class="uf-field-label">Bulk Price (₱ / 25 kg crate)</label>
-                <input type="number" id="publish-price-b2b" class="uf-input uf-tabular" value="1420" min="250" max="10000" required>
+              <div class="uf-score-pill-card">
+                <span style="font-size:0.7rem;font-weight:600;color:var(--ink-secondary);">Freshness</span>
+                <div id="scan-out-freshness" class="uf-score-val uf-tabular" style="color:var(--accent-emerald);">99%</div>
+              </div>
+              <div class="uf-score-pill-card">
+                <span style="font-size:0.7rem;font-weight:600;color:var(--ink-secondary);">Safety</span>
+                <div id="scan-out-safety" class="uf-score-val" style="color:var(--accent-emerald);">Passed</div>
               </div>
             </div>
 
-            <div class="uf-form-grid-2">
-              <div class="uf-field">
-                <label for="publish-crop-weight" class="uf-field-label">Available Weight (kg)</label>
-                <input type="number" id="publish-crop-weight" class="uf-input uf-tabular" value="180" min="10" max="5000" required>
+            <form id="scanner-publish-form" style="display:flex;flex-direction:column;gap:0.8rem;padding-top:0.8rem;border-top:1px solid var(--lg-border-subtle);">
+              <span class="uf-kicker">3. Post Straight to Shop</span>
+
+              <div class="uf-form-grid-2">
+                <div class="uf-field">
+                  <label for="publish-crop-title" class="uf-field-label">Produce Name</label>
+                  <input type="text" id="publish-crop-title" class="uf-input" value="Twisted Highland Carrots" required>
+                </div>
+                <div class="uf-field">
+                  <label for="publish-crop-category" class="uf-field-label">Category</label>
+                  <select id="publish-crop-category" class="uf-select">
+                    <option value="Root Crops">Root Crops</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruits">Fruits</option>
+                  </select>
+                </div>
               </div>
+
+              <div class="uf-form-grid-2">
+                <div class="uf-field">
+                  <label for="publish-price-b2c" class="uf-field-label">Price (₱ / 1 kg)</label>
+                  <input type="number" id="publish-price-b2c" class="uf-input uf-tabular" value="66" min="15" max="500" required>
+                </div>
+                <div class="uf-field">
+                  <label for="publish-crop-weight" class="uf-field-label">Stock Weight (kg)</label>
+                  <input type="number" id="publish-crop-weight" class="uf-input uf-tabular" value="180" min="10" max="5000" required>
+                </div>
+              </div>
+
               <div class="uf-field">
                 <label for="publish-farm-name" class="uf-field-label">Farm &amp; Region</label>
                 <input type="text" id="publish-farm-name" class="uf-input" value="Atok Highland Collective · Benguet" required>
               </div>
-            </div>
 
-            <div class="uf-field">
-              <label for="publish-defect-note" class="uf-field-label">AI Cosmetic Note (Shown to Buyers)</label>
-              <input type="text" id="publish-defect-note" class="uf-input" value="Intertwined twin taproot curvature — zero bruising or rot" required>
-            </div>
+              <div class="uf-field">
+                <label for="publish-defect-note" class="uf-field-label">Why It's Cheap (Shown to Shoppers)</label>
+                <input type="text" id="publish-defect-note" class="uf-input" value="Twisted twin roots — 100% crunchy &amp; sweet inside" required>
+              </div>
 
-            <button type="submit" class="lg-btn lg-btn--emerald" style="width:100%;padding:0.88rem;font-size:0.9rem;">
-              Publish Verified Lot to Live Marketplace &nearr;
-            </button>
-          </form>
+              <button type="submit" class="lg-btn lg-btn--emerald" style="width:100%;padding:0.86rem;font-size:0.9rem;">
+                Post Deal to Shop &nearr;
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
       </section>
     </div>
 
     <!-- ================================================================
-         VIEW 03: FARMER DASHBOARD & PARTNER FARMS
+         VIEW 03: FARMER SELLER HUB (Separate Screen)
          ================================================================ -->
     <div id="view-farmer-dashboard" class="uf-view" data-view="farmer-dashboard">
-      <section id="farmer-dashboard" class="uf-section uf-view-section" aria-labelledby="farmer-heading">
-      <div class="uf-section-header">
-        <div>
-          <span class="uf-kicker">Supplier Atelier · Direct Smallholder Control</span>
-          <h2 id="farmer-heading" class="uf-section-title">
-            Local Farmer <em>Dashboard</em> &amp; Orders
-          </h2>
-        </div>
-        <p class="uf-section-note">
-          Manage your live harvest inventory, toggle availability with tactile glass switches, and track incoming B2C and B2B orders.
-        </p>
-      </div>
-
-      <!-- 3 Curved Liquid Glass KPI Cards -->
-      <div class="uf-farmer-kpis">
-        <div class="lg-card uf-kpi-glass-card">
-          <span class="uf-kicker">Revenue From Imperfect Crops</span>
-          <div id="farmer-kpi-revenue" class="uf-kpi-number uf-tabular">₱184,688</div>
-          <span class="uf-stat-sub">89% direct net retention (zero broker cut)</span>
-        </div>
-        <div class="lg-card uf-kpi-glass-card">
-          <span class="uf-kicker">Total Kilograms Rescued</span>
-          <div id="farmer-kpi-kg" class="uf-kpi-number uf-tabular">7,160 kg</div>
-          <span class="uf-stat-sub">Grade A-, B &amp; C harvests monetized</span>
-        </div>
-        <div class="lg-card uf-kpi-glass-card">
-          <span class="uf-kicker">Active Marketplace Lots</span>
-          <div id="farmer-kpi-listings" class="uf-kpi-number uf-tabular">10 Active</div>
-          <span class="uf-stat-sub">Synced live across B2C &amp; B2B views</span>
-        </div>
-      </div>
-
-      <!-- Curved Glass Inventory & Orders Panels -->
-      <div class="uf-farmer-grid">
-        <div class="lg-card uf-panel-card">
-          <div class="uf-panel-head">
-            <div>
-              <span class="uf-kicker">Live Harvest Inventory</span>
-              <h3 class="uf-heading" style="font-size:1.45rem;margin-top:0.2rem;">Manage Crop Lots</h3>
-            </div>
-            <a href="#scanner" class="lg-btn" style="padding:0.48rem 0.95rem;font-size:0.78rem;" data-jump-section="scanner">+ Scan New Lot</a>
-          </div>
-          <div id="farmer-inventory-list" class="uf-stack-list"></div>
-        </div>
-
-        <div class="lg-card uf-panel-card">
-          <div class="uf-panel-head">
-            <div>
-              <span class="uf-kicker">Direct Dispatch Feed</span>
-              <h3 class="uf-heading" style="font-size:1.45rem;margin-top:0.2rem;">Incoming Buyer Orders</h3>
-            </div>
-            <span class="uf-brand-pill-tag">Live</span>
-          </div>
-          <div id="farmer-orders-list" class="uf-stack-list"></div>
-        </div>
-      </div>
-
-      <!-- Partner Farms Curved Liquid Glass Grid -->
-      <div style="margin-top:2.75rem;">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem;">
+      <section id="farmer-dashboard" class="uf-view-top-pad" aria-labelledby="farmer-heading">
+        <div class="uf-section-header">
           <div>
-            <span class="uf-kicker">Verified Smallholder Collectives</span>
-            <h3 class="uf-heading" style="font-size:1.75rem;margin-top:0.2rem;">Direct Partner <em>Farms</em></h3>
+            <span class="uf-kicker">Direct Grower Hub</span>
+            <h2 id="farmer-heading" class="uf-section-title">
+              Sell Your <em>Harvest</em>
+            </h2>
           </div>
-          <span style="font-size:0.84rem;color:var(--ink-secondary);">Tap any farm to filter their rescued harvest lots</span>
+          <p class="uf-section-note">
+            Manage live produce stock, pause/unpause items with one tap, and track direct incoming orders.
+          </p>
         </div>
 
-        <div id="partner-farms-grid" class="uf-farms-grid"></div>
-      </div>
+        <div class="uf-farmer-kpis">
+          <div class="lg-card uf-kpi-glass-card">
+            <span class="uf-kicker">Total Earnings</span>
+            <div id="farmer-kpi-revenue" class="uf-kpi-number uf-tabular">₱184,688</div>
+            <span style="font-size:0.78rem;color:var(--ink-secondary);">89% direct payout to growers</span>
+          </div>
+          <div class="lg-card uf-kpi-glass-card">
+            <span class="uf-kicker">Produce Rescued</span>
+            <div id="farmer-kpi-kg" class="uf-kpi-number uf-tabular">7,160 kg</div>
+            <span style="font-size:0.78rem;color:var(--ink-secondary);">Saved from cosmetic rejection</span>
+          </div>
+          <div class="lg-card uf-kpi-glass-card">
+            <span class="uf-kicker">Live Deals</span>
+            <div id="farmer-kpi-listings" class="uf-kpi-number uf-tabular">10 Active</div>
+            <span style="font-size:0.78rem;color:var(--ink-secondary);">Visible right now in Shop</span>
+          </div>
+        </div>
+
+        <div class="uf-farmer-grid">
+          <div class="lg-card uf-panel-card">
+            <div class="uf-panel-head">
+              <div>
+                <span class="uf-kicker">Your Listings</span>
+                <h3 class="uf-heading" style="font-size:1.35rem;margin-top:0.15rem;">Live Stock</h3>
+              </div>
+              <button type="button" class="lg-btn" style="padding:0.45rem 0.9rem;font-size:0.76rem;" data-jump-section="scanner">+ Scan New Crop</button>
+            </div>
+            <div id="farmer-inventory-list" class="uf-stack-list"></div>
+          </div>
+
+          <div class="lg-card uf-panel-card">
+            <div class="uf-panel-head">
+              <div>
+                <span class="uf-kicker">Direct Orders</span>
+                <h3 class="uf-heading" style="font-size:1.35rem;margin-top:0.15rem;">Incoming Orders</h3>
+              </div>
+              <span style="font-size:0.72rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:999px;background:var(--accent-emerald-soft);color:var(--accent-emerald);">Live</span>
+            </div>
+            <div id="farmer-orders-list" class="uf-stack-list"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:2.25rem;">
+          <span class="uf-kicker">Partner Farms</span>
+          <h3 class="uf-heading" style="font-size:1.55rem;margin:0.2rem 0 0;">Local Grower <em>Collectives</em></h3>
+          <div id="partner-farms-grid" class="uf-farms-grid"></div>
+        </div>
       </section>
     </div>
   </main>
 
   <!-- ====================================================================
-       CONCENTRIC INSET LIQUID GLASS SHEET 01: AI TRUST REPORT MODAL
+       CONCENTRIC LIQUID GLASS SHEET 01: PRODUCT DETAIL & FRESHNESS REPORT
        ==================================================================== -->
-  <div id="trust-report-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="AI Quality Assurance Report">
+  <div id="trust-report-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="Produce Details">
     <div class="lg-sheet uf-trust-sheet">
       <div id="trust-report-content" class="lg-sheet-inner uf-trust-inner"></div>
     </div>
   </div>
 
   <!-- ====================================================================
-       CONCENTRIC INSET LIQUID GLASS SHEET 02: HARVEST CART & MOCK CHECKOUT
+       CONCENTRIC LIQUID GLASS SHEET 02: GROCERY BASKET & 1-TAP CHECKOUT
        ==================================================================== -->
-  <div id="cart-sheet-backdrop" class="lg-sheet-backdrop uf-cart-backdrop" role="dialog" aria-modal="true" aria-label="Rescued Harvest Cart">
+  <div id="cart-sheet-backdrop" class="lg-sheet-backdrop uf-cart-backdrop" role="dialog" aria-modal="true" aria-label="Grocery Basket">
     <div class="lg-sheet uf-cart-sheet">
       <div class="lg-sheet-inner uf-cart-inner">
         <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;border-bottom:1px solid var(--lg-border-subtle);">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.95rem;border-bottom:1px solid var(--lg-border-subtle);">
             <div>
-              <span class="uf-kicker">Direct Farm Dispatch</span>
-              <h2 class="uf-heading" style="font-size:1.6rem;margin-top:0.15rem;">Harvest Basket</h2>
+              <span class="uf-kicker">Direct From Farm</span>
+              <h2 class="uf-heading" style="font-size:1.55rem;margin-top:0.15rem;">Your Basket</h2>
             </div>
-            <button type="button" id="close-cart-btn" class="uf-close-orb" aria-label="Close Cart">&times;</button>
+            <button type="button" id="close-cart-btn" class="uf-close-orb" aria-label="Close Basket">&times;</button>
           </div>
 
-          <div id="cart-items-container" style="margin-top:0.5rem;"></div>
+          <div id="cart-items-container" style="margin-top:0.4rem;"></div>
         </div>
 
         <div id="cart-summary-footer"></div>
@@ -566,62 +493,43 @@
   </div>
 
   <!-- ====================================================================
-       CONCENTRIC INSET LIQUID GLASS SHEET 03: SPECIAL ACCESS PORTAL
+       CONCENTRIC LIQUID GLASS SHEET 03: OWNER TESTING ACCESS (Private)
        ==================================================================== -->
-  <div id="special-access-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="Special Access Portal">
-    <div class="lg-sheet uf-special-access-sheet">
+  <div id="owner-access-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-label="Owner Testing Access">
+    <div class="lg-sheet uf-owner-sheet">
       <div class="lg-sheet-inner uf-trust-inner">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding-bottom:1rem;border-bottom:1px solid var(--lg-border-subtle);margin-bottom:1.25rem;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding-bottom:0.9rem;border-bottom:1px solid var(--lg-border-subtle);margin-bottom:1.1rem;">
           <div>
-            <span class="uf-kicker">Partner &amp; Wholesale Clearance</span>
-            <h2 class="uf-heading" style="font-size:1.75rem;margin-top:0.2rem;">Special <em>Access</em> Portal</h2>
+            <span class="uf-kicker">Site Owner Only</span>
+            <h2 class="uf-heading" style="font-size:1.55rem;margin-top:0.15rem;">Owner <em>Testing</em> Access</h2>
           </div>
-          <button type="button" id="close-special-access-btn" class="uf-close-orb" aria-label="Close Special Access">&times;</button>
+          <button type="button" id="close-owner-access-btn" class="uf-close-orb" aria-label="Close Owner Access">&times;</button>
         </div>
 
-        <p style="font-size:0.9rem;color:var(--ink-secondary);line-height:1.55;margin:0 0 1.15rem;">
-          Select a partner clearance pass below or enter an access code (<strong style="color:var(--ink-primary);">BULK25</strong> or <strong style="color:var(--ink-primary);">FARM89</strong>) to unlock commercial wholesale crate pricing or direct farmer supply tools.
-        </p>
-
-        <div class="uf-access-cards-stack">
-          <button type="button" class="uf-access-tier-card is-active" data-access-tier="b2c">
-            <div>
-              <div style="display:flex;align-items:center;gap:0.5rem;">
-                <span class="uf-kicker">Standard Pass</span>
-                <span class="uf-access-active-dot">Active</span>
-              </div>
-              <div class="uf-heading" style="font-size:1.22rem;margin-top:0.2rem;">Personal Harvest Pass (1–5 kg Packs)</div>
-              <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:0.2rem;">Retail household packs at up to 48% off supermarket prices.</div>
-            </div>
-          </button>
-
-          <button type="button" class="uf-access-tier-card" data-access-tier="b2b">
-            <div>
-              <div style="display:flex;align-items:center;gap:0.5rem;">
-                <span class="uf-kicker" style="color:var(--accent-emerald);">Code: BULK25 · Commercial Pass</span>
-                <span class="uf-access-active-dot">Active</span>
-              </div>
-              <div class="uf-heading" style="font-size:1.22rem;margin-top:0.2rem;">Wholesale Commissary Access (25 kg Crates)</div>
-              <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:0.2rem;">Unlocks restaurant &amp; commissary bulk crate rates (-52% wholesale).</div>
-            </div>
-          </button>
-
-          <button type="button" class="uf-access-tier-card" data-access-tier="farmer">
-            <div>
-              <div style="display:flex;align-items:center;gap:0.5rem;">
-                <span class="uf-kicker">Code: FARM89 · Supplier Pass</span>
-                <span class="uf-access-active-dot">Active</span>
-              </div>
-              <div class="uf-heading" style="font-size:1.22rem;margin-top:0.2rem;">Direct Grower &amp; AI Scanner Access</div>
-              <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:0.2rem;">Opens the Farmer Supplier Atelier &amp; AI Crop Grader with 89% direct payout.</div>
-            </div>
-          </button>
-        </div>
-
-        <form id="special-access-code-form" style="margin-top:1.15rem;padding-top:1rem;border-top:1px solid var(--lg-border-subtle);display:flex;gap:0.55rem;">
-          <input type="text" id="special-access-code-input" class="uf-input" placeholder="Enter access code (e.g. BULK25 or FARM89)" style="flex:1;">
-          <button type="submit" class="lg-btn lg-btn--prominent">Unlock</button>
+        <form id="owner-auth-form" style="display:flex;flex-direction:column;gap:0.75rem;">
+          <p style="font-size:0.86rem;color:var(--ink-secondary);line-height:1.5;margin:0;">
+            Enter the owner testing key (<strong style="color:var(--ink-primary);">OWNER</strong>) to switch between standard grocery packs and wholesale crate testing mode.
+          </p>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="password" id="owner-passcode-input" class="uf-input" placeholder="Owner passcode (OWNER)" style="flex:1;">
+            <button type="submit" class="lg-btn lg-btn--prominent">Unlock</button>
+          </div>
         </form>
+
+        <div id="owner-unlocked-panel" style="display:none;flex-direction:column;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--lg-border-subtle);">
+          <span class="uf-kicker" style="color:var(--accent-emerald);">Owner Testing Unlocked</span>
+          <div class="uf-access-cards-stack">
+            <button type="button" class="uf-access-tier-card is-active" data-owner-mode="retail">
+              <div style="font-weight:700;font-size:0.9rem;">Standard Grocery Mode (1 kg Packs)</div>
+              <div style="font-size:0.78rem;color:var(--ink-secondary);">Default shopper view for everyday buyers.</div>
+            </button>
+            <button type="button" class="uf-access-tier-card" data-owner-mode="wholesale">
+              <div style="font-weight:700;font-size:0.9rem;">Wholesale Crate Testing (25 kg Crates)</div>
+              <div style="font-size:0.78rem;color:var(--ink-secondary);">Tests bulk crate pricing &amp; commissary discounts.</div>
+            </button>
+          </div>
+          <button type="button" id="owner-lock-btn" class="lg-btn" style="width:100%;font-size:0.8rem;">Lock Owner Mode</button>
+        </div>
       </div>
     </div>
   </div>
@@ -637,7 +545,6 @@
     </svg>
   </button>
 
-  <!-- UglyFood AI Dataset & Apple-Spring Controller -->
   <script src="./js/uglyfood-data.js"></script>
   <script src="./js/uglyfood-app.js"></script>
 </body>
