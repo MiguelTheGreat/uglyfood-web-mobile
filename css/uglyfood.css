@@ -8,6 +8,26 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+select,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 html {
@@ -500,13 +520,173 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
   cursor: pointer;
 }
 
-/* Horizontal Swipeable Category Chips with Fun Icons */
+/* Custom Apple Liquid Glass Dropdown (Replaces Native Browser <select>) */
+.uf-lg-dropdown {
+  position: relative;
+  width: 100%;
+  z-index: 25;
+}
+
+.uf-lg-dropdown.is-open {
+  z-index: 60;
+}
+
+.uf-lg-dropdown-trigger {
+  width: 100%;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  padding: 0.68rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--lg-border);
+  background: var(--lg-surface-bg);
+  backdrop-filter: blur(16px) saturate(165%);
+  -webkit-backdrop-filter: blur(16px) saturate(165%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), var(--lg-shadow-card);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.28s var(--apple-spring-bouncy),
+    border-color 0.22s ease,
+    box-shadow 0.24s ease;
+}
+
+.uf-lg-dropdown-trigger:hover {
+  border-color: rgba(255, 84, 24, 0.45);
+}
+
+.uf-lg-dropdown-trigger:active {
+  transform: scale(0.97);
+}
+
+.uf-lg-dropdown.is-open .uf-lg-dropdown-trigger {
+  border-color: var(--accent-primary);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 6px 20px rgba(255, 84, 24, 0.16);
+}
+
+.uf-lg-dropdown-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-primary);
+  flex-shrink: 0;
+  transition: transform 0.36s var(--apple-spring-bouncy);
+}
+
+.uf-lg-dropdown.is-open .uf-lg-dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+.uf-lg-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 0;
+  right: 0;
+  min-width: 190px;
+  padding: 0.38rem;
+  border-radius: 22px;
+  border: 1px solid var(--lg-border);
+  background: rgba(255, 250, 246, 0.88);
+  backdrop-filter: blur(28px) saturate(185%);
+  -webkit-backdrop-filter: blur(28px) saturate(185%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 18px 42px rgba(28, 16, 12, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, -8px, 0) scale(0.95);
+  transform-origin: top center;
+  transition:
+    opacity 0.22s ease,
+    transform 0.36s var(--apple-spring-bouncy),
+    visibility 0.22s ease;
+}
+
+[data-theme="dark"] .uf-lg-dropdown-menu {
+  background: rgba(28, 20, 25, 0.90);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 20px 48px rgba(0, 0, 0, 0.52);
+}
+
+.uf-lg-dropdown.is-open .uf-lg-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.uf-lg-dropdown-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.62rem 0.85rem;
+  border: none;
+  border-radius: 15px;
+  background: transparent;
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.24s var(--apple-spring-bouncy);
+}
+
+.uf-lg-dropdown-option:hover {
+  background: var(--accent-primary-soft);
+  color: var(--accent-primary);
+}
+
+.uf-lg-dropdown-option:active {
+  transform: scale(0.97);
+}
+
+.uf-lg-dropdown-option.is-selected {
+  background: var(--lg-prominent-tangerine);
+  color: #ffffff;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(255, 84, 24, 0.24);
+}
+
+.uf-lg-dropdown-check {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s ease, transform 0.3s var(--apple-spring-bouncy);
+}
+
+.uf-lg-dropdown-option.is-selected .uf-lg-dropdown-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Horizontal Swipeable Category Chips with Fun Icons (Generous glow padding so box-shadow never clips!) */
 .uf-chip-scroller {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   overflow-x: auto;
-  padding: 0.15rem 0.1rem 0.35rem;
+  padding: 0.55rem 0.75rem 1.25rem;
+  margin: -0.45rem -0.75rem -0.95rem;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -1260,11 +1440,27 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
   height: calc(100vh - 2rem);
   display: flex;
   flex-direction: column;
-  transform: translate3d(108%, 0, 0);
+  transform: translate3d(108%, 0, 0) scale(0.94);
+  opacity: 0.4;
+  transition:
+    transform 0.54s var(--apple-spring-bouncy),
+    opacity 0.32s ease;
 }
 
 .lg-sheet-backdrop.is-open .uf-cart-sheet {
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+}
+
+@keyframes basketItemPop {
+  0% {
+    opacity: 0;
+    transform: translate3d(22px, 8px, 0) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 .uf-cart-inner {
@@ -1283,6 +1479,7 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
   align-items: center;
   padding: 0.8rem 0;
   border-bottom: 1px solid var(--lg-border-subtle);
+  animation: basketItemPop 0.42s var(--apple-spring-bouncy) both;
 }
 
 .uf-cart-item img {
@@ -1290,6 +1487,144 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
   height: 52px;
   object-fit: cover;
   border-radius: 14px;
+  transition: transform 0.32s var(--apple-spring-bouncy);
+}
+
+.uf-cart-item:hover img {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+/* Interactive Delivery Map Pin Dropper & Shipping Estimator Sheet */
+.uf-map-sheet {
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  overflow-y: auto;
+  transform: translate3d(0, 32px, 0) scale(0.94);
+}
+
+.lg-sheet-backdrop.is-open .uf-map-sheet {
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.uf-map-canvas {
+  position: relative;
+  width: 100%;
+  height: 225px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1.5px solid var(--lg-border);
+  background:
+    radial-gradient(circle at 22% 25%, rgba(255, 176, 32, 0.22), transparent 50%),
+    radial-gradient(circle at 78% 75%, rgba(255, 84, 24, 0.18), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(28, 20, 23, 0.045) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(28, 20, 23, 0.045) 0 1px, transparent 1px 28px),
+    var(--bg-canvas-deep);
+  cursor: crosshair;
+  user-select: none;
+}
+
+[data-theme="dark"] .uf-map-canvas {
+  background:
+    radial-gradient(circle at 22% 25%, rgba(255, 176, 32, 0.16), transparent 50%),
+    radial-gradient(circle at 78% 75%, rgba(255, 84, 24, 0.16), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(255, 240, 230, 0.06) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(255, 240, 230, 0.06) 0 1px, transparent 1px 28px),
+    #1c1519;
+}
+
+/* Stylized Metro Roads SVG inside Map */
+.uf-map-roads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.uf-map-hub-dot {
+  position: absolute;
+  left: 24%;
+  top: 26%;
+  transform: translate(-50%, -50%);
+  padding: 0.22rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: var(--lg-prominent-ink);
+  color: var(--bg-canvas);
+  font-size: 0.64rem;
+  font-weight: 800;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+.uf-map-pin {
+  position: absolute;
+  left: 56%;
+  top: 52%;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  z-index: 4;
+  transition: left 0.42s var(--apple-spring-bouncy), top 0.42s var(--apple-spring-bouncy);
+}
+
+@keyframes pinDropBounce {
+  0%   { transform: translate(-50%, -145%) scale(1.22, 0.85); }
+  55%  { transform: translate(-50%, -92%) scale(0.92, 1.12); }
+  100% { transform: translate(-50%, -100%) scale(1); }
+}
+
+.uf-map-pin.is-dropping {
+  animation: pinDropBounce 0.46s var(--apple-spring-bouncy);
+}
+
+.uf-map-pin svg {
+  width: 38px;
+  height: 38px;
+  color: var(--accent-primary);
+  filter: drop-shadow(0 6px 12px rgba(255, 84, 24, 0.45));
+}
+
+.uf-map-zones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.uf-zone-chip {
+  padding: 0.42rem 0.82rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--lg-border-subtle);
+  background: var(--lg-surface-bg);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.28s var(--apple-spring-bouncy), background-color 0.2s ease, color 0.2s ease;
+}
+
+.uf-zone-chip.is-active {
+  background: var(--lg-prominent-tangerine);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.uf-zone-chip:active {
+  transform: scale(0.93);
+}
+
+.uf-fee-summary-box {
+  margin-top: 0.85rem;
+  padding: 0.9rem 1.05rem;
+  border-radius: 20px;
+  background: var(--lg-surface-bg);
+  border: 1px solid var(--lg-border-subtle);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  text-align: center;
 }
 
 .uf-qty-stepper {
@@ -1398,6 +1733,12 @@ body.is-mobile-frame-mode .uf-farmer-kpis {
     height: 46px;
     padding: 0 1.2rem;
     justify-content: center;
+  }
+
+  .uf-top-utility-bar,
+  .uf-delivery-pill {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .uf-mobile-dock {

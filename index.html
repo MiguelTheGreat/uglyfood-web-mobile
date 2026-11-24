@@ -168,14 +168,16 @@
       <div class="uf-view-top-pad">
 
         <div class="uf-grocery-top">
-          <!-- Delivery Slot Pill -->
+          <!-- Delivery Pin & Fee Estimator Pill -->
           <div class="uf-top-utility-bar">
-            <button type="button" id="delivery-slot-btn" class="uf-delivery-pill" title="Tap to switch delivery slot">
-              <svg class="uf-delivery-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a7 7 0 0 0-7 7c0 4.6 5.4 10.6 6.3 11.6a1 1 0 0 0 1.4 0C13.6 19.6 19 13.6 19 9a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
-              </svg>
-              <span id="delivery-slot-text">Deliver to Metro Manila · Today, 2–4 PM</span>
-              <span style="opacity:0.55;">&#9662;</span>
+            <button type="button" id="delivery-slot-btn" class="uf-delivery-pill" title="Tap to drop delivery pin & estimate shipping fee">
+              <span style="display:inline-flex;align-items:center;gap:0.45rem;min-width:0;">
+                <svg class="uf-delivery-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2a7 7 0 0 0-7 7c0 4.6 5.4 10.6 6.3 11.6a1 1 0 0 0 1.4 0C13.6 19.6 19 13.6 19 9a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
+                </svg>
+                <span id="delivery-slot-text" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Quezon City · Est. ₱39</span>
+              </span>
+              <span style="font-size:0.76rem;font-weight:700;color:var(--accent-primary);flex-shrink:0;">Pin Map &#9662;</span>
             </button>
           </div>
 
@@ -197,7 +199,7 @@
             </div>
           </div>
 
-          <!-- Instant Search + Custom Aligned Sort Dropdown -->
+          <!-- Instant Search + Custom Apple Liquid Glass Sort Dropdown -->
           <div class="uf-search-row">
             <div class="lg-card uf-search-shell">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -213,12 +215,30 @@
               >
             </div>
 
-            <select id="filter-sort" class="uf-sort-select" aria-label="Sort produce">
-              <option value="featured">Sort: Best Steals</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="discount-desc">Biggest % Off</option>
-              <option value="fresh-desc">Freshest Harvest</option>
-            </select>
+            <div id="sort-dropdown" class="uf-lg-dropdown" data-lg-dropdown="sort">
+              <button type="button" class="uf-lg-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Sort produce">
+                <span data-dropdown-label>Sort: Best Steals</span>
+                <svg class="uf-lg-dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="uf-lg-dropdown-menu" role="listbox">
+                <button type="button" class="uf-lg-dropdown-option is-selected" data-value="featured" data-label="Sort: Best Steals">
+                  <span>Sort: Best Steals</span>
+                  <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
+                <button type="button" class="uf-lg-dropdown-option" data-value="price-asc" data-label="Price: Low to High">
+                  <span>Price: Low to High</span>
+                  <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
+                <button type="button" class="uf-lg-dropdown-option" data-value="discount-desc" data-label="Biggest % Off">
+                  <span>Biggest % Off</span>
+                  <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
+                <button type="button" class="uf-lg-dropdown-option" data-value="fresh-desc" data-label="Freshest Harvest">
+                  <span>Freshest Harvest</span>
+                  <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Swipeable Category Chips with Fun Icons -->
@@ -393,12 +413,28 @@
                   <input type="text" id="publish-crop-title" class="uf-input" value="Twisted Highland Carrots" required>
                 </div>
                 <div class="uf-field">
-                  <label for="publish-crop-category" class="uf-field-label">Category</label>
-                  <select id="publish-crop-category" class="uf-select">
-                    <option value="Root Crops">Root Crops</option>
-                    <option value="Vegetables">Vegetables</option>
-                    <option value="Fruits">Fruits</option>
-                  </select>
+                  <label class="uf-field-label">Category</label>
+                  <div id="scanner-cat-dropdown" class="uf-lg-dropdown" data-lg-dropdown="scanner-cat">
+                    <button type="button" class="uf-lg-dropdown-trigger" style="border-radius:var(--radius-control);" aria-haspopup="listbox" aria-expanded="false">
+                      <span data-dropdown-label>Root Crops</span>
+                      <svg class="uf-lg-dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="uf-lg-dropdown-menu" role="listbox">
+                      <button type="button" class="uf-lg-dropdown-option is-selected" data-value="Root Crops" data-label="Root Crops">
+                        <span>Root Crops</span>
+                        <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </button>
+                      <button type="button" class="uf-lg-dropdown-option" data-value="Vegetables" data-label="Vegetables">
+                        <span>Vegetables</span>
+                        <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </button>
+                      <button type="button" class="uf-lg-dropdown-option" data-value="Fruits" data-label="Fruits">
+                        <span>Fruits</span>
+                        <svg class="uf-lg-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <input type="hidden" id="publish-crop-category" value="Root Crops">
                 </div>
               </div>
 
@@ -562,6 +598,71 @@
           </div>
           <button type="button" id="owner-lock-btn" class="lg-btn" style="width:100%;font-size:0.8rem;">Lock Owner Mode</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Delivery Map Pin Dropper & Live Shipping Fee Estimator -->
+  <div id="delivery-map-modal" class="lg-sheet-backdrop uf-modal-wrapper" role="dialog" aria-modal="true" aria-labelledby="delivery-map-title">
+    <div class="lg-sheet uf-map-sheet">
+      <div class="lg-sheet-inner uf-trust-inner">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.75rem;margin-bottom:0.85rem;">
+          <div>
+            <span class="uf-kicker">Pin Your Drop-off</span>
+            <h2 id="delivery-map-title" class="uf-heading" style="font-size:1.35rem;margin-top:0.15rem;">Delivery Map &amp; Fee Estimator</h2>
+          </div>
+          <button type="button" class="uf-close-orb" id="close-map-modal-btn" aria-label="Close delivery map">&times;</button>
+        </div>
+
+        <p style="font-size:0.82rem;color:var(--ink-secondary);margin:0 0 0.75rem;line-height:1.45;">
+          Tap anywhere on the map to drop your pin, or pick a quick zone below. Free delivery on baskets <strong>₱300+</strong>!
+        </p>
+
+        <div id="interactive-map-canvas" class="uf-map-canvas" role="application" aria-label="Interactive delivery zone map">
+          <svg class="uf-map-roads" viewBox="0 0 500 225" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M-10 42 Q 130 68, 250 112 T 515 162" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+            <path d="M90 -10 Q 150 95, 225 130 T 385 235" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path>
+            <path d="M30 215 Q 195 140, 340 85 T 510 30" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="7 7"></path>
+            <path d="M210 -5 L 285 230" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+          </svg>
+          <span class="uf-map-hub-dot">QC Farm Hub</span>
+          <div id="dropped-map-pin" class="uf-map-pin" style="left:36%;top:38%;">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12z"></path>
+              <circle cx="12" cy="10" r="2.7" fill="#ffffff" stroke="none"></circle>
+            </svg>
+          </div>
+        </div>
+
+        <div class="uf-map-zones" role="group" aria-label="Quick Metro Manila Zones">
+          <button type="button" class="uf-zone-chip is-active" data-map-zone="Quezon City" data-x="36" data-y="38">Quezon City</button>
+          <button type="button" class="uf-zone-chip" data-map-zone="Makati" data-x="54" data-y="68">Makati</button>
+          <button type="button" class="uf-zone-chip" data-map-zone="BGC Taguig" data-x="72" data-y="74">BGC Taguig</button>
+          <button type="button" class="uf-zone-chip" data-map-zone="Manila" data-x="20" data-y="64">Manila</button>
+          <button type="button" class="uf-zone-chip" data-map-zone="Pasig" data-x="76" data-y="46">Pasig</button>
+          <button type="button" class="uf-zone-chip" data-map-zone="Farm Hub Pickup" data-x="24" data-y="26" data-pickup="true">Hub Pickup (Free)</button>
+        </div>
+
+        <div class="uf-fee-summary-box">
+          <div>
+            <div style="font-size:0.68rem;font-weight:700;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:0.06em;">Distance</div>
+            <div id="map-est-distance" class="uf-tabular" style="font-family:var(--font-display);font-size:1.12rem;font-weight:800;margin-top:0.15rem;">4.2 km</div>
+          </div>
+          <div>
+            <div style="font-size:0.68rem;font-weight:700;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:0.06em;">Est. Arrival</div>
+            <div id="map-est-eta" class="uf-tabular" style="font-family:var(--font-display);font-size:1.12rem;font-weight:800;margin-top:0.15rem;">35 mins</div>
+          </div>
+          <div>
+            <div style="font-size:0.68rem;font-weight:700;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:0.06em;">Shipping Fee</div>
+            <div id="map-est-fee" class="uf-tabular" style="font-family:var(--font-display);font-size:1.12rem;font-weight:800;color:var(--accent-primary);margin-top:0.15rem;">₱39</div>
+          </div>
+        </div>
+
+        <div id="map-free-delivery-hint" style="margin-top:0.65rem;font-size:0.76rem;font-weight:700;color:var(--accent-primary);text-align:center;"></div>
+
+        <button type="button" id="confirm-map-pin-btn" class="lg-btn lg-btn--tangerine" style="width:100%;margin-top:0.85rem;padding:0.88rem;font-size:0.9rem;">
+          Confirm Pin · Quezon City (₱39)
+        </button>
       </div>
     </div>
   </div>

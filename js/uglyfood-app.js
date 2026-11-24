@@ -34,12 +34,16 @@
     description: 'Our best-value 5 kg surprise box packed fresh every morning with whichever perfectly edible ugly veggies & fruits need rescuing most.'
   };
 
-  const DELIVERY_SLOTS = [
-    'Deliver to Metro Manila · Today, 2–4 PM',
-    'Deliver to Metro Manila · Today, 6–8 PM',
-    'Deliver to Metro Manila · Tomorrow, 8–10 AM',
-    'Farm Hub Pickup · Quezon City (Free)'
-  ];
+  const FREE_DELIVERY_THRESHOLD = 300;
+  const DEFAULT_DELIVERY = {
+    zone: 'Quezon City',
+    x: 36,
+    y: 38,
+    distanceKm: 4.2,
+    eta: '35 mins',
+    fee: 39,
+    isPickup: false
+  };
 
   function loadState() {
     try {
@@ -47,6 +51,9 @@
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && Array.isArray(parsed.listings) && parsed.listings.length > 0) {
+          if (!parsed.delivery || typeof parsed.delivery.fee !== 'number') {
+            parsed.delivery = { ...DEFAULT_DELIVERY };
+          }
           return parsed;
         }
       }
@@ -56,7 +63,7 @@
     return {
       ownerUnlocked: false,
       pricingMode: 'retail', // 'retail' | 'wholesale' (only toggleable via Owner Testing Access)
-      deliverySlotIdx: 0,
+      delivery: { ...DEFAULT_DELIVERY },
       listings: JSON.parse(JSON.stringify(defaultData.listings)),
       incomingOrders: JSON.parse(JSON.stringify(defaultData.incomingOrders)),
       platformStats: JSON.parse(JSON.stringify(defaultData.platformStats)),
@@ -81,7 +88,8 @@
     customUploadDataUrl: null,
     customUploadName: null,
     modalQty: 1,
-    checkoutSuccessOrder: null
+    checkoutSuccessOrder: null,
+    draftDelivery: { ...(state.delivery || DEFAULT_DELIVERY) }
   };
 
   function saveState() {
@@ -103,6 +111,20 @@
     el.classList.add('is-visible');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('is-visible'), duration);
+  }
+
+  function triggerIconGel(el) {
+    if (!el || typeof el.animate !== 'function') return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    el.animate(
+      [
+        { transform: 'scale3d(1, 1, 1) rotate(0deg)' },
+        { transform: 'scale3d(1.18, 0.86, 1) rotate(-6deg)', offset: 0.35 },
+        { transform: 'scale3d(0.92, 1.12, 1) rotate(4deg)', offset: 0.68 },
+        { transform: 'scale3d(1, 1, 1) rotate(0deg)' }
+      ],
+      { duration: 420, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }
+    );
   }
 
   function findCropById(cropId) {
@@ -603,7 +625,10 @@
           ? `Rescued ${ui.customUploadName.replace(/\.[^/.]+$/, '')}`
           : preset.name;
       }
-      if (catInput) catInput.value = preset.category;
+      if (catInput) {
+        catInput.value = preset.category;
+        syncLgDropdownValue('scanner-cat-dropdown', preset.category);
+      }
       if (weightInput) weightInput.value = String(preset.defaultWeightKg);
       if (priceInput) priceInput.value = String(preset.recommendedB2C);
       if (farmInput) farmInput.value = `${preset.farmName} · ${preset.region}`;
@@ -778,7 +803,7 @@
             <p style="font-size:0.82rem;color:var(--ink-secondary);line-height:1.48;margin:0;">${farm.bio}</p>
           </div>
           <div style="display:flex;justify-content:space-between;padding-top:0.65rem;border-top:1px solid var(--lg-border-subtle);font-size:0.74rem;font-weight:700;">
-            <span class="uf-tabular" style="color:var(--accent-emerald);">${farm.wasteDivertedKg.toLocaleString('en-PH')} kg rescued</span>
+            <span class="uf-tabular" style="color:var(--accent-primary);">${farm.wasteDivertedKg.toLocaleString('en-PH')} kg rescued</span>
             <span style="color:var(--accent-bronze);">Shop Farm &rarr;</span>
           </div>
         </article>
@@ -800,7 +825,241 @@
   }
 
   /* ------------------------------------------------------------------------
-     7. GROCERY BASKET, FLOATING LIVE BAR & 1-TAP CHECKOUT
+     7. CUSTOM APPLE LIQUID GLASS DROPDOWNS
+     ------------------------------------------------------------------------ */
+  function closeAllLgDropdowns(exceptEl = null) {
+    document.querySelectorAll('.uf-lg-dropdown.is-open').forEach((dd) => {
+      if (dd === exceptEl) return;
+      dd.classList.remove('is-open');
+      dd.querySelector('.uf-lg-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function syncLgDropdownValue(dropdownId, value) {
+    const dd = document.getElementById(dropdownId);
+    if (!dd) return;
+    const labelEl = dd.querySelector('[data-dropdown-label]');
+    dd.querySelectorAll('.uf-lg-dropdown-option').forEach((opt) => {
+      const match = opt.getAttribute('data-value') === value;
+      opt.classList.toggle('is-selected', match);
+      if (match && labelEl) {
+        labelEl.textContent = opt.getAttribute('data-label') || opt.textContent.trim();
+      }
+    });
+  }
+
+  function initLgDropdowns() {
+    document.querySelectorAll('.uf-lg-dropdown').forEach((dd) => {
+      const trigger = dd.querySelector('.uf-lg-dropdown-trigger');
+      const dropdownType = dd.getAttribute('data-lg-dropdown');
+      const labelEl = dd.querySelector('[data-dropdown-label]');
+
+      trigger?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = !dd.classList.contains('is-open');
+        closeAllLgDropdowns(dd);
+        dd.classList.toggle('is-open', willOpen);
+        trigger.setAttribute('aria-expanded', String(willOpen));
+        triggerIconGel(trigger.querySelector('.uf-lg-dropdown-chevron'));
+      });
+
+      dd.querySelectorAll('.uf-lg-dropdown-option').forEach((opt) => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = opt.getAttribute('data-value');
+          const lbl = opt.getAttribute('data-label') || opt.textContent.trim();
+
+          dd.querySelectorAll('.uf-lg-dropdown-option').forEach((o) => {
+            o.classList.toggle('is-selected', o === opt);
+          });
+          if (labelEl) labelEl.textContent = lbl;
+
+          dd.classList.remove('is-open');
+          trigger?.setAttribute('aria-expanded', 'false');
+
+          if (dropdownType === 'sort') {
+            ui.filters.sort = val;
+            renderMarketplace();
+          } else if (dropdownType === 'scanner-cat') {
+            const hiddenInput = document.getElementById('publish-crop-category');
+            if (hiddenInput) hiddenInput.value = val;
+          }
+        });
+      });
+    });
+
+    document.addEventListener('click', () => closeAllLgDropdowns());
+  }
+
+  /* ------------------------------------------------------------------------
+     8. INTERACTIVE DELIVERY MAP PIN DROPPER & SHIPPING FEE ESTIMATOR
+     ------------------------------------------------------------------------ */
+  function getCartSubtotal() {
+    return state.cart.reduce((sum, entry) => {
+      const crop = findCropById(entry.cropId);
+      if (!crop) return sum;
+      return sum + getActivePrice(crop).price * entry.qty;
+    }, 0);
+  }
+
+  function getEffectiveShippingFee(deliveryObj = state.delivery) {
+    const d = deliveryObj || DEFAULT_DELIVERY;
+    if (d.isPickup) return 0;
+    const subtotal = getCartSubtotal();
+    if (subtotal >= FREE_DELIVERY_THRESHOLD) return 0;
+    return d.fee;
+  }
+
+  function syncDeliveryPill() {
+    const d = state.delivery || DEFAULT_DELIVERY;
+    const effectiveFee = getEffectiveShippingFee(d);
+    const slotText = document.getElementById('delivery-slot-text');
+    if (!slotText) return;
+    if (d.isPickup) {
+      slotText.textContent = 'Farm Hub Pickup · Free';
+    } else if (effectiveFee === 0) {
+      slotText.textContent = `${d.zone} · Free Delivery`;
+    } else {
+      slotText.textContent = `${d.zone} · Est. ${formatPhp(d.fee)}`;
+    }
+  }
+
+  function guessZoneFromCoords(xPct, yPct) {
+    const zones = [
+      { name: 'Farm Hub Pickup', x: 24, y: 26, isPickup: true },
+      { name: 'Quezon City', x: 36, y: 38, isPickup: false },
+      { name: 'Makati', x: 54, y: 68, isPickup: false },
+      { name: 'BGC Taguig', x: 72, y: 74, isPickup: false },
+      { name: 'Manila', x: 20, y: 64, isPickup: false },
+      { name: 'Pasig', x: 76, y: 46, isPickup: false }
+    ];
+    let best = zones[1];
+    let bestDist = Infinity;
+    zones.forEach((z) => {
+      const dist = Math.hypot(xPct - z.x, yPct - z.y);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = z;
+      }
+    });
+    if (bestDist <= 14) return { zone: best.name, isPickup: best.isPickup };
+    return { zone: `Near ${best.name}`, isPickup: false };
+  }
+
+  function updateMapDraftUI(xPct, yPct, zoneName, isPickup = false, animatePin = true) {
+    const clampedX = Math.max(8, Math.min(92, xPct));
+    const clampedY = Math.max(14, Math.min(92, yPct));
+
+    // Distance from QC Farm Hub (24%, 26%)
+    const rawDist = Math.hypot((clampedX - 24) * 0.24, (clampedY - 26) * 0.21);
+    const distanceKm = isPickup ? 0 : Math.max(1.2, Math.round(rawDist * 10) / 10);
+    const eta = isPickup ? 'Ready in 15m' : `${Math.round(18 + distanceKm * 3.8)} mins`;
+    const fee = isPickup ? 0 : Math.min(99, Math.max(29, Math.round(29 + distanceKm * 4.5)));
+
+    ui.draftDelivery = {
+      zone: zoneName,
+      x: clampedX,
+      y: clampedY,
+      distanceKm,
+      eta,
+      fee,
+      isPickup
+    };
+
+    const pin = document.getElementById('dropped-map-pin');
+    if (pin) {
+      pin.style.left = `${clampedX}%`;
+      pin.style.top = `${clampedY}%`;
+      if (animatePin) {
+        pin.classList.remove('is-dropping');
+        void pin.offsetWidth;
+        pin.classList.add('is-dropping');
+      }
+    }
+
+    const subtotal = getCartSubtotal();
+    const isFreeUnlocked = !isPickup && subtotal >= FREE_DELIVERY_THRESHOLD;
+
+    const distEl = document.getElementById('map-est-distance');
+    const etaEl = document.getElementById('map-est-eta');
+    const feeEl = document.getElementById('map-est-fee');
+    const hintEl = document.getElementById('map-free-delivery-hint');
+    const confirmBtn = document.getElementById('confirm-map-pin-btn');
+
+    if (distEl) distEl.textContent = isPickup ? '0.0 km' : `${distanceKm.toFixed(1)} km`;
+    if (etaEl) etaEl.textContent = eta;
+    if (feeEl) {
+      feeEl.textContent = isPickup || isFreeUnlocked ? 'FREE' : formatPhp(fee);
+    }
+    if (hintEl) {
+      if (isPickup) {
+        hintEl.textContent = 'Self-pickup at Quezon City Farm Hub — ₱0 shipping!';
+      } else if (isFreeUnlocked) {
+        hintEl.textContent = `Free Delivery unlocked! (Normal fee ${formatPhp(fee)} waived)`;
+      } else {
+        const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
+        hintEl.textContent = `Add ${formatPhp(remaining)} more to unlock Free Delivery`;
+      }
+    }
+    if (confirmBtn) {
+      const feeLabel = isPickup || isFreeUnlocked ? 'Free' : formatPhp(fee);
+      confirmBtn.textContent = `Confirm Pin · ${zoneName} (${feeLabel})`;
+    }
+
+    document.querySelectorAll('[data-map-zone]').forEach((chip) => {
+      chip.classList.toggle('is-active', chip.getAttribute('data-map-zone') === zoneName);
+    });
+  }
+
+  function openDeliveryMapModal() {
+    const d = state.delivery || DEFAULT_DELIVERY;
+    updateMapDraftUI(d.x, d.y, d.zone, d.isPickup, false);
+    document.getElementById('delivery-map-modal')?.classList.add('is-open');
+    triggerIconGel(document.querySelector('#delivery-slot-btn .uf-delivery-icon'));
+  }
+
+  function closeDeliveryMapModal() {
+    document.getElementById('delivery-map-modal')?.classList.remove('is-open');
+  }
+
+  function initDeliveryMap() {
+    const canvas = document.getElementById('interactive-map-canvas');
+    canvas?.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const xPct = ((e.clientX - rect.left) / rect.width) * 100;
+      const yPct = ((e.clientY - rect.top) / rect.height) * 100;
+      const guessed = guessZoneFromCoords(xPct, yPct);
+      updateMapDraftUI(xPct, yPct, guessed.zone, guessed.isPickup, true);
+    });
+
+    document.querySelectorAll('[data-map-zone]').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const zone = chip.getAttribute('data-map-zone');
+        const x = Number(chip.getAttribute('data-x') || 36);
+        const y = Number(chip.getAttribute('data-y') || 38);
+        const isPickup = chip.getAttribute('data-pickup') === 'true';
+        updateMapDraftUI(x, y, zone, isPickup, true);
+      });
+    });
+
+    document.getElementById('confirm-map-pin-btn')?.addEventListener('click', () => {
+      state.delivery = { ...ui.draftDelivery };
+      saveState();
+      syncDeliveryPill();
+      renderCart();
+      closeDeliveryMapModal();
+      const eff = getEffectiveShippingFee(state.delivery);
+      showToast(`Pinned ${state.delivery.zone} · ${eff === 0 ? 'Free Shipping' : formatPhp(eff)}`);
+    });
+
+    document.getElementById('close-map-modal-btn')?.addEventListener('click', closeDeliveryMapModal);
+    document.getElementById('delivery-map-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'delivery-map-modal') closeDeliveryMapModal();
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     9. GROCERY BASKET, SAVINGS METER & 1-TAP CHECKOUT
      ------------------------------------------------------------------------ */
   function popCartBadges() {
     document.querySelectorAll('[data-cart-badge]').forEach((badge) => {
@@ -808,6 +1067,8 @@
       void badge.offsetWidth;
       badge.classList.add('is-popping');
     });
+    triggerIconGel(document.querySelector('#header-cart-btn svg'));
+    triggerIconGel(document.querySelector('[data-mobile-nav="cart"] svg'));
   }
 
   function addToCart(cropId, qty = 1) {
@@ -867,8 +1128,31 @@
     });
 
     const totalSavings = Math.max(0, marketTotal - subtotal);
+    const delivery = state.delivery || DEFAULT_DELIVERY;
+    const effectiveShipping = getEffectiveShippingFee(delivery);
+    const grandTotal = subtotal + effectiveShipping;
 
-    // Update Floating Live Basket Bar
+    // Sync Live Savings Meter & Delivery Pill
+    const meterAmt = document.getElementById('meter-savings-amt');
+    const meterHint = document.getElementById('meter-delivery-hint');
+    const meterFill = document.getElementById('meter-savings-fill');
+    if (meterAmt) meterAmt.textContent = formatPhp(totalSavings);
+    if (meterFill) {
+      const pct = Math.min(100, Math.round((subtotal / FREE_DELIVERY_THRESHOLD) * 100));
+      meterFill.style.width = `${pct}%`;
+    }
+    if (meterHint) {
+      if (delivery.isPickup) {
+        meterHint.textContent = 'Hub Pickup Selected · Free!';
+      } else if (subtotal >= FREE_DELIVERY_THRESHOLD) {
+        meterHint.textContent = 'Free Delivery Unlocked!';
+      } else {
+        meterHint.textContent = `Add ${formatPhp(FREE_DELIVERY_THRESHOLD - subtotal)} more for Free Delivery`;
+      }
+    }
+    syncDeliveryPill();
+
+    // Update Floating Live Basket Bar (if present)
     const liveMain = document.getElementById('live-cart-main');
     const liveSavings = document.getElementById('live-cart-savings');
     if (liveMain) liveMain.textContent = `${totalCount} item${totalCount === 1 ? '' : 's'} · ${formatPhp(subtotal)}`;
@@ -882,17 +1166,17 @@
     if (ui.checkoutSuccessOrder) {
       const ord = ui.checkoutSuccessOrder;
       listEl.innerHTML = `
-        <div style="border-radius:22px;background:var(--accent-emerald-soft);border:1px solid rgba(38,105,74,0.28);padding:1.35rem;margin-top:0.75rem;">
-          <span class="uf-kicker" style="color:var(--accent-emerald);">Order Confirmed · ${ord.id}</span>
+        <div class="uf-cart-item" style="display:block;border-radius:22px;background:var(--accent-primary-soft);border:1px solid rgba(255,84,24,0.28);padding:1.35rem;margin-top:0.75rem;">
+          <span class="uf-kicker" style="color:var(--accent-primary);">Order Confirmed · ${ord.id}</span>
           <h3 class="uf-heading" style="font-size:1.45rem;margin:0.35rem 0 0.55rem;">Your rescued produce is on the way!</h3>
           <p style="font-size:0.84rem;color:var(--ink-secondary);line-height:1.52;margin:0 0 0.9rem;">
             Packed fresh for <strong>${ord.buyerName}</strong> (${ord.rescuedKg} kg rescued).
           </p>
           <div style="border-top:1px solid var(--lg-border-subtle);padding-top:0.75rem;display:flex;flex-direction:column;gap:0.35rem;font-size:0.84rem;">
             <div style="display:flex;justify-content:space-between;"><span>Total Paid</span><strong class="uf-tabular">${formatPhp(ord.totalPhp)}</strong></div>
-            <div style="display:flex;justify-content:space-between;color:var(--accent-emerald);"><span>Saved vs. Grocery</span><strong class="uf-tabular">${formatPhp(ord.savedPhp)}</strong></div>
+            <div style="display:flex;justify-content:space-between;color:var(--accent-primary);"><span>Saved vs. Grocery</span><strong class="uf-tabular">${formatPhp(ord.savedPhp)}</strong></div>
           </div>
-          <button type="button" class="lg-btn lg-btn--prominent" id="cart-continue-shopping-btn" style="width:100%;margin-top:1.1rem;">Back to Shop</button>
+          <button type="button" class="lg-btn lg-btn--tangerine" id="cart-continue-shopping-btn" style="width:100%;margin-top:1.1rem;">Back to Deals</button>
         </div>
       `;
       summaryEl.innerHTML = '';
@@ -916,7 +1200,7 @@
     }
 
     listEl.innerHTML = state.cart
-      .map((entry) => {
+      .map((entry, idx) => {
         const crop = findCropById(entry.cropId);
         if (!crop) return '';
         const pricing = getActivePrice(crop);
@@ -924,12 +1208,12 @@
         const lineMarket = pricing.market * entry.qty;
 
         return `
-          <div class="uf-cart-item">
+          <div class="uf-cart-item" style="animation-delay:${idx * 55}ms;">
             <img src="${crop.image}" alt="${crop.title}">
             <div>
               <div style="font-weight:700;font-size:0.88rem;">${crop.title}</div>
               <div class="uf-tabular" style="font-size:0.75rem;color:var(--ink-secondary);">${formatPhp(pricing.price)} · ${pricing.unit}</div>
-              <div class="uf-tabular" style="font-size:0.72rem;font-weight:700;color:var(--accent-emerald);">Save ${formatPhp(lineMarket - lineTotal)}</div>
+              <div class="uf-tabular" style="font-size:0.72rem;font-weight:700;color:var(--accent-primary);">Save ${formatPhp(lineMarket - lineTotal)}</div>
             </div>
             <div class="uf-qty-stepper">
               <button type="button" class="uf-qty-btn" data-cart-dec="${crop.id}" aria-label="Decrease">&minus;</button>
@@ -941,33 +1225,39 @@
       })
       .join('');
 
+    const pinFeeBadge = effectiveShipping === 0 ? 'FREE' : formatPhp(effectiveShipping);
+
     summaryEl.innerHTML = `
       <div style="border-top:1px solid var(--lg-border-subtle);padding-top:0.95rem;display:flex;flex-direction:column;gap:0.75rem;">
-        <div style="display:flex;flex-direction:column;gap:0.3rem;font-size:0.84rem;">
+        <div style="display:flex;flex-direction:column;gap:0.32rem;font-size:0.84rem;">
           <div style="display:flex;justify-content:space-between;color:var(--ink-secondary);">
             <span>Supermarket Price</span>
             <span class="uf-tabular" style="text-decoration:line-through;">${formatPhp(marketTotal)}</span>
           </div>
-          <div style="display:flex;justify-content:space-between;color:var(--accent-emerald);font-weight:700;">
+          <div style="display:flex;justify-content:space-between;color:var(--accent-primary);font-weight:700;">
             <span>Total Savings (${marketTotal > 0 ? Math.round((totalSavings / marketTotal) * 100) : 0}% Off)</span>
             <span class="uf-tabular">&minus;${formatPhp(totalSavings)}</span>
           </div>
+          <div style="display:flex;justify-content:space-between;color:var(--ink-secondary);">
+            <span>Shipping (${delivery.zone})</span>
+            <span class="uf-tabular" style="font-weight:700;color:${effectiveShipping === 0 ? 'var(--accent-primary)' : 'var(--ink-primary)'};">${pinFeeBadge}</span>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:0.45rem;border-top:1px solid var(--lg-border-subtle);">
             <span class="uf-kicker">Total</span>
-            <span class="uf-tabular" style="font-family:var(--font-display);font-size:1.6rem;font-weight:600;">${formatPhp(subtotal)}</span>
+            <span class="uf-tabular" style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;">${formatPhp(grandTotal)}</span>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
-          <input type="text" id="checkout-buyer-name" class="uf-input" value="Elena Reyes" style="font-size:0.82rem;padding:0.58rem 0.8rem;">
-          <select id="checkout-fulfillment" class="uf-select" style="font-size:0.82rem;padding:0.58rem 0.8rem;" aria-label="Delivery Method">
-            <option value="Today 2–4 PM">Today 2–4 PM</option>
-            <option value="Hub Pickup (Free)">Hub Pickup (₱0)</option>
-          </select>
+          <input type="text" id="checkout-buyer-name" class="uf-input" value="Elena Reyes" style="font-size:0.82rem;padding:0.58rem 0.8rem;" aria-label="Your Name">
+          <button type="button" id="cart-change-pin-btn" class="uf-lg-dropdown-trigger" style="border-radius:var(--radius-control);font-size:0.78rem;padding:0.56rem 0.78rem;min-height:auto;" title="Change delivery pin">
+            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${delivery.zone} · ${pinFeeBadge}</span>
+            <span style="color:var(--accent-primary);font-size:0.7rem;flex-shrink:0;">Edit</span>
+          </button>
         </div>
 
-        <button type="button" class="lg-btn lg-btn--emerald" id="confirm-mock-order-btn" style="width:100%;padding:0.88rem;font-size:0.9rem;">
-          Place Order · ${formatPhp(subtotal)}
+        <button type="button" class="lg-btn lg-btn--tangerine" id="confirm-mock-order-btn" style="width:100%;padding:0.88rem;font-size:0.92rem;">
+          Place Order · ${formatPhp(grandTotal)}
         </button>
       </div>
     `;
@@ -979,9 +1269,13 @@
       btn.addEventListener('click', () => updateCartQty(btn.getAttribute('data-cart-inc'), 1));
     });
 
+    document.getElementById('cart-change-pin-btn')?.addEventListener('click', () => {
+      openDeliveryMapModal();
+    });
+
     document.getElementById('confirm-mock-order-btn')?.addEventListener('click', () => {
       const buyerName = (document.getElementById('checkout-buyer-name')?.value || 'Elena Reyes').trim();
-      const fulfillment = document.getElementById('checkout-fulfillment')?.value || 'Today 2–4 PM';
+      const fulfillment = delivery.isPickup ? 'Hub Pickup (Free)' : `${delivery.zone} (${delivery.eta})`;
       const firstCrop = findCropById(state.cart[0]?.cropId);
 
       const orderRecord = {
@@ -989,7 +1283,7 @@
         buyerName,
         cropTitle: firstCrop ? `${firstCrop.title}${state.cart.length > 1 ? ` + ${state.cart.length - 1} more` : ''}` : 'Rescued Produce',
         quantityLabel: `${totalRescuedKg} kg (${fulfillment})`,
-        totalPhp: subtotal,
+        totalPhp: grandTotal,
         savedPhp: totalSavings,
         rescuedKg: totalRescuedKg,
         status: `Confirmed · ${fulfillment}`,
@@ -1009,7 +1303,10 @@
   }
 
   function openCartDrawer() {
+    renderCart();
     document.getElementById('cart-sheet-backdrop')?.classList.add('is-open');
+    triggerIconGel(document.querySelector('#header-cart-btn svg'));
+    triggerIconGel(document.querySelector('[data-mobile-nav="cart"] svg'));
   }
 
   function closeCartDrawer() {
@@ -1018,11 +1315,14 @@
   }
 
   /* ------------------------------------------------------------------------
-     8. INITIALIZATION & EVENT BINDINGS
+     10. INITIALIZATION & EVENT BINDINGS
      ------------------------------------------------------------------------ */
   function initApp() {
     initTheme();
+    initLgDropdowns();
+    initDeliveryMap();
     syncOwnerUI();
+    syncDeliveryPill();
     renderMarketplace();
     renderFarmerDashboard();
     renderPartnerFarms();
@@ -1047,12 +1347,16 @@
     document.querySelectorAll('[data-top-nav]').forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
+        triggerIconGel(link.querySelector('svg'));
         navigateToSection(link.getAttribute('data-top-nav'));
       });
     });
 
     document.querySelectorAll('[data-mobile-nav]').forEach((tab) => {
-      tab.addEventListener('click', () => navigateToSection(tab.getAttribute('data-mobile-nav')));
+      tab.addEventListener('click', () => {
+        triggerIconGel(tab.querySelector('svg'));
+        navigateToSection(tab.getAttribute('data-mobile-nav'));
+      });
     });
 
     document.querySelectorAll('[data-jump-section]').forEach((el) => {
@@ -1062,15 +1366,8 @@
       });
     });
 
-    // Delivery Slot Cycle Pill
-    const slotText = document.getElementById('delivery-slot-text');
-    if (slotText) slotText.textContent = DELIVERY_SLOTS[state.deliverySlotIdx || 0];
-    document.getElementById('delivery-slot-btn')?.addEventListener('click', () => {
-      state.deliverySlotIdx = ((state.deliverySlotIdx || 0) + 1) % DELIVERY_SLOTS.length;
-      saveState();
-      if (slotText) slotText.textContent = DELIVERY_SLOTS[state.deliverySlotIdx];
-      showToast(DELIVERY_SLOTS[state.deliverySlotIdx]);
-    });
+    // Delivery Pin & Shipping Fee Map Button
+    document.getElementById('delivery-slot-btn')?.addEventListener('click', openDeliveryMapModal);
 
     // 1-Tap Mystery Ugly Box
     document.getElementById('add-mystery-box-btn')?.addEventListener('click', () => {
@@ -1080,14 +1377,9 @@
     // Live Floating Cart Bar -> Open Basket
     document.getElementById('live-cart-bar')?.addEventListener('click', openCartDrawer);
 
-    // Search, Sort & Category Chips
+    // Search & Category Chips
     document.getElementById('filter-search')?.addEventListener('input', (e) => {
       ui.filters.search = e.target.value;
-      renderMarketplace();
-    });
-
-    document.getElementById('filter-sort')?.addEventListener('change', (e) => {
-      ui.filters.sort = e.target.value;
       renderMarketplace();
     });
 
@@ -1095,6 +1387,7 @@
       chip.addEventListener('click', () => {
         ui.filters.category = chip.getAttribute('data-category-pill');
         document.querySelectorAll('[data-category-pill]').forEach((c) => c.classList.toggle('is-active', c === chip));
+        triggerIconGel(chip.querySelector('svg'));
         renderMarketplace();
       });
     });
@@ -1201,6 +1494,8 @@
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        closeAllLgDropdowns();
+        closeDeliveryMapModal();
         closeProductReportModal();
         closeCartDrawer();
         closeOwnerModal();
